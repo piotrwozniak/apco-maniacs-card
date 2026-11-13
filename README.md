@@ -8,9 +8,9 @@ A Home Assistant weather card for paraglider pilots. Choose an exact point on th
 
 Two separate, lossless PNG screenshots at 2× pixel density: Warsaw in the dark theme, and Piecki in the light theme. Both use the English interface. Captured from the same component in its standalone preview on 13 November 2026. Warsaw uses simulated example data (a green window from 07:00 to 14:00); Piecki shows the Open-Meteo forecast fetched at capture time. Demo data is never used by the installed card.
 
-![Warsaw — English card, dark theme](docs/weather-en-dark.png)
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-dark.png" alt="Warsaw — English card, dark theme" width="640">
 
-![Piecki — English card, light theme](docs/weather-en-light.png)
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — English card, light theme" width="640">
 
 - Native map with a draggable pin in the visual card editor; manual coordinates are also supported.
 - Open-Meteo forecasts for the selected point, without a weather entity, Python integration or API key.
@@ -65,7 +65,7 @@ Do not replace `configuration.yaml`, automations or scenes. HACS installs only t
 
 ## Manual single-file installation
 
-Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.3` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
+Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.4` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
 
 The source version in `warun-web/` still runs standalone and can also be deployed using four files. The detailed deployment guide, [wdrozenie.html](wdrozenie.html), is in Polish.
 
