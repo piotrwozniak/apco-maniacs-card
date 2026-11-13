@@ -49,6 +49,12 @@ daylight_only: true
 
 Ogni scheda conserva la propria posizione. Il segnaposto non modifica la posizione di casa di Home Assistant. Le nuove schede partono dalle coordinate di casa HA. Se scegli una località in un altro fuso orario, modifica anche `timezone`: non viene ricavato automaticamente dalla mappa.
 
+## Scegliere una posizione sulla mappa
+
+Apri la dashboard → Modifica dashboard → Modifica la scheda APCO Maniacs. Usa l’editor visuale (passa dall’editor di codice se necessario), fai clic sulla mappa o trascina il segnaposto e salva la scheda. Lo screenshot mostra l’editor nativo di Home Assistant con Varsavia selezionata: latitudine `52.2297`, longitudine `21.0122`, fuso orario `Europe/Warsaw`.
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Selezione di Varsavia sulla mappa nell’editor di Home Assistant" width="320">
+
 ## Lingua e localizzazione
 
 Senza `language`, la scheda segue la lingua dell’interfaccia HA: `pl`, `en`, `it` ed `es`, incluse le varianti regionali come `it-IT` o `es-MX`. Le lingue non supportate usano l’inglese. Impostare esplicitamente una delle quattro lingue ha la precedenza sulla lingua di HA; i valori non riconosciuti ricadono sull’inglese. Puoi cambiare lingua nell’editor visuale.
@@ -63,7 +69,7 @@ Non sostituire `configuration.yaml`, automazioni o scene. HACS installa soltanto
 
 ## Installazione manuale con un solo file
 
-Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) in `www/apco-maniacs-card/`. Aggiungi `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.6` come risorsa di tipo **Modulo JavaScript**. Se hai appena creato `www`, riavvia HA. Non servono CSS, traduzioni o immagini separati.
+Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) in `www/apco-maniacs-card/`. Aggiungi `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.7` come risorsa di tipo **Modulo JavaScript**. Se hai appena creato `www`, riavvia HA. Non servono CSS, traduzioni o immagini separati.
 
 La versione sorgente in `warun-web/` funziona anche autonomamente e può essere installata con quattro file. La guida dettagliata [wdrozenie.html](wdrozenie.html) è in polacco.
 

@@ -49,6 +49,12 @@ daylight_only: true
 
 Cada tarjeta conserva su propia ubicación. El marcador no cambia la ubicación de casa de Home Assistant. Las tarjetas nuevas utilizan inicialmente las coordenadas de casa de HA. Si eliges un lugar en otra zona horaria, cambia también `timezone`: no se calcula automáticamente a partir del mapa.
 
+## Elegir una ubicación en el mapa
+
+Abre el panel → Editar panel → Editar la tarjeta APCO Maniacs. Usa el editor visual (cambia desde el editor de código si es necesario), haz clic en el mapa o arrastra el marcador y guarda la tarjeta. La captura muestra el editor nativo de Home Assistant con Varsovia seleccionada: latitud `52.2297`, longitud `21.0122`, zona horaria `Europe/Warsaw`.
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Selección de Varsovia en el mapa del editor de Home Assistant" width="320">
+
 ## Idioma y localización
 
 Sin `language`, la tarjeta sigue el idioma de la interfaz de HA: `pl`, `en`, `it` y `es`, incluidas variantes regionales como `es-ES` o `es-MX`. Para cualquier idioma no compatible se utiliza el inglés. Elegir explícitamente uno de los cuatro idiomas tiene prioridad sobre HA; los valores desconocidos también utilizan el inglés. Puedes cambiar el idioma en el editor visual.
@@ -63,7 +69,7 @@ No sustituyas `configuration.yaml`, automatizaciones ni escenas. HACS instala so
 
 ## Instalación manual de un solo archivo
 
-Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) a `www/apco-maniacs-card/`. Añade `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.6` como recurso de tipo **Módulo JavaScript**. Si acabas de crear `www`, reinicia HA. No necesitas archivos CSS, traducciones ni imágenes por separado.
+Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) a `www/apco-maniacs-card/`. Añade `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.7` como recurso de tipo **Módulo JavaScript**. Si acabas de crear `www`, reinicia HA. No necesitas archivos CSS, traducciones ni imágenes por separado.
 
 La versión fuente de `warun-web/` también funciona de forma independiente y puede desplegarse con cuatro archivos. La guía detallada [wdrozenie.html](wdrozenie.html) está en polaco.
 

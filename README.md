@@ -51,6 +51,12 @@ daylight_only: true
 
 Each card stores its own location. Selecting a point does not change your Home Assistant home location. New cards initially use your HA home coordinates. When choosing a location in another time zone, also change `timezone` in the editor; it is not inferred from the map pin.
 
+## Choose a location on the map
+
+Open the dashboard → Edit dashboard → Edit the APCO Maniacs card. Use the visual editor (switch from the code editor if needed), then click the map or drag the pin and save the card. This screenshot shows the native Home Assistant editor with Warsaw selected: latitude `52.2297`, longitude `21.0122`, time zone `Europe/Warsaw`.
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Warsaw location selection in the Home Assistant card editor" width="320">
+
 ## Language and localization
 
 Without a `language` setting, the card follows the language of the current Home Assistant frontend: `pl`, `en`, `it` and `es`, including regional variants such as `it-IT` and `es-MX`. Unsupported languages fall back to English. Explicitly selecting one of the four languages takes priority; unrecognized values also fall back to English. New cards start with the language matching the HA frontend, and the visual editor lets you change it.
@@ -65,7 +71,7 @@ Do not replace `configuration.yaml`, automations or scenes. HACS installs only t
 
 ## Manual single-file installation
 
-Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.6` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
+Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.7` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
 
 The source version in `warun-web/` still runs standalone and can also be deployed using four files. The detailed deployment guide, [wdrozenie.html](wdrozenie.html), is in Polish.
 

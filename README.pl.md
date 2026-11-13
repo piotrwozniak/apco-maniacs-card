@@ -51,6 +51,12 @@ daylight_only: true
 
 Każda karta zapisuje własną lokalizację. Wybór punktu nie zmienia lokalizacji Home Assistanta. Domyślnie nowa karta korzysta ze współrzędnych domu HA. Dla miejsca w innej strefie czasowej zmień także `timezone` w edytorze — nie jest automatycznie wyliczana z pinezki.
 
+## Wybór miejsca na mapie
+
+Otwórz dashboard → Edytuj panel → Edytuj kartę APCO Maniacs. Użyj edytora wizualnego (przełącz z edytora kodu, jeśli potrzeba), kliknij mapę lub przesuń pinezkę i zapisz kartę. Zrzut przedstawia natywny edytor Home Assistant z wybraną Warszawą: szerokość `52.2297`, długość `21.0122`, strefa `Europe/Warsaw`.
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Wybór Warszawy na mapie w edytorze karty Home Assistant" width="320">
+
 ## Język i lokalizacja
 
 Bez ustawienia `language` karta korzysta z języka interfejsu HA: `pl`, `en`, `it`, `es`, także wariantów regionalnych, np. `it-IT` i `es-MX`. Dla nieobsługiwanego języka włącza angielski. Jawny wybór jednego z czterech języków ma pierwszeństwo; nieznane wartości również przełączają na angielski. Nowe karty startują z językiem dopasowanym do HA, a w edytorze można go zmienić.
@@ -65,7 +71,7 @@ Nie podmieniaj przy tym `configuration.yaml`, automatyzacji ani scen. HACS insta
 
 ## Instalacja ręczna jednego pliku
 
-Skopiuj [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) do `www/apco-maniacs-card/`. Dodaj zasób `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.6` typu **Moduł JavaScript**. Przy pierwszym utworzeniu `www` zrestartuj HA. Nie potrzebujesz osobnych plików CSS, tłumaczeń ani grafiki.
+Skopiuj [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) do `www/apco-maniacs-card/`. Dodaj zasób `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.7` typu **Moduł JavaScript**. Przy pierwszym utworzeniu `www` zrestartuj HA. Nie potrzebujesz osobnych plików CSS, tłumaczeń ani grafiki.
 
 Dotychczasowa wersja źródłowa w `warun-web/` nadal działa samodzielnie i może być wdrażana jako cztery pliki. Pełna instrukcja: [wdrozenie.html](wdrozenie.html).
 
