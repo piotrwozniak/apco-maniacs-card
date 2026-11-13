@@ -6,7 +6,7 @@
 <title>APCO Maniacs — English preview</title>
 <style>
 body{margin:0;background:#101921;font-family:system-ui,sans-serif;color:#e0e9ee}main{width:min(100% - 40px,1160px);margin:24px auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}apco-maniacs-card{display:block}body.light{background:#eef1f4;--card-background-color:#fff;--primary-text-color:#212121;--secondary-text-color:#626b73;--divider-color:#dce1e5;--success-color:#23823c;--error-color:#c62828;--disabled-text-color:#8a9299;--primary-color:#1976d2;--secondary-background-color:#f3f5f7}@media(max-width:850px){main{max-width:560px;grid-template-columns:1fr}}
-.demo-note{margin:18px auto 0;width:min(100% - 40px,1160px);font-size:12px;color:#9aa9b5}.light .demo-note{color:#626b73}
+.demo-note{margin:18px auto 0;width:min(100% - 40px,1160px);font-size:12px;color:#9aa9b5}.light .demo-note{color:#626b73}.single main{max-width:560px;grid-template-columns:1fr}.single .demo-note{max-width:560px}
 </style>
 </head>
 <body>
@@ -14,11 +14,17 @@ body{margin:0;background:#101921;font-family:system-ui,sans-serif;color:#e0e9ee}
 <main id="places"><noscript>Enable JavaScript to load the weather forecast.</noscript></main>
 <script type="module">
   import '../dist/apco-maniacs-card.js?v=1.0.2-footer';
-  if(new URLSearchParams(location.search).get('theme')==='light')document.body.classList.add('light');
+  const params=new URLSearchParams(location.search), selected=params.get('place');
+  if(params.get('theme')==='light')document.body.classList.add('light');
+  if(selected){
+    document.body.classList.add('single');
+    document.querySelector('.demo-note').textContent=selected==='Warsaw'?'Documentation example — simulated Warsaw forecast':'Piecki — Open-Meteo forecast at capture time';
+  }
   for(const place of [
     {name:'Warsaw',latitude:52.2297,longitude:21.0122},
     {name:'Piecki',latitude:53.721,longitude:21.015},
   ]){
+    if(selected&&place.name!==selected)continue;
     const card=document.createElement('apco-maniacs-card');
     card.setConfig({...place,language:'en'});
     if(place.name==='Warsaw'){

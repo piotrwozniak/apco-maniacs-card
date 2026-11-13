@@ -6,11 +6,11 @@ Karta pogodowa Home Assistant dla paralotniarzy. Wybierz dokładne miejsce na ma
 
 ## Zrzuty ekranu
 
-Warszawa i Piecki, interfejs angielski. Zrzuty tego samego komponentu w podglądzie samodzielnym, wykonane 13 listopada 2026. Dane Warszawy są demonstracyjne (zielone okno 07:00–14:00); Piecki korzystają z prognozy Open-Meteo pobranej przy wykonywaniu zrzutów. Dane demonstracyjne nie są używane przez instalowaną kartę.
+Dwa osobne, bezstratne zrzuty PNG w podwójnej rozdzielczości: Warszawa w ciemnym motywie i Piecki w jasnym. Interfejs angielski. Zrzuty tego samego komponentu w podglądzie samodzielnym, wykonane 13 listopada 2026. Dane Warszawy są demonstracyjne (zielone okno 07:00–14:00); Piecki korzystają z prognozy Open-Meteo pobranej przy wykonywaniu zrzutów. Dane demonstracyjne nie są używane przez instalowaną kartę.
 
-![Warszawa i Piecki — angielska karta, ciemny motyw](docs/weather-en-dark.png)
+![Warszawa — angielska karta, ciemny motyw](docs/weather-en-dark.png)
 
-![Warszawa i Piecki — angielska karta, jasny motyw](docs/weather-en-light.png)
+![Piecki — angielska karta, jasny motyw](docs/weather-en-light.png)
 
 - Mapa z pinezką w graficznym edytorze karty; współrzędne można też wpisać ręcznie.
 - Prognoza Open-Meteo dla wybranego punktu, bez encji pogodowej, integracji Python i klucza API.
@@ -65,7 +65,7 @@ Nie podmieniaj przy tym `configuration.yaml`, automatyzacji ani scen. HACS insta
 
 ## Instalacja ręczna jednego pliku
 
-Skopiuj [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) do `www/apco-maniacs-card/`. Dodaj zasób `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.2` typu **Moduł JavaScript**. Przy pierwszym utworzeniu `www` zrestartuj HA. Nie potrzebujesz osobnych plików CSS, tłumaczeń ani grafiki.
+Skopiuj [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) do `www/apco-maniacs-card/`. Dodaj zasób `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.3` typu **Moduł JavaScript**. Przy pierwszym utworzeniu `www` zrestartuj HA. Nie potrzebujesz osobnych plików CSS, tłumaczeń ani grafiki.
 
 Dotychczasowa wersja źródłowa w `warun-web/` nadal działa samodzielnie i może być wdrażana jako cztery pliki. Pełna instrukcja: [wdrozenie.html](wdrozenie.html).
 

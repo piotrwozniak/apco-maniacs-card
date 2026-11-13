@@ -6,9 +6,9 @@ Scheda meteo per Home Assistant dedicata ai piloti di parapendio. Scegli un punt
 
 Schermate del componente autonomo in inglese, con temi chiaro e scuro, acquisite il 13 novembre 2026. Varsavia usa dati dimostrativi simulati (finestra verde 07:00–14:00); Piecki mostra le previsioni Open-Meteo al momento dell’acquisizione. I dati dimostrativi non sono utilizzati dalla scheda installata.
 
-![Varsavia e Piecki — interfaccia inglese, dark](docs/weather-en-dark.png)
+![Varsavia — interfaccia inglese, tema scuro](docs/weather-en-dark.png)
 
-![Varsavia e Piecki — interfaccia inglese, light](docs/weather-en-light.png)
+![Piecki — interfaccia inglese, tema chiaro](docs/weather-en-light.png)
 
 - Mappa nativa con segnaposto trascinabile nell’editor visuale; coordinate inseribili anche manualmente.
 - Previsioni Open-Meteo senza entità meteo, integrazione Python o chiave API.
@@ -63,7 +63,7 @@ Non sostituire `configuration.yaml`, automazioni o scene. HACS installa soltanto
 
 ## Installazione manuale con un solo file
 
-Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) in `www/apco-maniacs-card/`. Aggiungi `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.2` come risorsa di tipo **Modulo JavaScript**. Se hai appena creato `www`, riavvia HA. Non servono CSS, traduzioni o immagini separati.
+Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) in `www/apco-maniacs-card/`. Aggiungi `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.3` come risorsa di tipo **Modulo JavaScript**. Se hai appena creato `www`, riavvia HA. Non servono CSS, traduzioni o immagini separati.
 
 La versione sorgente in `warun-web/` funziona anche autonomamente e può essere installata con quattro file. La guida dettagliata [wdrozenie.html](wdrozenie.html) è in polacco.
 
