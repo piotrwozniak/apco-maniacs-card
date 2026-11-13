@@ -69,7 +69,7 @@ No sustituyas `configuration.yaml`, automatizaciones ni escenas. HACS instala so
 
 ## Instalación manual de un solo archivo
 
-Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) a `www/apco-maniacs-card/`. Añade `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.7` como recurso de tipo **Módulo JavaScript**. Si acabas de crear `www`, reinicia HA. No necesitas archivos CSS, traducciones ni imágenes por separado.
+Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) a `www/apco-maniacs-card/`. Añade `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.8` como recurso de tipo **Módulo JavaScript**. Si acabas de crear `www`, reinicia HA. No necesitas archivos CSS, traducciones ni imágenes por separado.
 
 La versión fuente de `warun-web/` también funciona de forma independiente y puede desplegarse con cuatro archivos. La guía detallada [wdrozenie.html](wdrozenie.html) está en polaco.
 
