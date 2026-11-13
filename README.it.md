@@ -6,20 +6,35 @@ Scheda meteo per Home Assistant dedicata ai piloti di parapendio. Scegli un punt
 
 Schermate del componente autonomo in inglese, con temi chiaro e scuro, acquisite il 13 novembre 2026. Varsavia usa dati dimostrativi simulati (finestra verde 07:00–14:00); Piecki mostra le previsioni Open-Meteo al momento dell’acquisizione. I dati dimostrativi non sono utilizzati dalla scheda installata.
 
-<table>
-<tr>
-<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-dark.png" alt="Varsavia — interfaccia inglese, tema scuro" width="320"></td>
-<td valign="top"><h3>Varsavia · tema scuro</h3><p>Condizioni attuali e finestre meteo dei giorni successivi in un’unica vista. Le ore consecutive con la stessa valutazione formano una finestra con temperatura, vento massimo, direzione e precipitazioni.</p><p>L’esempio di Varsavia usa dati simulati, compresa la finestra verde 07:00–14:00. La scheda installata richiede sempre le previsioni per la posizione configurata.</p></td>
-</tr>
-<tr>
-<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — interfaccia inglese, tema chiaro" width="320"></td>
-<td valign="top"><h3>Piecki · tema chiaro</h3><p>La scheda segue il tema attivo di Home Assistant. Gli sfondi verdi e rossi distinguono le finestre che rispettano le soglie di vento e precipitazioni da quelle che le superano.</p><p>Lo screenshot mostra le previsioni Open-Meteo acquisite per Piecki. Con il filtro diurno attivo, le finestre terminano al tramonto locale.</p></td>
-</tr>
-<tr>
-<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Selezione di Varsavia sulla mappa nell’editor di Home Assistant" width="320"></td>
-<td valign="top"><h3>Scegli la tua posizione</h3><p>Apri l’editor visuale, fai clic sulla mappa o trascina il segnaposto sul decollo, quindi assegna un nome e salva la scheda. Ogni scheda ha una posizione indipendente e non modifica quella di casa in HA.</p><p>Editor reale di Home Assistant con il centro di Varsavia: 52.2297, 21.0122. Imposta separatamente il fuso orario nell’editor.</p></td>
-</tr>
-</table>
+<h3>Varsavia · tema scuro</h3>
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-dark.png" alt="Varsavia — interfaccia inglese, tema scuro" width="320" align="left" hspace="16">
+
+Condizioni attuali e finestre meteo dei giorni successivi in un’unica vista. Le ore consecutive con la stessa valutazione formano una finestra con temperatura, vento massimo, direzione e precipitazioni.
+
+L’esempio di Varsavia usa dati simulati, compresa la finestra verde 07:00–14:00. La scheda installata richiede sempre le previsioni per la posizione configurata.
+
+<br clear="all">
+
+<h3>Piecki · tema chiaro</h3>
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — interfaccia inglese, tema chiaro" width="320" align="left" hspace="16">
+
+La scheda segue il tema attivo di Home Assistant. Gli sfondi verdi e rossi distinguono le finestre che rispettano le soglie di vento e precipitazioni da quelle che le superano.
+
+Lo screenshot mostra le previsioni Open-Meteo acquisite per Piecki. Con il filtro diurno attivo, le finestre terminano al tramonto locale.
+
+<br clear="all">
+
+<h3>Scegli la tua posizione</h3>
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Selezione di Varsavia sulla mappa nell’editor di Home Assistant" width="320" align="left" hspace="16">
+
+Apri l’editor visuale, fai clic sulla mappa o trascina il segnaposto sul decollo, quindi assegna un nome e salva la scheda. Ogni scheda ha una posizione indipendente e non modifica quella di casa in HA.
+
+Editor reale di Home Assistant con il centro di Varsavia: 52.2297, 21.0122. Imposta separatamente il fuso orario nell’editor.
+
+<br clear="all">
 
 - Mappa nativa con segnaposto trascinabile nell’editor visuale; coordinate inseribili anche manualmente.
 - Previsioni Open-Meteo senza entità meteo, integrazione Python o chiave API.

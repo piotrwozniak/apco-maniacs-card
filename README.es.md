@@ -6,20 +6,35 @@ Tarjeta meteorológica de Home Assistant para pilotos de parapente. Elige un pun
 
 Capturas del componente independiente en inglés, con temas claro y oscuro, realizadas el 13 de noviembre de 2026. Varsovia utiliza datos de demostración simulados (ventana verde de 07:00 a 14:00); Piecki muestra el pronóstico de Open-Meteo obtenido al hacer las capturas. La tarjeta instalada nunca utiliza los datos de demostración.
 
-<table>
-<tr>
-<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-dark.png" alt="Varsovia — interfaz en inglés, tema oscuro" width="320"></td>
-<td valign="top"><h3>Varsovia · tema oscuro</h3><p>Condiciones actuales y ventanas meteorológicas de los próximos días en una vista. Las horas consecutivas con la misma evaluación forman una ventana con temperatura, viento máximo, dirección y precipitaciones.</p><p>El ejemplo de Varsovia usa datos simulados, incluida la ventana verde de 07:00 a 14:00. La tarjeta instalada siempre solicita el pronóstico para la ubicación configurada.</p></td>
-</tr>
-<tr>
-<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — interfaz en inglés, tema claro" width="320"></td>
-<td valign="top"><h3>Piecki · tema claro</h3><p>La tarjeta sigue el tema activo de Home Assistant. Los fondos verdes y rojos distinguen las ventanas que cumplen los umbrales de viento y precipitaciones de las que los superan.</p><p>La captura muestra el pronóstico de Open-Meteo obtenido para Piecki. Con el filtro diurno activado, las ventanas terminan a la puesta de sol local.</p></td>
-</tr>
-<tr>
-<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Selección de Varsovia en el mapa del editor de Home Assistant" width="320"></td>
-<td valign="top"><h3>Elige tu ubicación</h3><p>Abre el editor visual, haz clic en el mapa o arrastra el marcador al despegue, ponle un nombre y guarda la tarjeta. Cada tarjeta tiene su propia ubicación y no modifica la ubicación de casa de HA.</p><p>Editor real de Home Assistant con el centro de Varsovia: 52.2297, 21.0122. Configura la zona horaria por separado en el editor.</p></td>
-</tr>
-</table>
+<h3>Varsovia · tema oscuro</h3>
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-dark.png" alt="Varsovia — interfaz en inglés, tema oscuro" width="320" align="left" hspace="16">
+
+Condiciones actuales y ventanas meteorológicas de los próximos días en una vista. Las horas consecutivas con la misma evaluación forman una ventana con temperatura, viento máximo, dirección y precipitaciones.
+
+El ejemplo de Varsovia usa datos simulados, incluida la ventana verde de 07:00 a 14:00. La tarjeta instalada siempre solicita el pronóstico para la ubicación configurada.
+
+<br clear="all">
+
+<h3>Piecki · tema claro</h3>
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — interfaz en inglés, tema claro" width="320" align="left" hspace="16">
+
+La tarjeta sigue el tema activo de Home Assistant. Los fondos verdes y rojos distinguen las ventanas que cumplen los umbrales de viento y precipitaciones de las que los superan.
+
+La captura muestra el pronóstico de Open-Meteo obtenido para Piecki. Con el filtro diurno activado, las ventanas terminan a la puesta de sol local.
+
+<br clear="all">
+
+<h3>Elige tu ubicación</h3>
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Selección de Varsovia en el mapa del editor de Home Assistant" width="320" align="left" hspace="16">
+
+Abre el editor visual, haz clic en el mapa o arrastra el marcador al despegue, ponle un nombre y guarda la tarjeta. Cada tarjeta tiene su propia ubicación y no modifica la ubicación de casa de HA.
+
+Editor real de Home Assistant con el centro de Varsovia: 52.2297, 21.0122. Configura la zona horaria por separado en el editor.
+
+<br clear="all">
 
 - Mapa nativo con marcador que puedes arrastrar en el editor visual; también permite introducir coordenadas manualmente.
 - Pronóstico de Open-Meteo sin entidad meteorológica, integración Python ni clave API.

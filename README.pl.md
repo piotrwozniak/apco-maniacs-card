@@ -8,20 +8,35 @@ Karta pogodowa Home Assistant dla paralotniarzy. Wybierz dokładne miejsce na ma
 
 Dwa osobne, bezstratne zrzuty PNG w podwójnej rozdzielczości: Warszawa w ciemnym motywie i Piecki w jasnym. Interfejs angielski. Zrzuty tego samego komponentu w podglądzie samodzielnym, wykonane 13 listopada 2026. Dane Warszawy są demonstracyjne (zielone okno 07:00–14:00); Piecki korzystają z prognozy Open-Meteo pobranej przy wykonywaniu zrzutów. Dane demonstracyjne nie są używane przez instalowaną kartę.
 
-<table>
-<tr>
-<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-dark.png" alt="Warszawa — angielska karta, ciemny motyw" width="320"></td>
-<td valign="top"><h3>Warszawa · ciemny motyw</h3><p>Bieżące warunki i okna pogodowe na kolejne dni w jednym widoku. Kolejne godziny o tej samej ocenie tworzą wspólne okno z temperaturą, maksymalnym wiatrem, jego kierunkiem i opadami.</p><p>Przykład Warszawy korzysta z danych demonstracyjnych, w tym zielonego okna 07:00–14:00. Zainstalowana karta zawsze pobiera prognozę dla ustawionego miejsca.</p></td>
-</tr>
-<tr>
-<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — angielska karta, jasny motyw" width="320"></td>
-<td valign="top"><h3>Piecki · jasny motyw</h3><p>Karta dopasowuje się do aktywnego motywu Home Assistant. Zielone i czerwone tło pozwala odróżnić okna spełniające ustawione progi wiatru i opadów od tych, które je przekraczają.</p><p>Zrzut pokazuje prognozę Open-Meteo pobraną dla Piecek. Przy włączonym filtrze pory lotów okna kończą się o lokalnym zachodzie słońca.</p></td>
-</tr>
-<tr>
-<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Wybór Warszawy na mapie w edytorze karty Home Assistant" width="320"></td>
-<td valign="top"><h3>Wybierz swoje miejsce</h3><p>Otwórz edytor wizualny karty, kliknij mapę lub przesuń pinezkę na startowisko, a następnie nadaj nazwę i zapisz kartę. Każda karta ma własną lokalizację; lokalizacja domu w HA pozostaje bez zmian.</p><p>Rzeczywisty edytor Home Assistant z centrum Warszawy: 52.2297, 21.0122. Strefę czasową miejsca ustaw osobno w edytorze.</p></td>
-</tr>
-</table>
+<h3>Warszawa · ciemny motyw</h3>
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-dark.png" alt="Warszawa — angielska karta, ciemny motyw" width="320" align="left" hspace="16">
+
+Bieżące warunki i okna pogodowe na kolejne dni w jednym widoku. Kolejne godziny o tej samej ocenie tworzą wspólne okno z temperaturą, maksymalnym wiatrem, jego kierunkiem i opadami.
+
+Przykład Warszawy korzysta z danych demonstracyjnych, w tym zielonego okna 07:00–14:00. Zainstalowana karta zawsze pobiera prognozę dla ustawionego miejsca.
+
+<br clear="all">
+
+<h3>Piecki · jasny motyw</h3>
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — angielska karta, jasny motyw" width="320" align="left" hspace="16">
+
+Karta dopasowuje się do aktywnego motywu Home Assistant. Zielone i czerwone tło pozwala odróżnić okna spełniające ustawione progi wiatru i opadów od tych, które je przekraczają.
+
+Zrzut pokazuje prognozę Open-Meteo pobraną dla Piecek. Przy włączonym filtrze pory lotów okna kończą się o lokalnym zachodzie słońca.
+
+<br clear="all">
+
+<h3>Wybierz swoje miejsce</h3>
+
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Wybór Warszawy na mapie w edytorze karty Home Assistant" width="320" align="left" hspace="16">
+
+Otwórz edytor wizualny karty, kliknij mapę lub przesuń pinezkę na startowisko, a następnie nadaj nazwę i zapisz kartę. Każda karta ma własną lokalizację; lokalizacja domu w HA pozostaje bez zmian.
+
+Rzeczywisty edytor Home Assistant z centrum Warszawy: 52.2297, 21.0122. Strefę czasową miejsca ustaw osobno w edytorze.
+
+<br clear="all">
 
 - Mapa z pinezką w graficznym edytorze karty; współrzędne można też wpisać ręcznie.
 - Prognoza Open-Meteo dla wybranego punktu, bez encji pogodowej, integracji Python i klucza API.
