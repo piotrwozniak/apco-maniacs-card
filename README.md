@@ -12,10 +12,10 @@ Karta pogodowa Home Assistant dla paralotniarzy. Wybierz dokładne miejsce na ma
 
 ## Instalacja przez HACS
 
-Po opublikowaniu repozytorium na GitHubie:
+Repozytorium do dodania: **https://github.com/piotrwozniak/apco-maniacs-card**.
 
 1. Otwórz HACS → menu ⋮ → **Repozytoria niestandardowe**.
-2. Wklej adres tego repozytorium, wybierz kategorię **Dashboard** i dodaj.
+2. Wklej `https://github.com/piotrwozniak/apco-maniacs-card`, wybierz kategorię **Dashboard** i dodaj.
 3. Znajdź **APCO Maniacs**, pobierz kartę i odśwież przeglądarkę.
 4. Sprawdź zasoby dashboardu (`/config/lovelace/resources`). HACS powinien dodać moduł `apco-maniacs-card.js`. Gdy zasoby są zarządzane w YAML, dodaj go ręcznie, używając ścieżki wskazanej przez HACS.
 5. Dodaj kartę **APCO Maniacs** z listy kart. W edytorze kliknij mapę lub przesuń pinezkę, ustaw nazwę i zapisz.
@@ -82,7 +82,7 @@ python3 -m unittest discover -s tests
 
 `npm run build` tworzy pojedynczy plik HACS ze źródeł i osadza CSS oraz grafikę. Po każdej zmianie źródeł odtwórz i skomituj `dist/apco-maniacs-card.js`. CI sprawdza testy, zgodność paczki ze źródłami oraz zgodność z HACS.
 
-Na pierwszą publikację utwórz publiczne repozytorium GitHub (sugerowana nazwa `apco-maniacs-card`), wyślij tę gałąź i sprawdź wynik Actions. Następnie utwórz release z tagiem `v1.0.0`. Workflow `Attach HACS bundle` dołączy jeden plik JS. Przy kolejnej wersji podnieś numer w `package.json`, odtwórz `dist`, wyślij commit i utwórz odpowiadający mu release.
+Publiczne repozytorium: [piotrwozniak/apco-maniacs-card](https://github.com/piotrwozniak/apco-maniacs-card). Pierwsza wersja ma tag `v1.0.0`. Przed publikacją kolejnej wersji sprawdź wynik Actions. Workflow `Attach HACS bundle` dołączy jeden plik JS. Przy kolejnej wersji podnieś numer w `package.json`, odtwórz `dist`, wyślij commit i utwórz odpowiadający mu release.
 
 Repozytorium można instalować jako niestandardowe bez zgłaszania go do domyślnego katalogu HACS. Zgłoszenie do katalogu to oddzielny krok. Bez testu na działającym HA nie traktuj lokalnych testów edytora jako potwierdzenia działania konkretnej wersji frontendu HA.
 
