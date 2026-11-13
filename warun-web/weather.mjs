@@ -1,3 +1,4 @@
+import {languageFor} from './i18n.mjs?v=25';
 export const DEFAULTS = Object.freeze({
   name: 'Faryny', latitude: 53.531944, longitude: 21.385556,
   wind_threshold: 5, precip_threshold: 10, forecast_hours: 40,
@@ -15,7 +16,7 @@ export function configFor(input = {}) {
   if (!Number.isInteger(config.forecast_hours)) throw new Error('Liczba godzin musi być całkowita.');
   if (typeof config.daylight_only !== 'boolean') throw new Error('Opcja daylight_only musi być wartością true lub false.');
   if (typeof config.name !== 'string' || !config.name.trim() || config.name.length > 80) throw new Error('Podaj nazwę miejsca (do 80 znaków).');
-  if (!['pl', 'en'].includes(config.language)) throw new Error('Supported languages: pl, en.');
+  config.language = languageFor(config.language);
   new Intl.DateTimeFormat('pl-PL', {timeZone: config.timezone});
   return config;
 }

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {MESSAGES} from './i18n.mjs';
+import {MESSAGES,languageFor,localeFor} from './i18n.mjs';
 import {configFor} from './weather.mjs';
 
 // Minimal host for testing the real card classes, without a browser or HA.
@@ -16,13 +16,18 @@ const Card=registry.get('apco-maniacs-card');
 function cardIn(language){
   const card=new Card();card.setConfig({language});card.render();return card;
 }
-test('PL and EN translations have identical complete key sets',()=>{
+test('all four translations have identical complete key sets',()=>{
   assert.deepEqual(Object.keys(MESSAGES.pl).sort(),Object.keys(MESSAGES.en).sort());
-  for(const words of Object.values(MESSAGES))for(const value of Object.values(words))assert.ok(value.length);
+  for(const words of Object.values(MESSAGES)){
+    assert.deepEqual(Object.keys(words).sort(),Object.keys(MESSAGES.en).sort());
+    for(const value of Object.values(words))assert.ok(value.length);
+  }
 });
-test('language setting accepts only PL or EN',()=>{
+test('language setting supports four languages and falls back to English',()=>{
   assert.equal(configFor().language,'pl');assert.equal(configFor({language:'en'}).language,'en');
-  assert.throws(()=>configFor({language:'de'}));
+  assert.equal(configFor({language:'de'}).language,'en');
+  assert.equal(configFor({language:'it'}).language,'it');
+  assert.equal(configFor({language:'es-MX'}).language,'es');
 });
 test('English render localizes controls, zero precipitation and decimal numbers',()=>{
   const card=cardIn('en');
@@ -130,3 +135,31 @@ test('new cards start at the HA home coordinates and support links are present',
   assert.match(card.shadowRoot.innerHTML,/https:\/\/buymeacoffee.com\/piotrwoznil/);
   assert.match(card.shadowRoot.innerHTML,/https:\/\/www.youtube.com\/@piter_fly/);
 });
+
+ test('HA language detection supports regional forms and defaults to English',()=>{
+  for(const [input,expected] of [['pl-PL','pl'],['en-US','en'],['it-IT','it'],['es-419','es'],['ES_mx','es'],['de','en'],['fr','en'],['','en'],[null,'en'],['toString','en']])assert.equal(languageFor(input),expected);
+  assert.equal(localeFor('it'),'it-IT');assert.equal(localeFor('es'),'es-ES');
+ });
+ test('unconfigured cards follow HA language changes without refetching weather',()=>{
+  const card=cardIn('pl');card.setConfig({});const data={hours:[],days:[],current:{}};card.data=data;
+  card.refresh=()=>assert.fail('Language must not refetch weather');card.isConnected=true;
+  card.hass={language:'it-IT'};assert.equal(card.config.language,'it');assert.equal(card.data,data);
+  card.hass={language:'es-MX'};assert.equal(card.config.language,'es');
+  card.hass={language:'de'};assert.equal(card.config.language,'en');
+  card.setConfig({language:'pl'});card.hass={language:'it'};assert.equal(card.config.language,'pl');
+  assert.equal(Card.getStubConfig({language:'es'}).language,'es');
+ });
+ test('Italian and Spanish localize labels dates and decimal separators',()=>{
+  for(const [language,now,weekday] of [['it','Adesso','Sabato'],['es','Ahora','Sábado']]){
+    const card=cardIn(language);assert.match(card.shadowRoot.innerHTML,new RegExp(now));
+    assert.match(card.day(Date.parse('2026-11-14T12:00:00Z')),new RegExp(weekday));
+    assert.equal(card.fmt(3.2,1),'3,2');
+    assert.match(card.shadowRoot.innerHTML,/value="it"/);assert.match(card.shadowRoot.innerHTML,/value="es"/);
+    assert.doesNotMatch(card.shadowRoot.innerHTML,/undefined/);
+  }
+ });
+ test('editor honors explicit language and otherwise follows the HA frontend',async()=>{
+  const editor=await Card.getConfigElement();editor.setConfig({});editor.hass={language:'es'};
+  assert.equal(editor.config.language,'es');assert.match(editor.shadowRoot.innerHTML,/Nombre del lugar/);
+  editor.setConfig({language:'it'});editor.hass={language:'es'};assert.equal(editor.config.language,'it');
+ });

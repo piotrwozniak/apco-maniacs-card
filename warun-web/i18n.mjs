@@ -40,5 +40,50 @@ export const MESSAGES = {
     source: 'Weather: Open-Meteo', windFrom: 'Wind from', noDirection: 'No direction', invalid: 'Check the settings and time zone.',
     description: 'Weather and flying windows grouped by conditions, independent of HA entities.',
   },
+  it: {
+    location: 'Posizione sulla mappa', mapHint: 'Fai clic sulla mappa o trascina il segnaposto. Salva la scheda per mantenere la posizione.', mapUnavailable: 'La mappa è disponibile nell’editor di Home Assistant. Se non viene caricata, aggiorna la pagina oppure inserisci le coordinate qui sotto.', support: 'Sostieni il progetto', youtube: 'YouTube',
+    subtitle: 'APCO Meteo per piloti di parapendio', refresh: 'Aggiorna', refreshing: 'Caricamento…', refreshLabel: 'Aggiorna le previsioni',
+    good: 'Condizioni favorevoli', bad: 'Condizioni sfavorevoli', unknown: 'Dati non disponibili', now: 'Adesso', wind: 'vento', windMax: 'vento fino a',
+    noRain: 'nessuna precipitazione', rain: 'precipitazioni', currentLabel: 'Condizioni attuali', forecast: 'Finestre meteo',
+    daylight: 'Solo ore diurne', allDay: 'Tutte le ore', solarNote: 'Dalla prima ora intera dopo l’alba fino al tramonto.',
+    nightNote: 'Sono visualizzati anche gli intervalli notturni.', nextDay: 'Le finestre di oggi sono terminate. Di seguito è mostrato il giorno successivo.',
+    loading: 'Caricamento del meteo…', currentMissing: 'Dati attuali insufficienti per valutare le condizioni.', incomplete: 'Dati delle previsioni incompleti.',
+    empty: 'Nessuna finestra in questo intervallo. Aumenta le ore di previsione o disattiva il filtro delle ore diurne.',
+    noForecast: 'Previsioni non disponibili. Premi Aggiorna o verifica le coordinate nelle impostazioni.',
+    fetching: 'Caricamento delle previsioni per questa posizione…', error: 'Impossibile caricare le previsioni. Verifica la connessione e riprova.',
+    previous: 'La previsione precedente rimane visibile; la valutazione attuale è sospesa.',
+    limits: 'L’intera finestra deve rispettare entrambe le soglie.', settings: 'Impostazioni della posizione e delle soglie', name: 'Nome della località',
+    latitude: 'Latitudine', longitude: 'Longitudine', wind_threshold: 'Soglia del vento (m/s)',
+    precip_threshold: 'Soglia delle precipitazioni (%)', forecast_hours: 'Ore di previsione', timezone: 'Fuso orario', language: 'Lingua',
+    daylight_only: 'Mostra solo le finestre tra alba e tramonto', temporary: 'Le modifiche durano fino alla riapertura della scheda. Salvale nella configurazione della pagina per mantenerle.',
+    apply: 'Applica le impostazioni', updated: 'Aggiornato', interval: 'ogni 15 min', autoUpdate: 'Aggiornamento ogni 15 min',
+    source: 'Meteo: Open-Meteo', windFrom: 'Vento da', noDirection: 'Direzione non disponibile', invalid: 'Verifica le impostazioni e il fuso orario.',
+    description: 'Meteo e finestre di volo raggruppate per condizioni, indipendenti dalle entità HA.',
+  },
+  es: {
+    location: 'Ubicación en el mapa', mapHint: 'Haz clic en el mapa o arrastra el marcador. Guarda la tarjeta para conservar la ubicación.', mapUnavailable: 'El mapa está disponible en el editor de Home Assistant. Si no se carga, actualiza la página o introduce las coordenadas abajo.', support: 'Apoya el proyecto', youtube: 'YouTube',
+    subtitle: 'APCO Meteorología para pilotos de parapente', refresh: 'Actualizar', refreshing: 'Cargando…', refreshLabel: 'Actualizar el pronóstico',
+    good: 'Condiciones favorables', bad: 'Condiciones desfavorables', unknown: 'Sin datos', now: 'Ahora', wind: 'viento', windMax: 'viento hasta',
+    noRain: 'sin precipitaciones', rain: 'precipitaciones', currentLabel: 'Condiciones actuales', forecast: 'Ventanas meteorológicas',
+    daylight: 'Solo horas de luz', allDay: 'Todas las horas', solarNote: 'Desde la primera hora en punto después del amanecer hasta la puesta de sol.',
+    nightNote: 'También se muestran los intervalos nocturnos.', nextDay: 'Las ventanas de hoy han terminado. A continuación se muestra el día siguiente.',
+    loading: 'Cargando el tiempo…', currentMissing: 'No hay datos actuales suficientes para evaluar las condiciones.', incomplete: 'Datos del pronóstico incompletos.',
+    empty: 'No hay ventanas en este intervalo. Aumenta las horas del pronóstico o desactiva el filtro de horas de luz.',
+    noForecast: 'No hay pronóstico. Pulsa Actualizar o comprueba las coordenadas en los ajustes.',
+    fetching: 'Cargando el pronóstico para esta ubicación…', error: 'No se pudo cargar el pronóstico. Comprueba la conexión e inténtalo de nuevo.',
+    previous: 'El pronóstico anterior sigue visible; la evaluación actual está en pausa.',
+    limits: 'Toda la ventana debe cumplir ambos umbrales.', settings: 'Ajustes de ubicación y umbrales', name: 'Nombre del lugar',
+    latitude: 'Latitud', longitude: 'Longitud', wind_threshold: 'Umbral de viento (m/s)',
+    precip_threshold: 'Umbral de precipitaciones (%)', forecast_hours: 'Horas del pronóstico', timezone: 'Zona horaria', language: 'Idioma',
+    daylight_only: 'Mostrar solo ventanas entre el amanecer y la puesta de sol', temporary: 'Los cambios duran hasta que se vuelva a abrir la tarjeta. Guárdalos en la configuración de la página para conservarlos.',
+    apply: 'Aplicar ajustes', updated: 'Actualizado', interval: 'cada 15 min', autoUpdate: 'Actualización cada 15 min',
+    source: 'Tiempo: Open-Meteo', windFrom: 'Viento del', noDirection: 'Dirección no disponible', invalid: 'Comprueba los ajustes y la zona horaria.',
+    description: 'Tiempo y ventanas de vuelo agrupadas por condiciones, independientes de las entidades de HA.',
+  },
 };
-export const localeFor = language => language === 'en' ? 'en-GB' : 'pl-PL';
+export const LANGUAGE_NAMES = Object.freeze({pl:'Polski', en:'English', it:'Italiano', es:'Español'});
+export const languageFor = language => {
+  const code = typeof language === 'string' ? language.toLowerCase().split(/[-_]/)[0] : '';
+  return Object.hasOwn(LANGUAGE_NAMES, code) ? code : 'en';
+};
+export const localeFor = language => ({pl:'pl-PL', en:'en-GB', it:'it-IT', es:'es-ES'})[languageFor(language)];
