@@ -12,6 +12,8 @@ Two separate, lossless PNG screenshots at 2× pixel density: Warsaw in the dark 
 
 <img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — English card, light theme" width="320">
 
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Warsaw location selection in the Home Assistant card editor" width="320">
+
 - Native map with a draggable pin in the visual card editor; manual coordinates are also supported.
 - Open-Meteo forecasts for the selected point, without a weather entity, Python integration or API key.
 - Hourly assessments grouped into continuous windows, without a three-hour limit, with sunrise/sunset filtering.
@@ -55,7 +57,6 @@ Each card stores its own location. Selecting a point does not change your Home A
 
 Open the dashboard → Edit dashboard → Edit the APCO Maniacs card. Use the visual editor (switch from the code editor if needed), then click the map or drag the pin and save the card. This screenshot shows the native Home Assistant editor with Warsaw selected: latitude `52.2297`, longitude `21.0122`, time zone `Europe/Warsaw`.
 
-<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Warsaw location selection in the Home Assistant card editor" width="320">
 
 ## Language and localization
 

@@ -12,6 +12,8 @@ Dwa osobne, bezstratne zrzuty PNG w podwójnej rozdzielczości: Warszawa w ciemn
 
 <img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — angielska karta, jasny motyw" width="320">
 
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Wybór Warszawy na mapie w edytorze karty Home Assistant" width="320">
+
 - Mapa z pinezką w graficznym edytorze karty; współrzędne można też wpisać ręcznie.
 - Prognoza Open-Meteo dla wybranego punktu, bez encji pogodowej, integracji Python i klucza API.
 - Godzinowa ocena, okna bez limitu 3 godzin, filtr wschodu i zachodu słońca.
@@ -55,7 +57,6 @@ Każda karta zapisuje własną lokalizację. Wybór punktu nie zmienia lokalizac
 
 Otwórz dashboard → Edytuj panel → Edytuj kartę APCO Maniacs. Użyj edytora wizualnego (przełącz z edytora kodu, jeśli potrzeba), kliknij mapę lub przesuń pinezkę i zapisz kartę. Zrzut przedstawia natywny edytor Home Assistant z wybraną Warszawą: szerokość `52.2297`, długość `21.0122`, strefa `Europe/Warsaw`.
 
-<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Wybór Warszawy na mapie w edytorze karty Home Assistant" width="320">
 
 ## Język i lokalizacja
 

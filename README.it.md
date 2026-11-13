@@ -10,6 +10,8 @@ Schermate del componente autonomo in inglese, con temi chiaro e scuro, acquisite
 
 <img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — interfaccia inglese, tema chiaro" width="320">
 
+<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Selezione di Varsavia sulla mappa nell’editor di Home Assistant" width="320">
+
 - Mappa nativa con segnaposto trascinabile nell’editor visuale; coordinate inseribili anche manualmente.
 - Previsioni Open-Meteo senza entità meteo, integrazione Python o chiave API.
 - Valutazione oraria, finestre senza limite di tre ore e filtro alba/tramonto.
@@ -53,7 +55,6 @@ Ogni scheda conserva la propria posizione. Il segnaposto non modifica la posizio
 
 Apri la dashboard → Modifica dashboard → Modifica la scheda APCO Maniacs. Usa l’editor visuale (passa dall’editor di codice se necessario), fai clic sulla mappa o trascina il segnaposto e salva la scheda. Lo screenshot mostra l’editor nativo di Home Assistant con Varsavia selezionata: latitudine `52.2297`, longitudine `21.0122`, fuso orario `Europe/Warsaw`.
 
-<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Selezione di Varsavia sulla mappa nell’editor di Home Assistant" width="320">
 
 ## Lingua e localizzazione
 
