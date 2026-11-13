@@ -103,4 +103,6 @@ Root `hacs.json` selects `dist/apco-maniacs-card.js`. The dependency-free packag
 
 Support links in `warun-web/i18n.mjs` point to `https://buymeacoffee.com/piotrwoznil` and `https://www.youtube.com/@piter_fly`; mirror these in README, deployment docs and `.github/FUNDING.yml` as applicable. Publication workflows validate HACS category `plugin` and attach the single JS asset on a published GitHub release.
 
-Web card language follows the HA frontend when `language` is omitted. Supported regional language tags normalize to PL/EN/IT/ES; all unmatched languages fall back to English. An explicit supported language overrides HA. Keep all four dictionaries complete and README.md / README.en.md / README.it.md / README.es.md aligned. Native HA map controls use HA’s own localization.
+Web card language follows the HA frontend when `language` is omitted. Supported regional language tags normalize to PL/EN/IT/ES; all unmatched languages fall back to English. An explicit supported language overrides HA. Keep all four dictionaries complete and README.md (English default) / README.pl.md / README.it.md / README.es.md aligned. Native HA map controls use HA’s own localization.
+
+The default README and HACS listing description are English. README.en.md is a compatibility link to README.md. Documentation screenshots use the real standalone component in English for Warsaw and Piecki. The Warsaw screenshot fixture is explicitly simulated and isolated in warun-web/demo-warsaw.json; never include demo forecasts in the production card or HACS bundle.

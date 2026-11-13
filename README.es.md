@@ -1,10 +1,14 @@
 # APCO Maniacs
 
-[Polski](README.md) · [English](README.en.md) · [Italiano](README.it.md) · **Español**
+[Polski](README.pl.md) · [English](README.md) · [Italiano](README.it.md) · **Español**
 
 Tarjeta meteorológica de Home Assistant para pilotos de parapente. Elige un punto exacto en el mapa, establece los umbrales de viento y precipitaciones y consulta las horas consecutivas con la misma evaluación agrupadas en ventanas meteorológicas.
 
-![Ilustración de APCO F1 MKII Azure utilizada en la cabecera](docs/header-illustration.png)
+Capturas del componente independiente en inglés, con temas claro y oscuro, realizadas el 13 de noviembre de 2026. Varsovia utiliza datos de demostración simulados (ventana verde de 07:00 a 14:00); Piecki muestra el pronóstico de Open-Meteo obtenido al hacer las capturas. La tarjeta instalada nunca utiliza los datos de demostración.
+
+![Varsovia y Piecki — interfaz en inglés, dark](docs/weather-en-dark.png)
+
+![Varsovia y Piecki — interfaz en inglés, light](docs/weather-en-light.png)
 
 - Mapa nativo con marcador que puedes arrastrar en el editor visual; también permite introducir coordenadas manualmente.
 - Pronóstico de Open-Meteo sin entidad meteorológica, integración Python ni clave API.
@@ -59,7 +63,7 @@ No sustituyas `configuration.yaml`, automatizaciones ni escenas. HACS instala so
 
 ## Instalación manual de un solo archivo
 
-Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) a `www/apco-maniacs-card/`. Añade `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.1` como recurso de tipo **Módulo JavaScript**. Si acabas de crear `www`, reinicia HA. No necesitas archivos CSS, traducciones ni imágenes por separado.
+Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) a `www/apco-maniacs-card/`. Añade `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.2` como recurso de tipo **Módulo JavaScript**. Si acabas de crear `www`, reinicia HA. No necesitas archivos CSS, traducciones ni imágenes por separado.
 
 La versión fuente de `warun-web/` también funciona de forma independiente y puede desplegarse con cuatro archivos. La guía detallada [wdrozenie.html](wdrozenie.html) está en polaco.
 

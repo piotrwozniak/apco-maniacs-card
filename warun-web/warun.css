@@ -78,7 +78,7 @@ label.check { display: flex; align-items: center; gap: 8px; }
 .form-error { color: var(--bad); font-size: 12px; }
 .form-error:empty { display: none; }
 .save { background: var(--primary-color, #24577b); color: var(--text-primary-color, white); border: 0; border-radius: 5px; padding: 9px 13px; justify-self: start; grid-column: 1/-1; }
-footer { margin-top: 16px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 6px 10px; border-top: 1px solid var(--line); padding-top: 12px; color: var(--muted); font-size: 10px; }
+footer { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; border-top: 1px solid var(--line); padding-top: 12px; color: var(--muted); font-size: 10px; }
 a { color: inherit; text-underline-offset: 3px; }
 .message { background: var(--bad-bg); color: var(--bad); padding: 12px; margin-bottom: 12px; font-size: 12px; }
 .empty, .loading { color: var(--muted); font-size: 13px; padding: 18px 0; }
@@ -98,10 +98,11 @@ a { color: inherit; text-underline-offset: 3px; }
 header h1 { font-size: 20px; }
 .editor h2 { font-size: 18px; }
 
-footer > span { grid-column: 1; grid-row: 1; }
-footer > a { grid-column: 2; grid-row: 1; justify-self: end; text-align: right; }
+footer > span { margin-right: auto; }
+footer > a { white-space: nowrap; }
 
 .location-map { margin-top: 14px; }
 .location-map ha-form { display: block; }
-.project-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-top: 10px; color: var(--muted); font-size: 10px; }
+.project-links { display: inline-flex; align-items: center; gap: 12px; font: inherit; }
+.project-links a { white-space: nowrap; }
 .project-links:empty { display: none; }
