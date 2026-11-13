@@ -1,0 +1,36 @@
+- id: '1681309102863'
+  alias: Pogoda na bazie
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition: '{{ is_state(''weather.forecast_dom'', ''sunny'') }}'
+  action:
+  - service: notify.mobile_app_gutek
+    data:
+      message: "{% if state_attr('weather.forecast_dom', 'wind_speed')|float > 15
+        %}\n  Jutro będzie słonecznie, ale z dużym wiatrem ({{ state_attr('weather.forecast_dom',
+        'wind_speed')|float }} km/h).\n{% else %}\n  Jutro będzie słonecznie ({{ state_attr('weather.forecast_dom',
+        'wind_speed')|float }} km/h).\n{% endif %}\n"
+      title: Pogodynka podpowiada
+  mode: single
+- id: '1701646806256'
+  alias: Powiadomienie o śmieciach
+  trigger:
+  - platform: time
+    at: '14:00:00'
+  - platform: time
+    at: '20:15:00'
+  action:
+  - condition: template
+    value_template: '{{ states(''sensor.trashes_tomorrow'') not in ['''', ''unknown'', ''unavailable''] }}'
+  - service: notify.mobile_app_gutek
+    data:
+      message: 'Wystaw śmieci na jutro: {{ states(''sensor.trashes_tomorrow'') }}'
+      title: Powiadomienie o śmieciach
+  - service: notify.mobile_app_iphone_m
+    data:
+      message: 'Wystaw śmieci na jutro: {{ states(''sensor.trashes_tomorrow'') }}'
+      title: Powiadomienie o śmieciach
+  mode: single
+

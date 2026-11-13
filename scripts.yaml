@@ -1,0 +1,14 @@
+get_forecast_for_piecki:
+  alias: fcst_piecki
+  sequence:
+  - action: weather.get_forecasts
+    target:
+      entity_id: weather.piecki
+    data:
+      type: hourly
+    response_variable: response_data
+  - action: persistent_notification.create
+    data:
+      title: Prognoza pogody
+      message: '{{ response_data[''weather.piecki''][''forecast''][0] }}'
+

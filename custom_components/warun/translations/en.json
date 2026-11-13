@@ -1,0 +1,53 @@
+{
+  "title": "APCO maniacs",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Choose a location",
+        "data": {
+          "location": "Location",
+          "location_name": "Location name"
+        },
+        "data_description": {
+          "location": "Choose the location on the map",
+          "location_name": "For example: Faryny, Piecki, Home"
+        }
+      },
+      "pick_weather": {
+        "title": "Choose the weather source",
+        "data": {
+          "weather_entity": "Weather entity"
+        },
+        "data_description": {
+          "weather_entity": "Choose the weather entity for {location_name}"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This weather entity is already configured."
+    },
+    "error": {
+      "location_required": "Choose a location on the map.",
+      "name_required": "Enter a location name."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "APCO maniacs — settings",
+        "data": {
+          "wind_threshold": "Wind threshold (m/s)",
+          "precip_threshold": "Precipitation threshold (%)",
+          "forecast_hours": "Forecast hours",
+          "language": "Language"
+        },
+        "data_description": {
+          "wind_threshold": "Wind must be below this value for good conditions",
+          "precip_threshold": "Precipitation probability must be below this value",
+          "forecast_hours": "Number of forecast hours to check (up to 48)",
+          "language": "Language of sensor assessments and descriptions: Polish or English"
+        }
+      }
+    }
+  }
+}

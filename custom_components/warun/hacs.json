@@ -1,0 +1,10 @@
+{
+  "name": "APCO maniacs",
+  "content_in_root": false,
+  "zip_release": false,
+  "country": [
+    "PL"
+  ],
+  "homeassistant": "2024.8.0",
+  "render_readme": true
+}

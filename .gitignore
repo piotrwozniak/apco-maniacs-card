@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+.env
+.env.*
+output/
+tmp/
+warun-web/assets/
+custom_components/uzupelnienie_backup/

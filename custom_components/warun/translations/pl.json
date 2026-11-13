@@ -1,0 +1,53 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "location": "Lokalizacja",
+          "location_name": "Nazwa miejsca"
+        },
+        "data_description": {
+          "location": "Kliknij na mapie, aby wybrać lokalizację do obserwacji",
+          "location_name": "Np. Faryny, Piecki, Dom"
+        },
+        "title": "Wybierz miejsce na mapie"
+      },
+      "pick_weather": {
+        "data": {
+          "weather_entity": "Encja pogodowa"
+        },
+        "data_description": {
+          "weather_entity": "Wybierz encję weather dla lokalizacji: {location_name}"
+        },
+        "title": "Wybierz źródło pogody"
+      }
+    },
+    "abort": {
+      "already_configured": "Ta encja pogodowa jest już skonfigurowana."
+    },
+    "error": {
+      "location_required": "Wybierz lokalizację na mapie.",
+      "name_required": "Podaj nazwę miejsca."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "wind_threshold": "Próg wiatru (m/s)",
+          "precip_threshold": "Próg opadów (%)",
+          "forecast_hours": "Liczba godzin prognozy",
+          "language": "Język"
+        },
+        "data_description": {
+          "wind_threshold": "Wartość poniżej której wiatr uznawany jest za OK",
+          "precip_threshold": "Wartość poniżej której opady uznawane są za OK",
+          "forecast_hours": "Ile godzin prognozy sprawdzać (max 48)",
+          "language": "Język ocen i opisu sensora: polski lub angielski"
+        },
+        "title": "APCO maniacs — ustawienia"
+      }
+    }
+  },
+  "title": "APCO maniacs"
+}

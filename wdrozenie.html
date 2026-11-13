@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APCO Maniacs i odpady — instrukcja wdrożenia</title>
+<style>
+:root{color-scheme:light;--ink:#21352f;--green:#14634e;--line:#d7e2dc;--paper:#fffef9}
+*{box-sizing:border-box}body{margin:0;background:#edf2ed;color:var(--ink);font:17px/1.65 system-ui,sans-serif}main{max-width:940px;margin:40px auto;padding:48px;background:var(--paper);border:1px solid var(--line);border-radius:12px}h1{font-size:2.2rem;line-height:1.15;margin:12px 0 20px}h2{font-size:1.35rem;margin:36px 0 12px;color:var(--green)}p{margin:12px 0}.meta{color:#596d63;font-size:.9rem}.note{padding:16px 20px;border-left:4px solid var(--green);background:#edf5ef}table{width:100%;border-collapse:collapse;font-size:.95rem}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#edf5ef}code{font: .9em ui-monospace,monospace;overflow-wrap:anywhere}pre{padding:18px;background:#eaf0eb;overflow:auto;border-radius:6px}pre code{white-space:pre}li{margin:8px 0}a{color:var(--green)}.table-wrap{overflow-x:auto}footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:.9rem}@media(max-width:650px){main{margin:0;padding:24px 18px;border:0;border-radius:0}h1{font-size:1.8rem}th,td{padding:9px}}@media print{body{background:white;font-size:11pt}main{max-width:none;margin:0;padding:0;border:0}h2{break-after:avoid}tr,pre,.note{break-inside:avoid}}
+</style>
+</head>
+<body><main>
+<p class="meta">Home Assistant · APCO Maniacs i przypomnienia o odpadach · aktualizacja: <time datetime="2026-11-13">13 listopada 2026</time></p>
+<h1>Wdrożenie krok po kroku</h1>
+<p>Instrukcja obejmuje instalację lub aktualizację integracji APCO Maniacs (wcześniej Warun), konfigurację harmonogramu odpadów i dodanie karty pogodowej. Warun ocenia warunki do latania na podstawie godzinowej prognozy wybranej encji pogodowej.</p>
+<div class="note"><strong>Ważne:</strong> lokalne sprawdzenia YAML i testy logiki nie zastępują sprawdzenia na Twojej instancji Home Assistant. Jeżeli pliki na serwerze zawierają dodatkowe ustawienia, połącz zmiany — nie nadpisuj ich całym plikiem z projektu.</div>
+
+<h2>Wariant webowy — niezależny od Home Assistant</h2>
+<p>Folder <code>warun-web/</code> zawiera samodzielną wersję Waruna pogodowego. Ten sam element <code>&lt;apco-maniacs-card&gt;</code> działa na zwykłej stronie i jako karta dashboardu HA. Nie korzysta z integracji Python, encji pogodowych ani <code>sun.sun</code>. Pobiera dane bezpośrednio z Open-Meteo. Ten wariant nie obsługuje przypomnień o odpadach.</p>
+<p>Karta pokazuje bieżącą pogodę i okna pogodowe: kolejne godziny o tej samej ocenie są łączone bez limitu 3 godzin. Okno kończy się przy zmianie oceny, luce w danych, końcu dnia lub zachodzie słońca (gdy włączono porę lotów). Startuje od bieżącej pełnej godziny (14:15 → 14:00), a kolejne dni od pierwszej pełnej godziny po wschodzie (09:20 → 10:00). Jeśli warunki pozostają dobre, okno trwa aż do zachodu, np. 14:00–17:24. Ocena pogody nadal opiera się na danych godzinowych. Godziny słońca są liczone osobno dla każdego dnia. Open-Meteo jest innym źródłem niż integracja pogodowa HA, więc wartości mogą się różnić.</p>
+<h3>Nazwa, wygląd i język</h3>
+<p>Wtyczka i karta noszą nazwę <strong>APCO Maniacs</strong>. Karta w HA dopasowuje się do aktywnego motywu, a poza HA ma domyślną ciemną skórkę. W nagłówku pokazuje nazwę miejsca i dyskretną paralotnię. Dane zachowują układ <code>temperatura | wiatr KIERUNEK | opady</code>. Podgląd obu języków: <a href="http://127.0.0.1:8765/warun-web/jezyki.html">Polski / English</a> (wymaga uruchomionego lokalnego serwera).</p>
+<p><strong>Język karty w HA:</strong> edytuj dashboard → edytuj kartę APCO Maniacs → wybierz <strong>Polski</strong> lub <strong>English</strong> w polu języka → zapisz kartę. Edytor pozwala również zapisać nazwę, współrzędne, progi, strefę czasową i zakres prognozy. Język obejmuje teksty, dni tygodnia, format liczb i komunikaty. W YAML odpowiada mu <code>language: pl</code> albo <code>language: en</code>. Dotychczasowy typ <code>custom:warun-card</code> nadal działa; nie zmieniaj istniejących identyfikatorów encji ani katalogu integracji <code>custom_components/warun</code>.</p>
+<p><strong>Język sensora integracji Python:</strong> Ustawienia → Urządzenia i usługi → APCO Maniacs → opcje wpisu → Język. To niezależne ustawienie opisów sensora. Język interfejsu formularzy integracji wynika z profilu HA. Nowa karta pobiera pogodę samodzielnie, więc nie odczytuje opcji sensora. Zmiana języka sensora zmienia również jego tekstowy stan; uwzględnij to w automatyzacjach porównujących stan do konkretnego napisu.</p>
+<h3>Uruchomienie bez Home Assistant</h3>
+<ol>
+<li>Otwórz terminal w katalogu projektu i uruchom poniższe polecenie (wymaga Python 3). Nie otwieraj <code>index.html</code> bezpośrednio przez <code>file://</code>, ponieważ komponent używa modułów JavaScript.</li>
+</ol>
+<pre><code>python3 -m http.server 8765 --bind 127.0.0.1</code></pre>
+<ol start="2">
+<li>Otwórz <a href="http://127.0.0.1:8765/warun-web/">http://127.0.0.1:8765/warun-web/</a>. Serwer musi pozostać uruchomiony. Zatrzymasz go skrótem Ctrl+C.</li>
+<li>W sekcji „Ustawienia miejsca i progów” podaj nazwę i współrzędne, ustaw progi oraz liczbę godzin. Zmiany formularza działają do ponownego otwarcia strony. Nie wymagają konta ani klucza API.</li>
+<li>Aby zapisać konfigurację własnej strony na stałe, po załadowaniu modułu wywołaj <code>setConfig</code> jak w przykładzie poniżej. Możesz też opublikować pliki na zwykłym serwerze statycznym HTTPS — bez backendu i procesu budowania.</li>
+</ol>
+<pre><code>&lt;apco-maniacs-card&gt;&lt;/apco-maniacs-card&gt;
+&lt;script type="module"&gt;
+  import './warun-card.js';
+  document.querySelector('apco-maniacs-card').setConfig({
+    name: 'Faryny',
+    latitude: 53.531944,
+    longitude: 21.385556,
+    wind_threshold: 5,
+    precip_threshold: 10,
+    forecast_hours: 40,
+    timezone: 'Europe/Warsaw',
+    language: 'pl',
+    daylight_only: true
+  });
+&lt;/script&gt;</code></pre>
+<h3>Ten sam komponent jako karta Home Assistant</h3>
+<p>Zwarty nagłówek pokazuje nazwę miejsca obok mniejszej paralotni, a pod nią „APCO Pogoda dla Paralotniarzy” (lub odpowiednik angielski). Odświeżanie jest dyskretną ikoną bez ramki, po prawej stronie w pierwszym wierszu nazwy miejsca. Używa osadzonej grafiki AI opartej na APCO F1 MKII Azure #24. Karta dziedziczy kolory tła, tekstu, obramowań, czcionkę i kształt karty z aktywnego motywu HA, w tym jego trybu jasnego i ciemnego. Bloki pogodowe korzystają z kolorów sukcesu i błędu motywu. Poza HA pozostaje ciemny wygląd domyślny. Po aktualizacji odśwież także <code>warun.css</code>. Nie trzeba kopiować katalogu <code>assets</code>; cztery pliki wykonawcze wystarczą.</p>
+<ol>
+<li>Utwórz katalog <code>/config/www/warun-web/</code>. Skopiuj do niego cztery pliki: <code>warun-card.js</code>, <code>weather.mjs</code>, <code>i18n.mjs</code> i <code>warun.css</code>. Zachowaj je obok siebie. <code>index.html</code> jest potrzebny tylko do uruchomienia jako osobna strona.</li>
+<li>Jeżeli dopiero utworzyłeś katalog <code>www</code>, zrestartuj HA, aby udostępnił pliki przez <code>/local/</code>.</li>
+<li>W zasobach dashboardu dodaj URL <code>/local/warun-web/warun-card.js?v=22</code>, typ <strong>moduł JavaScript</strong>. Zasoby znajdziesz w ustawieniach dashboardów; w zależności od wersji może być potrzebny tryb zaawansowany profilu.</li>
+<li>Dodaj ręczną kartę i wklej konfigurację poniżej. Nie jest to karta Markdown ani iframe.</li>
+</ol>
+<pre><code>type: custom:apco-maniacs-card
+name: Faryny
+latitude: 53.531944
+longitude: 21.385556
+wind_threshold: 5
+precip_threshold: 10
+forecast_hours: 40
+timezone: Europe/Warsaw
+language: pl
+daylight_only: true</code></pre>
+<p>Aby dodać drugą kartę dla Piecek, użyj tego samego typu karty z poniższą konfiguracją (współrzędne z konfiguracji projektu):</p>
+<pre><code>type: custom:apco-maniacs-card
+name: Piecki
+latitude: 53.721
+longitude: 21.015
+wind_threshold: 5
+precip_threshold: 10
+forecast_hours: 40
+timezone: Europe/Warsaw
+language: pl
+daylight_only: true</code></pre>
+<p>Plik <code>warun-web/godzina-14.html</code> pokazuje zachowanie karty o 14:15 czasu polskiego dla Londynu 6 listopada 2026: zegar jest ustawiony na potrzeby prezentacji, a wartości pogody pochodzą z prognozy godzinowej. Plik <code>warun-web/godzina-15.html</code> pokazuje analogiczny podgląd o 15:10, z przedziałem skróconym do zachodu o 17:24 czasu polskiego. Standardowe karty nadal używają bieżącej godziny. Plik <code>warun-web/mieszane.html</code> pokazuje podgląd mieszanych warunków dla Londynu, również na żywej prognozie; kolory zmieniają się wraz z pogodą. Plik <code>warun-web/opady.html</code> pokazuje dodatkowy podgląd dla Dublina, na żywej prognozie (nie są to dane demonstracyjne; opady zmieniają się wraz z pogodą). Samodzielny podgląd pokazuje Faryny i Piecki obok siebie, a na wąskim ekranie jedno pod drugim. Każda karta pobiera prognozę dla własnych współrzędnych. Poprawki wyglądu komponentu webowego dotyczą również jego osadzenia w HA jako <code>custom:warun-card</code>. Nie przenoszą się automatycznie do starej karty Markdown ani integracji Python.</p>
+<ol start="5">
+<li>Prognoza zaczyna się od wyróżnionej daty, np. „Sobota, 14 listopada”, czcionką 16 px. Między blokiem „Teraz” a pierwszą datą jest dodatkowy odstęp 8 px. Skróty kierunku wiatru są pogrubione. Nie ma dodatkowego nagłówka „Okna pogodowe / Tylko pora lotów”. Każda godzina jest oceniana osobno; kolejne godziny o tej samej ocenie łączą się bez limitu długości w jednym dniu. Zmiana oceny (także brak danych) kończy blok, więc dwie dobre godziny przed złą pozostają zielone. Nadal obowiązuje filtr dnia, start od bieżącej pełnej godziny i skracanie okna do zachodu. Gdy dzisiejsze okna już się skończyły, wyjaśnienie jest dostępne po najechaniu na pierwszą datę prognozy.</li>
+<li>Zapisz kartę. Nie musisz dodawać integracji Warun ani tworzyć encji. Istniejąca integracja Python może działać obok tej karty, jeżeli nadal potrzebujesz jej sensorów do automatyzacji.</li>
+<li>Na stałe zmieniaj ustawienia w edytorze graficznym lub konfiguracji YAML karty. W HA użyj edytora graficznego karty lub jej YAML; formularz tymczasowy jest dostępny wyłącznie w samodzielnej stronie.</li>
+<li>Przy kolejnej aktualizacji skopiuj ponownie wszystkie cztery pliki, zwiększ numer <code>?v=</code> w zasobie i wykonaj pełne odświeżenie przeglądarki z pominięciem pamięci podręcznej, również dla zależnych plików <code>weather.mjs</code>, <code>i18n.mjs</code> i <code>warun.css</code>.</li>
+</ol>
+<p><strong>Kontrola:</strong> karta powinna pokazać miejsce, pobraną pogodę i kolorowe bloki przedziałów 3-godzinnych. Każdy blok pokazuje przedział czasu, temperaturę, wiatr i opady w jednym wierszu rozdzielonym znakami |. Kierunek wiatru pokazuje wyłącznie skrót literowy obok prędkości, np. WNW; bez strzałek. Dla 0% wyświetlamy „brak opadów”; dla pozostałych wartości np. „opady 12%”, bez słowa „do”. Wartość jest maksymalnym prawdopodobieństwem w przedziale. Kierunek w przedziale odpowiada godzinie z najwyższą prędkością wiatru. Kolor bloku wskazuje ocenę warunków. Przy włączonym filtrze pory lotów wieczorne okna są ukryte; po zakończeniu dzisiejszych okien karta wyjaśnia przejście do kolejnego dnia. Możesz zmienić próg wiatru, aby sprawdzić zmianę oceny. Brak danych nie jest traktowany jako dobra pogoda.</p>
+<p><strong>Połączenie i źródło:</strong> przeglądarka musi mieć dostęp do <code>https://api.open-meteo.com</code>. Współrzędne wybranego miejsca są przekazywane temu serwisowi przy pobieraniu prognozy. Dane odświeżają się co 15 minut, gdy karta jest otwarta. Przy błędzie poprzednia prognoza pozostaje widoczna z komunikatem, a ocena bieżąca jest wstrzymana. Strona nie wysyła powiadomień w tle. Publiczny interfejs API Open-Meteo jest przeznaczony do zastosowań niekomercyjnych; dla zastosowań komercyjnych sprawdź warunki dostawcy.</p>
+<p><strong>Testy webowe:</strong> <code>node --test warun-web/*.test.mjs</code> (Node.js 18 lub nowszy). Testy nie zastępują sprawdzenia na Twoim dashboardzie. Podgląd samodzielny używa dokładnie tego samego elementu, co karta HA; ciemna paleta jest stała, a szerokość dopasowuje się do układu dashboardu.</p>
+<p>Dokumentacja: <a href="https://open-meteo.com/en/docs">Open-Meteo</a> i <a href="https://contributors.home-assistant.io/frontend/custom-ui/card/">karty niestandardowe HA</a>.</p>
+
+<h2>Wariant z integracją Python i przypomnieniami o odpadach</h2>
+<p>Poniższe kroki dotyczą dotychczasowej integracji HA i karty Markdown. Nie są wymagane do uruchomienia samego komponentu webowego.</p>
+<h2>1. Przygotuj dostęp i kopię</h2>
+<ol>
+<li>Otwórz katalog konfiguracji Home Assistant przez Studio Code Server, Sambę, SFTP lub dostęp do katalogu montowanego w kontenerze. W HA OS jest to zwykle <code>/config</code>. Rozpoznasz go po pliku <code>configuration.yaml</code>.</li>
+<li>Wykonaj kopię zapasową Home Assistant lub zachowaj kopie plików, które zmienisz, oraz istniejącego folderu <code>custom_components/warun</code>.</li>
+<li>Sprawdź, czy masz działającą encję pogodową, np. <code>weather.faryny</code> albo <code>weather.piecki</code>, obsługującą prognozę godzinną. Warun korzysta z istniejącej integracji pogodowej.</li>
+</ol>
+
+<h2>2. Skopiuj pliki</h2>
+<p>Ścieżki źródłowe poniżej są względne wobec katalogu tego projektu. Jeśli Twój katalog konfiguracji jest inny niż <code>/config</code>, odpowiednio zmień ścieżki docelowe.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Plik lub folder projektu</th><th>Miejsce docelowe i sposób aktualizacji</th></tr></thead>
+<tbody>
+<tr><td><code>configuration.yaml</code></td><td><code>/config/configuration.yaml</code>. W istniejącej instalacji połącz sekcję sensorów szablonowych i dyrektywy <code>!include</code> z własnymi ustawieniami.</td></tr>
+<tr><td><code>automations.yaml</code></td><td><code>/config/automations.yaml</code>. Zaktualizuj automatyzacje o tych samych identyfikatorach; zachowaj pozostałe.</td></tr>
+<tr><td><code>scenes.yaml</code></td><td><code>/config/scenes.yaml</code>. Plik projektu zawiera pustą listę <code>[]</code>. Skopiuj go tylko wtedy, gdy nie masz tego pliku. Zachowaj istniejące sceny.</td></tr>
+<tr><td><code>custom_components/warun/</code></td><td>Skopiuj całą zawartość do <code>/config/custom_components/warun/</code>.</td></tr>
+<tr><td><code>scripts.yaml</code></td><td>Przy pierwszym wdrożeniu skopiuj lub połącz z <code>/config/scripts.yaml</code>. Przy aktualizacji opisanych poprawek nie wymaga zmiany. Plik musi istnieć, jeżeli jest dołączony w konfiguracji.</td></tr>
+</tbody></table></div>
+<p>Układ integracji powinien wyglądać tak:</p>
+<pre><code>/config/
+├── configuration.yaml
+├── automations.yaml
+├── scripts.yaml
+├── scenes.yaml
+└── custom_components/
+    └── warun/
+        ├── __init__.py
+        ├── config_flow.py
+        ├── const.py
+        ├── coordinator.py
+        ├── sensor.py
+        ├── manifest.json
+        ├── strings.json
+        ├── hacs.json
+        └── translations/
+            ├── pl.json
+            └── en.json</code></pre>
+<p>Nie twórz dodatkowego poziomu <code>warun/warun/</code>. Foldery <code>md_card_place</code> i <code>uzupelnienie_backup</code> nie są integracjami do instalowania. Pliki <code>AGENTS.md</code>, <code>tests/</code> i ta instrukcja pozostają dokumentacją projektu.</p>
+
+<h2>3. Sprawdź konfigurację przed restartem</h2>
+<ol>
+<li>Upewnij się, że konfiguracja zawiera po jednej dyrektywie dołączającej automatyzacje, skrypty i sceny:</li>
+</ol>
+<pre><code>automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml</code></pre>
+<ol start="2">
+<li>Zachowaj pozostałe ustawienia swojej instalacji. Stary szablon <code>warun_faryny_sensor</code> został zastąpiony integracją Warun — usuń go, jeżeli nadal jest w konfiguracji serwera. Nie włączaj zakomentowanych sensorów REST met.no.</li>
+<li>W Home Assistant otwórz narzędzia YAML i uruchom <strong>Sprawdź konfigurację</strong>. W zależności od wersji sekcja może znajdować się w Narzędziach deweloperskich lub Ustawieniach → Narzędzia. Możesz też wywołać akcję <code>homeassistant.check_config</code>.</li>
+<li>Jeżeli walidacja zgłosi błąd, popraw go przed restartem. Gdy sprawdzenie zakończy się poprawnie, zrestartuj Home Assistant. Samo przeładowanie YAML nie załaduje zmian kodu Pythona integracji.</li>
+</ol>
+
+<h2>4. Dodaj lub sprawdź Warun</h2>
+<ol>
+<li>Jeżeli integracja była już skonfigurowana, pozostaw jej istniejący wpis — po restarcie powinna użyć nowego kodu.</li>
+<li>Przy pierwszej instalacji wybierz <strong>Ustawienia → Urządzenia i usługi → Dodaj integrację → APCO Maniacs</strong>.</li>
+<li>Wskaż miejsce na mapie i podaj nazwę, np. <strong>Faryny</strong>.</li>
+<li>Wybierz encję pogodową odpowiadającą miejscu, np. <code>weather.faryny</code>. Pinezka zapisuje współrzędne; nie tworzy źródła pogody ani nie zmienia lokalizacji wybranej encji.</li>
+<li>W opcjach Waruna ustaw próg wiatru, próg prawdopodobieństwa opadów i liczbę godzin prognozy. Domyślnie: <strong>5 m/s, 10%, 40 godzin</strong>. Godzina jest dobra, gdy obie wartości są ściśle poniżej progów.</li>
+<li>Odszukaj utworzony sensor w encjach lub narzędziu Stanów. Zapisz jego rzeczywisty identyfikator — może różnić się od <code>sensor.warun_faryny</code>.</li>
+</ol>
+<p>Warun pobiera prognozę przez <code>weather.get_forecasts</code> z typem <code>hourly</code>, co 15 minut oraz po zmianach encji pogodowej. Nie wymaga atrybutu <code>forecast</code> na encji <code>weather.*</code>.</p>
+
+<h2>5. Dodaj kartę na dashboardzie</h2>
+<ol>
+<li>Otwórz w projekcie plik <code>custom_components/md_card_place/md_card_place</code> i skopiuj całą jego treść.</li>
+<li>Na dashboardzie Home Assistant dodaj lub edytuj kartę <strong>Markdown</strong>. Wklej treść pliku w pole zawartości, nie do pliku konfiguracji HA.</li>
+<li>W zmiennej <code>sensor_name</code> wpisz rzeczywisty identyfikator sensora Warun <strong>bez prefiksu <code>sensor.</code></strong>:</li>
+</ol>
+<pre><code>{% set sensor_name = 'warun_faryny' %}
+{% set wind_threshold = 5.0 %}
+{% set precip_threshold = 10 %}
+{% set wind_convert = 1.0 %}</code></pre>
+<p>Powyższy identyfikator jest przykładem. Pozostaw <code>wind_convert = 1.0</code>, bo integracja przekazuje wiatr w m/s. Progi karty ustawia się osobno od opcji integracji — ustaw takie same, jeżeli chcesz zgodnych ocen. Liczba trzygodzinnych okien zależy od liczby dostępnych wpisów prognozy. Karta korzysta z <code>sun.sun</code> do ukrywania okien poza godzinami lotów.</p>
+
+<h2>6. Sprawdź przypomnienia o odpadach</h2>
+<ol>
+<li>Sprawdź obecność <code>sensor.trashes_today</code> oraz <code>sensor.trashes_tomorrow</code>. W razie konfliktu nazw popraw identyfikatory encji lub odwołania w automatyzacji.</li>
+<li>Sensor dzisiejszy pokazuje dzisiejsze odbiory, a jutrzejszy odbiory następnego dnia. Brak odbioru oznacza pusty tekst.</li>
+<li>Zweryfikuj terminy w obu harmonogramach w <code>configuration.yaml</code>. Obecnie obejmują <strong>2026 rok</strong>. Przy zmianie terminów aktualizuj harmonogram zarówno sensora dzisiejszego, jak i jutrzejszego.</li>
+<li>Sprawdź, czy akcje <code>notify.mobile_app_gutek</code> i <code>notify.mobile_app_iphone_m</code> istnieją w Twojej instalacji. W razie potrzeby zastąp je nazwami swoich telefonów.</li>
+<li>Automatyzacja przypomina o jutrzejszym odbiorze o <strong>14:00 i 20:15</strong>. Ustaw w HA strefę czasową <code>Europe/Warsaw</code>. Możesz przetestować każdą akcję powiadomienia osobno na własnym telefonie.</li>
+</ol>
+
+<h2>7. Kontrola po wdrożeniu</h2>
+<ul>
+<li>W logach nie ma błędów ładowania YAML ani integracji <code>warun</code>.</li>
+<li>Sensor Warun ma krótki stan: <strong>Warun</strong>, <strong>Brak warunu</strong>, <strong>Brak danych</strong> lub <strong>Brak prognozy</strong>. W razie błędu pobierania może być niedostępny.</li>
+<li>Atrybut <code>opis</code> zawiera opis warunków i prognozy; <code>forecast_raw</code> zawiera wpisy prognozy, gdy są dostępne, a <code>wind_speed_unit</code> ma wartość <code>m/s</code>.</li>
+<li>Karta pokazuje dane właściwego sensora, a nie komunikat o braku prognozy.</li>
+<li>Sensor jutrzejszych odpadów odpowiada następnej dacie w harmonogramie; oba telefony otrzymują próbne powiadomienia.</li>
+</ul>
+
+<h2>8. Jeśli coś nie działa</h2>
+<div class="table-wrap"><table><thead><tr><th>Objaw</th><th>Co sprawdzić</th></tr></thead><tbody>
+<tr><td>Błąd YAML albo brak pliku</td><td>Wcięcia w <code>configuration.yaml</code>, istnienie wszystkich plików wskazanych przez <code>!include</code> i wynik sprawdzenia konfiguracji.</td></tr>
+<tr><td>Warun nie pojawia się na liście integracji</td><td>Ścieżkę <code>/config/custom_components/warun/manifest.json</code>, restart Home Assistant i logi ładowania integracji.</td></tr>
+<tr><td>Brak prognozy lub sensor niedostępny</td><td>W narzędziu Akcji wywołaj <code>weather.get_forecasts</code> dla wybranej encji z <code>type: hourly</code>. Sprawdź odpowiedź, obsługę prognozy godzinowej przez źródło i logi Waruna.</td></tr>
+<tr><td>Karta nie widzi danych</td><td>Rzeczywisty identyfikator sensora, zmienną <code>sensor_name</code> oraz obecność atrybutu <code>forecast_raw</code>.</td></tr>
+<tr><td>Brak powiadomień</td><td>Stan <code>sensor.trashes_tomorrow</code>, nazwy akcji telefonów, włączenie automatyzacji i jej ślady wykonania.</td></tr>
+</tbody></table></div>
+<p>Jeśli aktualizacja uniemożliwia poprawne działanie, przywróć kopie zmienionych plików oraz poprzedni folder Warun, sprawdź konfigurację i zrestartuj Home Assistant. Jeśli HA nie uruchamia się normalnie, przywróć pliki przez użyty dostęp do katalogu konfiguracji.</p>
+
+<footer>
+<p><strong>Utrzymanie instrukcji:</strong> aktualizuj ten plik przy zmianie sposobu instalacji, plików wdrożeniowych, konfiguracji, encji, atrybutów, harmonogramów lub wymaganych czynności po aktualizacji. Zasada jest zapisana także w <code>AGENTS.md</code>.</p>
+<p>Dokumentacja Home Assistant: <a href="https://www.home-assistant.io/docs/configuration/">katalog i konfiguracja</a> · <a href="https://www.home-assistant.io/common-tasks/general/restarting/">sprawdzanie i restart</a> · <a href="https://contributors.home-assistant.io/core/integrations/file-structure/">struktura integracji</a>.</p>
+</footer>
+</main></body></html>

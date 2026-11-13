@@ -1,0 +1,153 @@
+{# ═══════════════════════════════════════════════════════════════
+   Karta Markdown: Warun do latania — okna 3-godzinne
+   Wklej całą zawartość jako "Zawartość" karty Markdown w Lovelace.
+
+   WYMAGA: komponentu custom_components/warun/ (sensor.warun_*)
+   ═══════════════════════════════════════════════════════════════ #}
+
+{# ─── KONFIGURACJA (zmień te wartości) ───────────────────────── #}
+{% set sensor_name = 'warun_faryny' %}  {# sensor warun, nie weather #}
+{% set wind_threshold = 5.0 %}         {# m/s – próg wiatru       #}
+{% set precip_threshold = 10 %}        {# % – próg opadów         #}
+{% set wind_convert = 1.0 %}           {# 1.0 – dane w m/s
+                                         (forecast_raw z warun już w m/s) #}
+
+{# ─── MAKRO: kierunek wiatru ─────────────────────────────────── #}
+{% macro wind_dir(degrees) -%}
+  {%- set d = degrees | float -%}
+  {%- set idx = ((d + 11.25) / 22.5) | int % 16 -%}
+  {%- set dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE',
+                  'S','SSW','SW','WSW','W','WNW','NW','NNW'] -%}
+  {{- dirs[idx] -}}
+{%- endmacro %}
+
+{# ─── POBIERZ DANE ───────────────────────────────────────────── #}
+{% set fc = state_attr('sensor.' + sensor_name, 'forecast_raw') %}
+
+{# ─── WSHÓD / ZACHÓD SŁOŃCA ─────────────────────────────────── #}
+{% set sun_rise = as_datetime(state_attr('sun.sun', 'next_rising')) %}
+{% set sun_set  = as_datetime(state_attr('sun.sun', 'next_setting')) %}
+{% if sun_rise and sun_set %}
+  {% set rise_h = sun_rise.hour %}           {# godzina wschodu           #}
+  {% set set_h  = sun_set.hour %}            {# godzina zachodu            #}
+  {% set fly_from = rise_h - 1 %}            {# można latać od wschód − 1h #}
+  {% set fly_to   = set_h %}                 {# do zachodu                 #}
+{% else %}
+  {% set fly_from = 0 %}
+  {% set fly_to   = 24 %}
+{% endif %}
+
+{% if not fc or fc | length < 1 -%}
+
+  <ha-alert alert-type="warning" title="⚠️ Brak prognozy">
+    Sensor <code>sensor.{{ sensor_name }}</code> nie zwraca atrybutu
+    <code>forecast_raw</code>. Zainstaluj komponent <code>warun</code>
+    i skonfiguruj go dla swojej encji pogodowej.
+  </ha-alert>
+
+{%- else -%}
+
+  {% if sun_rise and sun_set %}
+  <p style="margin:0 0 8px;font-size:.85em;opacity:.7">
+    🌅 Loty: godz. {{ fly_from }} – {{ fly_to }} &nbsp;·&nbsp;
+    okna poza tym zakresem są ukryte
+  </p>
+  {% endif %}
+
+  {# ═══════════════════════════════════════════════════════════
+     TERAZ – bieżąca godzina
+     ═══════════════════════════════════════════════════════════ #}
+  {% set f0 = fc[0] %}
+  {% set w0 = ((f0.wind_speed | float(0)) / wind_convert) | round(1) %}
+  {% set p0 = f0.precipitation_probability | float(0) | int %}
+  {% set t0 = f0.temperature | float(0) | int %}
+  {% set d0 = wind_dir(f0.wind_bearing | float(0)) %}
+  {% set ok0 = w0 < wind_threshold and p0 < precip_threshold %}
+
+  <ha-alert
+    alert-type="{{ 'success' if ok0 else 'error' }}"
+    title="Teraz – godz. {{ now().hour }}"
+  >
+    {{ t0 }}°C &nbsp;|&nbsp;
+    wiatr {{ w0 }}&nbsp;m/s {{ d0 }} &nbsp;|&nbsp;
+    opady {{ p0 }}% &nbsp;|&nbsp;
+    <strong>{{ '✅ WARUN' if ok0 else '❌ BRAK WARUNU' }}</strong>
+  </ha-alert>
+
+  {# ═══════════════════════════════════════════════════════════
+     OKNA 3-GODZINNE – max 24 okna = 72h do przodu
+     ═══════════════════════════════════════════════════════════ #}
+  {% set fc_len = fc | length %}
+  {% set max_win = ((fc_len - 1) / 3) | int %}
+  {% if max_win > 24 %}
+    {% set max_win = 24 %}
+  {% endif %}
+
+  {% for w in range(0, max_win) -%}
+    {% set i = 1 + w * 3 %}
+    {% set f1 = fc[i] %}
+    {% set f2 = fc[i+1] %}
+    {% set f3 = fc[i+2] %}
+
+    {# --- Wiatr w m/s --- #}
+    {% set w1 = (f1.wind_speed | float(0)) / wind_convert %}
+    {% set w2 = (f2.wind_speed | float(0)) / wind_convert %}
+    {% set w3 = (f3.wind_speed | float(0)) / wind_convert %}
+    {% set max_w = [w1, w2, w3] | max | round(1) %}
+
+    {# --- Opady --- #}
+    {% set p1 = f1.precipitation_probability | float(0) | int %}
+    {% set p2 = f2.precipitation_probability | float(0) | int %}
+    {% set p3 = f3.precipitation_probability | float(0) | int %}
+    {% set max_p = [p1, p2, p3] | max %}
+
+    {# --- Temperatura (zakres w oknie) --- #}
+    {% set t1 = f1.temperature | float(0) | int %}
+    {% set t2 = f2.temperature | float(0) | int %}
+    {% set t3 = f3.temperature | float(0) | int %}
+    {% set min_t = [t1, t2, t3] | min %}
+    {% set max_t = [t1, t2, t3] | max %}
+
+    {# --- Ocena każdej godziny --- #}
+    {% set ok1 = w1 < wind_threshold and p1 < precip_threshold %}
+    {% set ok2 = w2 < wind_threshold and p2 < precip_threshold %}
+    {% set ok3 = w3 < wind_threshold and p3 < precip_threshold %}
+
+    {# --- Okno OK tylko gdy wszystkie 3 godziny OK --- #}
+    {% set win_ok = ok1 and ok2 and ok3 %}
+    {% set ok_count = (1 if ok1 else 0) + (1 if ok2 else 0) + (1 if ok3 else 0) %}
+
+    {# --- Formatowanie czasu --- #}
+    {% set dt_start = strptime(f1.datetime, '%Y-%m-%dT%H:%M:%S%z') %}
+    {% set start_h = dt_start.hour %}
+    {% set end_h = (start_h + 3) % 24 %}
+    {% set start_str = dt_start.strftime('%H:%M') %}
+    {% set end_str = end_h | string + ':00' %}
+    {% set day_str = dt_start.strftime('%a') %}
+
+    {# --- Pomiń okna poza godzinami lotów --- #}
+    {% set win_end = start_h + 3 %}
+    {% if start_h >= fly_from and win_end <= fly_to %}
+
+  <ha-alert
+    alert-type="{{ 'success' if win_ok else 'error' }}"
+    title="{{ day_str }} {{ start_str }} – ok. {{ end_str }} &nbsp;({{ ok_count }}/3h OK)"
+  >
+    {{ min_t }}…{{ max_t }}°C &nbsp;|&nbsp;
+    wiatr do {{ max_w }}&nbsp;m/s &nbsp;|&nbsp;
+    opady do {{ max_p }}% &nbsp;|&nbsp;
+    <strong>{{ '✅' if win_ok else '❌' }}</strong>
+  </ha-alert>
+
+    {%- endif %}{# koniec if fly window #}
+
+  {%- endfor %}
+
+  {% if fc_len < 4 %}
+  <p style="color: var(--warning-color); font-style: italic;">
+    ⚠️ Tylko {{ fc_len }} wpisów prognozy – potrzeba minimum 4 do wyświetlenia okien.
+  </p>
+  {% endif %}
+
+{%- endif %}
+

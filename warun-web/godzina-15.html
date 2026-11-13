@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#eaf0f5">
+<title>APCO maniacs — Londyn, podgląd godziny 15:10</title>
+<style>
+body{margin:0;background:#101921;font-family:system-ui,sans-serif;color:#e0e9ee}main{width:min(100% - 28px,620px);margin:32px auto;display:grid;grid-template-columns:1fr;gap:24px;align-items:start}warun-card{display:block}noscript{display:block;padding:30px}@media(max-width:850px){main{max-width:620px;grid-template-columns:1fr}}@media(max-width:480px){main{margin:14px auto}}@media(prefers-color-scheme:dark){body{background:#101b25}}
+.preview-note{color:#61707e}@media(prefers-color-scheme:dark){.preview-note{color:#acbac6}}
+</style>
+
+</head>
+<body>
+<p class="preview-note" style="max-width:620px;margin:24px auto 0;padding:0 14px;font-size:13px;line-height:1.6">Podgląd: piątek 6 listopada 2026, godz. 15:10 czasu polskiego (Europe/Warsaw), pogoda dla Londynu. Godzina jest ustawiona na potrzeby prezentacji. Pogoda, także w sekcji „Teraz”, pochodzi z rzeczywistej prognozy na ten termin.</p>
+<main id="places"><noscript>Włącz JavaScript, aby pobrać prognozę i wyświetlić Warun.</noscript></main>
+<script type="module">
+  import './warun-card.js?v=9';
+  for (const place of [
+    {name: 'Londyn', latitude: 51.507, longitude: -0.128, timezone: 'Europe/Warsaw'},
+  ]) {
+    const card = document.createElement('apco-maniacs-card');
+    card.previewTime = Date.parse('2026-11-06T14:10:00Z');
+    card.setConfig(place);
+    document.querySelector('#places').append(card);
+  }
+</script>
+</body>
+</html>
