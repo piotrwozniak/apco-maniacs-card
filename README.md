@@ -8,11 +8,20 @@ A Home Assistant weather card for paraglider pilots. Choose an exact point on th
 
 Two separate, lossless PNG screenshots at 2× pixel density: Warsaw in the dark theme, and Piecki in the light theme. Both use the English interface. Captured from the same component in its standalone preview on 13 November 2026. Warsaw uses simulated example data (a green window from 07:00 to 14:00); Piecki shows the Open-Meteo forecast fetched at capture time. Demo data is never used by the installed card.
 
-<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-dark.png" alt="Warsaw — English card, dark theme" width="320">
-
-<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — English card, light theme" width="320">
-
-<img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Warsaw location selection in the Home Assistant card editor" width="320">
+<table>
+<tr>
+<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-dark.png" alt="Warsaw — English card, dark theme" width="320"></td>
+<td valign="top"><h3>Warsaw · dark theme</h3><p>See current conditions and the weather windows for the following days at a glance. Consecutive hours with the same assessment form one window, with temperature, maximum wind, wind direction and precipitation shown together.</p><p>This Warsaw example uses simulated data, including the green 07:00–14:00 window. Installed cards always request forecasts for their configured location.</p></td>
+</tr>
+<tr>
+<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/weather-en-light.png" alt="Piecki — English card, light theme" width="320"></td>
+<td valign="top"><h3>Piecki · light theme</h3><p>The card follows the active Home Assistant theme. Green and red backgrounds distinguish windows that meet your wind and precipitation thresholds from those that exceed them.</p><p>This screenshot uses the Open-Meteo forecast captured for Piecki. With daylight filtering enabled, windows end at the local sunset.</p></td>
+</tr>
+<tr>
+<td width="340" valign="top"><img src="https://raw.githubusercontent.com/piotrwozniak/apco-maniacs-card/main/docs/location-warsaw.png" alt="Warsaw location selection in the Home Assistant card editor" width="320"></td>
+<td valign="top"><h3>Choose your location</h3><p>Open the visual card editor, click the map or drag the pin to your launch site, then name and save the card. Each card has its own location; your Home Assistant home location stays unchanged.</p><p>Actual Home Assistant editor showing central Warsaw: 52.2297, 21.0122. Set the location’s time zone separately in the editor.</p></td>
+</tr>
+</table>
 
 - Native map with a draggable pin in the visual card editor; manual coordinates are also supported.
 - Open-Meteo forecasts for the selected point, without a weather entity, Python integration or API key.
@@ -72,7 +81,7 @@ Do not replace `configuration.yaml`, automations or scenes. HACS installs only t
 
 ## Manual single-file installation
 
-Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.8` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
+Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.9` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
 
 The source version in `warun-web/` still runs standalone and can also be deployed using four files. The detailed deployment guide, [wdrozenie.html](wdrozenie.html), is in Polish.
 
