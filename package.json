@@ -1,0 +1,12 @@
+{
+  "name": "apco-maniacs-card",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check:dist": "node scripts/build.mjs --check",
+    "test": "node --test warun-web/*.test.mjs"
+  }
+}

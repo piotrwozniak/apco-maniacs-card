@@ -41,10 +41,10 @@ test('dates use selected language, independent of the host locale',()=>{
   const date=Date.parse('2026-11-06T14:00:00Z');
   assert.match(cardIn('en').day(date),/Friday/);assert.match(cardIn('pl').day(date),/Piątek/);
 });
-test('HA cards expose real config editor and hide temporary standalone form',()=>{
+test('HA cards expose real config editor and hide temporary standalone form',async()=>{
   const card=cardIn('en');card.hass={};card.render();
   assert.doesNotMatch(card.shadowRoot.innerHTML,/<details class="settings">/);
-  const editor=Card.getConfigElement();editor.setConfig({language:'en'});
+  const editor=await Card.getConfigElement();editor.setConfig({language:'en'});
   assert.match(editor.shadowRoot.innerHTML,/value="en" selected/);
   assert.match(editor.shadowRoot.innerHTML,/Location name/);
 });
@@ -58,8 +58,8 @@ test('switching language keeps fetched weather without a new API call',()=>{
   assert.equal(card.data,data);assert.equal(card.config.language,'en');
 });
 
-test('HA editor publishes selected language together with existing location settings',()=>{
-  const editor=Card.getConfigElement();editor.setConfig({type:'custom:apco-maniacs-card',name:'Piecki',latitude:53.721,longitude:21.015});
+test('HA editor publishes selected language together with existing location settings',async()=>{
+  const editor=await Card.getConfigElement();editor.setConfig({type:'custom:apco-maniacs-card',name:'Piecki',latitude:53.721,longitude:21.015});
   const values={...editor.config,language:'en'};
   const form={reportValidity:()=>true,values};
   const NativeFormData=globalThis.FormData;
@@ -87,4 +87,46 @@ test('forecast begins with a prominent capitalized date without an extra heading
  card.data={hours:[{time:Date.parse('2026-11-14T10:00:00+01:00'),temperature:10,wind:3,precip:0,direction:90}],current:{},days:[{rise:Date.parse('2026-11-14T07:00:00+01:00'),set:Date.parse('2026-11-14T16:00:00+01:00')}]};card.render();
  assert.match(card.shadowRoot.innerHTML,/<h3>Sobota, 14 listopada<\/h3>/);
  assert.doesNotMatch(card.shadowRoot.innerHTML,/forecast-heading|<h2>Okna pogodowe|<span>Tylko pora lotów/);
+});
+
+test('card picker loads the native HA form before opening the map editor',async()=>{
+  let initialized=false;
+  window.loadCardHelpers=async()=>({createCardElement(config){
+    assert.equal(config.type,'entities');
+    return {constructor:{async getConfigElement(){initialized=true;registry.set('ha-form',class {});}}};
+  }});
+  try{
+    const editor=await Card.getConfigElement();
+    assert.ok(initialized);editor.setConfig({});
+    assert.match(editor.shadowRoot.innerHTML,/<ha-form data-location>/);
+  }finally{delete window.loadCardHelpers;registry.delete('ha-form');}
+});
+
+test('map pin changes persist exact coordinates and preserve all other settings',async()=>{
+  const editor=await Card.getConfigElement();editor.setConfig({type:'custom:apco-maniacs-card',name:'Startowisko',language:'en',wind_threshold:6,daylight_only:false});
+  const map={},latitude={},longitude={},error={};
+  editor.shadowRoot.querySelector=selector=>selector==='ha-form[data-location]'?map:selector==='[name="latitude"]'?latitude:selector==='[name="longitude"]'?longitude:error;
+  const hass={config:{latitude:53,longitude:21}};editor.hass=hass;
+  assert.equal(map.hass,hass);
+  assert.deepEqual(map.schema[0].selector,{location:{}});
+  let emitted;editor.addEventListener('config-changed',event=>{emitted=event.detail.config;});
+  editor.shadowRoot.handlers['value-changed']({target:{matches:()=>true},detail:{value:{location:{latitude:53.719876,longitude:21.012345}}},stopPropagation(){}});
+  assert.equal(emitted.latitude,53.719876);assert.equal(emitted.longitude,21.012345);
+  assert.equal(emitted.name,'Startowisko');assert.equal(emitted.language,'en');assert.equal(emitted.wind_threshold,6);assert.equal(emitted.daylight_only,false);
+  assert.equal(emitted.type,'custom:apco-maniacs-card');
+  assert.equal(latitude.value,53.719876);assert.equal(longitude.value,21.012345);
+  assert.equal(configFor(emitted).latitude,53.719876);
+  let renders=0;editor.render=()=>renders++;editor.setConfig(emitted);
+  assert.equal(renders,0,'HA echo must not reset map zoom or pin');
+  emitted=null;
+  editor.shadowRoot.handlers['value-changed']({target:{matches:()=>true},detail:{value:{location:{latitude:999,longitude:0}}},stopPropagation(){}});
+  assert.equal(emitted,null);assert.equal(editor.config.latitude,53.719876);
+});
+
+test('new cards start at the HA home coordinates and support links are present',()=>{
+  const config=Card.getStubConfig({config:{latitude:52.2,longitude:20.9,time_zone:'Europe/Warsaw'}});
+  assert.equal(config.latitude,52.2);assert.equal(config.longitude,20.9);
+  const card=cardIn('pl');card.hass={};card.render();
+  assert.match(card.shadowRoot.innerHTML,/https:\/\/buymeacoffee.com\/piotrwoznil/);
+  assert.match(card.shadowRoot.innerHTML,/https:\/\/www.youtube.com\/@piter_fly/);
 });

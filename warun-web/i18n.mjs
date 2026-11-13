@@ -1,5 +1,7 @@
+export const PROJECT_LINKS = Object.freeze({coffee: 'https://buymeacoffee.com/piotrwoznil', youtube: 'https://www.youtube.com/@piter_fly'});
 export const MESSAGES = {
   pl: {
+    location: 'Miejsce na mapie', mapHint: 'Kliknij mapę lub przesuń pinezkę. Zapisz kartę, aby zachować wybrane miejsce.', mapUnavailable: 'Mapa jest dostępna w edytorze Home Assistanta. Jeśli się nie ładuje, odśwież stronę; współrzędne możesz też wpisać poniżej.', support: 'Wesprzyj projekt', youtube: 'YouTube',
     subtitle: 'APCO Pogoda dla Paralotniarzy', refresh: 'Odśwież', refreshing: 'Pobieranie…', refreshLabel: 'Odśwież prognozę',
     good: 'Warun', bad: 'Brak warunu', unknown: 'Brak danych', now: 'Teraz', wind: 'wiatr', windMax: 'wiatr do',
     noRain: 'brak opadów', rain: 'opady', currentLabel: 'Bieżące warunki', forecast: 'Okna pogodowe',
@@ -19,6 +21,7 @@ export const MESSAGES = {
     description: 'Pogoda i okna lotów według warunków, niezależnie od encji HA.',
   },
   en: {
+    location: 'Location on the map', mapHint: 'Click the map or drag the pin. Save the card to keep this location.', mapUnavailable: 'The map is available in the Home Assistant editor. Reload if it does not load; you can also enter coordinates below.', support: 'Support this project', youtube: 'YouTube',
     subtitle: 'APCO Weather for Paraglider Pilots', refresh: 'Refresh', refreshing: 'Loading…', refreshLabel: 'Refresh forecast',
     good: 'Flyable', bad: 'Not flyable', unknown: 'No data', now: 'Now', wind: 'wind', windMax: 'wind up to',
     noRain: 'no precipitation', rain: 'precipitation', currentLabel: 'Current conditions', forecast: 'Weather windows',

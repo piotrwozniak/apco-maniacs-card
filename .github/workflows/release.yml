@@ -1,0 +1,22 @@
+name: Attach HACS bundle
+on:
+  release:
+    types: [published]
+permissions:
+  contents: write
+jobs:
+  asset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: npm run check:dist
+      - name: Attach standalone JavaScript
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" dist/apco-maniacs-card.js --clobber
