@@ -10,13 +10,13 @@
 </style>
 </head>
 <body><main>
-<p class="meta">Home Assistant · APCO Maniacs i przypomnienia o odpadach · aktualizacja: <time datetime="2026-11-13">13 listopada 2026</time></p>
+<p class="meta">Home Assistant · APCO Maniacs i przypomnienia o odpadach · aktualizacja: <time datetime="2026-11-14">14 listopada 2026</time></p>
 <h1>Wdrożenie krok po kroku</h1>
 <p>Instrukcja obejmuje instalację lub aktualizację integracji APCO Maniacs (wcześniej Warun), konfigurację harmonogramu odpadów i dodanie karty pogodowej. Warun ocenia warunki do latania na podstawie godzinowej prognozy wybranej encji pogodowej.</p>
 <div class="note"><strong>Ważne:</strong> lokalne sprawdzenia YAML i testy logiki nie zastępują sprawdzenia na Twojej instancji Home Assistant. Jeżeli pliki na serwerze zawierają dodatkowe ustawienia, połącz zmiany — nie nadpisuj ich całym plikiem z projektu.</div>
 
 <p>Instrukcja projektu: <a href="README.pl.md">Polski</a> / <a href="README.md">English</a> / <a href="README.it.md">Italiano</a> / <a href="README.es.md">Español</a>. Bez jawnego <code>language</code> karta dopasowuje język do interfejsu HA (PL, EN, IT lub ES), a dla pozostałych wybiera angielski. Ręczny wybór ma pierwszeństwo; nieznane wartości także włączają angielski.</p>
-<p>Domyślny opis w GitHubie i HACS jest po angielsku. README zawiera dwa osobne, bezstratne zrzuty angielskiej karty wykadrowane do samych kart, bez otaczającego tła i podpisów nad kartą, wyświetlane w README w szerokości 320 px z automatyczną wysokością: Warszawę w ciemnym motywie oraz Piecki w jasnym; przykład Warszawy używa oznaczonych danych demonstracyjnych. Stopka mieści czas aktualizacji, link wsparcia, skrót „YT” i źródło pogody w jednym wierszu; na wąskim ekranie może się zawinąć.</p>
+<p>Domyślny opis w GitHubie i HACS jest po angielsku. README zawiera dwa osobne, bezstratne zrzuty angielskiej karty wykadrowane do samych kart, bez otaczającego tła i podpisów nad kartą, wyświetlane w README w szerokości 320 px z automatyczną wysokością: Warszawę w ciemnym motywie oraz Piecki w jasnym; przykład Warszawy używa oznaczonych danych demonstracyjnych. Stopka mieści czas aktualizacji, link wsparcia i skrót „YT” w jednym wierszu; na wąskim ekranie może się zawinąć.</p>
 <h2>Instalacja i aktualizacje przez HACS — karta Dashboard</h2>
 <p>Projekt jest przygotowany jako karta Dashboard (kategoria techniczna <code>plugin</code>). Paczka <code>dist/apco-maniacs-card.js</code> zawiera kod, style, tłumaczenia i grafikę; HACS nie instaluje plików <code>configuration.yaml</code>, automatyzacji ani integracji Python. Publiczne repozytorium do dodania w HACS: <a href="https://github.com/piotrwozniak/apco-maniacs-card">https://github.com/piotrwozniak/apco-maniacs-card</a>.</p>
 <ol>
@@ -31,7 +31,7 @@
 <h3>Wybór miejsca na mapie — Warszawa</h3>
 <p>Otwórz dashboard → Edytuj panel → Edytuj kartę APCO Maniacs. Przełącz na edytor wizualny, jeśli widzisz YAML. Kliknij mapę lub przesuń pinezkę, podaj nazwę i zapisz kartę. Przykład: Warszawa, szerokość <code>52.2297</code>, długość <code>21.0122</code>, strefa <code>Europe/Warsaw</code>. Poniżej rzeczywisty widok natywnego edytora HA, sprawdzony 13 listopada 2026.</p>
 <img src="docs/location-warsaw.png" alt="Wybór Warszawy na mapie w edytorze Home Assistant" width="320" style="max-width:100%;height:auto">
-<p>Do ręcznej instalacji tej samej paczki wystarczy jeden plik <code>dist/apco-maniacs-card.js</code> w <code>www/apco-maniacs-card/</code> i zasób <code>/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.9</code>. Wariant czteroplikowy poniżej nadal działa. Nie ładuj obu wariantów naraz.</p>
+<p>Do ręcznej instalacji tej samej paczki wystarczy jeden plik <code>dist/apco-maniacs-card.js</code> w <code>www/apco-maniacs-card/</code> i zasób <code>/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.10</code>. Wariant czteroplikowy poniżej nadal działa. Nie ładuj obu wariantów naraz.</p>
 <p>Stopka zawiera dyskretne linki: <a href="https://buymeacoffee.com/piotrwoznil">Buy Me a Coffee</a> oraz <a href="https://www.youtube.com/@piter_fly">Piotrek Lata — YouTube</a>. Szczegóły testów i wydawania wersji: <code>README.md</code>. Pierwszy release przygotowano jako wersję <code>1.0.0</code>; zdalna walidacja HACS i test na działającym HA następują po publikacji.</p>
 <h2>Wariant webowy — niezależny od Home Assistant</h2>
 <p>Folder <code>warun-web/</code> zawiera samodzielną wersję Waruna pogodowego. Ten sam element <code>&lt;apco-maniacs-card&gt;</code> działa na zwykłej stronie i jako karta dashboardu HA. Nie korzysta z integracji Python, encji pogodowych ani <code>sun.sun</code>. Pobiera dane bezpośrednio z Open-Meteo. Ten wariant nie obsługuje przypomnień o odpadach.</p>

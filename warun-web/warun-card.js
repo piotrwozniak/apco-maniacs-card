@@ -105,7 +105,7 @@ class WarunCard extends HTMLElement {
       ${!windows.length?`<p class="empty">${t.empty}</p>`:''}</section>`:!this.loading?`<p class="empty">${t.noForecast}</p>`:`<div class="loading" role="status">${t.fetching}</div>`}
       <p class="limits">${t.wind} &lt; ${this.fmt(c.wind_threshold,1)} m/s | ${t.rain} &lt; ${this.fmt(c.precip_threshold)}%. ${t.limits}</p>
       ${!this.inHA?`<details class="settings"><summary>${t.settings}</summary><form>${fields(c,t)}<p class="wide hint">${t.temporary}</p><p class="wide form-error" data-form-error role="alert"></p><button class="save" type="submit">${t.apply}</button></form></details>`:''}
-      <footer><span>${this.updated?`${t.updated} ${this.time(this.updated)} · ${t.interval}`:t.autoUpdate}</span><nav class="project-links" aria-label="APCO Maniacs">${PROJECT_LINKS.coffee?`<a href="${escapeHTML(PROJECT_LINKS.coffee)}" target="_blank" rel="noopener noreferrer">☕ ${t.support}</a>`:''}${PROJECT_LINKS.youtube?`<a href="${escapeHTML(PROJECT_LINKS.youtube)}" target="_blank" rel="noopener noreferrer">${t.youtube}</a>`:''}</nav><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">${t.source}</a></footer></article>`;
+      <footer><span>${this.updated?`${t.updated} ${this.time(this.updated)} · ${t.interval}`:t.autoUpdate}</span><nav class="project-links" aria-label="APCO Maniacs">${PROJECT_LINKS.coffee?`<a href="${escapeHTML(PROJECT_LINKS.coffee)}" target="_blank" rel="noopener noreferrer">☕ ${t.support}</a>`:''}${PROJECT_LINKS.youtube?`<a href="${escapeHTML(PROJECT_LINKS.youtube)}" target="_blank" rel="noopener noreferrer">${t.youtube}</a>`:''}</nav></footer></article>`;
   }
   windHTML(speed,bearing){
     const valid=typeof bearing==='number'&&Number.isFinite(bearing);

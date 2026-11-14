@@ -17,7 +17,7 @@ export const MESSAGES = {
     precip_threshold: 'Próg opadów (%)', forecast_hours: 'Liczba godzin', timezone: 'Strefa czasowa', language: 'Język',
     daylight_only: 'Tylko okna od wschodu do zachodu', temporary: 'Zmiany obowiązują do ponownego otwarcia karty. Na stałe zapisz je w konfiguracji strony.',
     apply: 'Zastosuj ustawienia', updated: 'Pobrano', interval: 'co 15 min', autoUpdate: 'Aktualizacja co 15 min',
-    source: 'Pogoda: Open-Meteo', windFrom: 'Wiatr z', noDirection: 'Brak kierunku', invalid: 'Sprawdź poprawność ustawień i strefy czasowej.',
+    windFrom: 'Wiatr z', noDirection: 'Brak kierunku', invalid: 'Sprawdź poprawność ustawień i strefy czasowej.',
     description: 'Pogoda i okna lotów według warunków, niezależnie od encji HA.',
   },
   en: {
@@ -37,7 +37,7 @@ export const MESSAGES = {
     precip_threshold: 'Precipitation threshold (%)', forecast_hours: 'Forecast hours', timezone: 'Time zone', language: 'Language',
     daylight_only: 'Only show windows between sunrise and sunset', temporary: 'Changes last until the card is reopened. Save them in the page configuration to keep them.',
     apply: 'Apply settings', updated: 'Updated', interval: 'every 15 min', autoUpdate: 'Updates every 15 min',
-    source: 'Weather: Open-Meteo', windFrom: 'Wind from', noDirection: 'No direction', invalid: 'Check the settings and time zone.',
+    windFrom: 'Wind from', noDirection: 'No direction', invalid: 'Check the settings and time zone.',
     description: 'Weather and flying windows grouped by conditions, independent of HA entities.',
   },
   it: {
@@ -57,7 +57,7 @@ export const MESSAGES = {
     precip_threshold: 'Soglia delle precipitazioni (%)', forecast_hours: 'Ore di previsione', timezone: 'Fuso orario', language: 'Lingua',
     daylight_only: 'Mostra solo le finestre tra alba e tramonto', temporary: 'Le modifiche durano fino alla riapertura della scheda. Salvale nella configurazione della pagina per mantenerle.',
     apply: 'Applica le impostazioni', updated: 'Aggiornato', interval: 'ogni 15 min', autoUpdate: 'Aggiornamento ogni 15 min',
-    source: 'Meteo: Open-Meteo', windFrom: 'Vento da', noDirection: 'Direzione non disponibile', invalid: 'Verifica le impostazioni e il fuso orario.',
+    windFrom: 'Vento da', noDirection: 'Direzione non disponibile', invalid: 'Verifica le impostazioni e il fuso orario.',
     description: 'Meteo e finestre di volo raggruppate per condizioni, indipendenti dalle entità HA.',
   },
   es: {
@@ -77,7 +77,7 @@ export const MESSAGES = {
     precip_threshold: 'Umbral de precipitaciones (%)', forecast_hours: 'Horas del pronóstico', timezone: 'Zona horaria', language: 'Idioma',
     daylight_only: 'Mostrar solo ventanas entre el amanecer y la puesta de sol', temporary: 'Los cambios duran hasta que se vuelva a abrir la tarjeta. Guárdalos en la configuración de la página para conservarlos.',
     apply: 'Aplicar ajustes', updated: 'Actualizado', interval: 'cada 15 min', autoUpdate: 'Actualización cada 15 min',
-    source: 'Tiempo: Open-Meteo', windFrom: 'Viento del', noDirection: 'Dirección no disponible', invalid: 'Comprueba los ajustes y la zona horaria.',
+    windFrom: 'Viento del', noDirection: 'Dirección no disponible', invalid: 'Comprueba los ajustes y la zona horaria.',
     description: 'Tiempo y ventanas de vuelo agrupadas por condiciones, independientes de las entidades de HA.',
   },
 };

@@ -96,7 +96,7 @@ Do not replace `configuration.yaml`, automations or scenes. HACS installs only t
 
 ## Manual single-file installation
 
-Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.9` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
+Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.10` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
 
 The source version in `warun-web/` still runs standalone and can also be deployed using four files. The detailed deployment guide, [wdrozenie.html](wdrozenie.html), is in Polish.
 
