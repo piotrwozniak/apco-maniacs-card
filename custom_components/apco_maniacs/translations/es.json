@@ -1,0 +1,66 @@
+{
+  "title": "APCO Weather",
+  "config": {
+    "step": {
+      "user": {
+        "title": "APCO Weather",
+        "description": "Elige un lugar. Home Assistant obtiene previsiones de Open-Meteo cada 15 minutos, incluso con el panel cerrado.",
+        "data": {
+          "name": "Nombre del lugar",
+          "location": "Despegue",
+          "timezone": "Zona horaria",
+          "wind_threshold": "Umbral de viento (m/s)",
+          "precip_threshold": "Umbral de precipitación (%)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se puede conectar con Open-Meteo.",
+      "invalid_data": "Ajustes o previsión no válidos. Comprueba la zona horaria y la ubicación."
+    },
+    "abort": {
+      "already_configured": "Esta ubicación ya está configurada."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "APCO Weather",
+        "description": "Elige un lugar. Home Assistant obtiene previsiones de Open-Meteo cada 15 minutos, incluso con el panel cerrado.",
+        "data": {
+          "name": "Nombre del lugar",
+          "location": "Despegue",
+          "timezone": "Zona horaria",
+          "wind_threshold": "Umbral de viento (m/s)",
+          "precip_threshold": "Umbral de precipitación (%)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se puede conectar con Open-Meteo.",
+      "invalid_data": "Ajustes o previsión no válidos. Comprueba la zona horaria y la ubicación.",
+      "already_configured": "Esta ubicación ya está configurada."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "conditions": {
+        "name": "Condiciones",
+        "state": {
+          "good": "Condiciones favorables",
+          "bad": "Condiciones desfavorables",
+          "unknown": "Sin datos"
+        }
+      },
+      "temperature": {
+        "name": "Temperatura"
+      },
+      "wind": {
+        "name": "Velocidad del viento"
+      },
+      "precipitation": {
+        "name": "Probabilidad de precipitación"
+      }
+    }
+  }
+}

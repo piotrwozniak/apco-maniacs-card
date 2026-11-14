@@ -1,6 +1,7 @@
 export const PROJECT_LINKS = Object.freeze({coffee: 'https://buymeacoffee.com/piotrwoznil', youtube: 'https://www.youtube.com/@piter_fly'});
 export const MESSAGES = {
   pl: {
+    integrationSource: "Encja integracji APCO Weather (opcjonalnie)", integrationHint: "Miejsce i progi pochodzą z integracji. Zmień je w Ustawienia → Urządzenia i usługi → APCO Weather. Wyczyść encję, aby pobierać pogodę bezpośrednio w karcie.", integrationError: "Encja APCO Weather jest niedostępna lub jej prognoza jest nieaktualna. Sprawdź integrację w Home Assistant.",
     location: 'Miejsce na mapie', mapHint: 'Kliknij mapę lub przesuń pinezkę. Zapisz kartę, aby zachować wybrane miejsce.', mapUnavailable: 'Mapa jest dostępna w edytorze Home Assistanta. Jeśli się nie ładuje, odśwież stronę; współrzędne możesz też wpisać poniżej.', support: 'Wesprzyj projekt', youtube: 'YT',
     subtitle: 'APCO Pogoda dla Paralotniarzy', refresh: 'Odśwież', refreshing: 'Pobieranie…', refreshLabel: 'Odśwież prognozę',
     good: 'Warun', bad: 'Brak warunu', unknown: 'Brak danych', now: 'Teraz', wind: 'wiatr', windMax: 'wiatr do',
@@ -18,9 +19,10 @@ export const MESSAGES = {
     daylight_only: 'Tylko okna od wschodu do zachodu', temporary: 'Zmiany obowiązują do ponownego otwarcia karty. Na stałe zapisz je w konfiguracji strony.',
     apply: 'Zastosuj ustawienia', updated: 'Pobrano', interval: 'co 15 min', autoUpdate: 'Aktualizacja co 15 min',
     windFrom: 'Wiatr z', noDirection: 'Brak kierunku', invalid: 'Sprawdź poprawność ustawień i strefy czasowej.',
-    description: 'Pogoda i okna lotów według warunków, niezależnie od encji HA.',
+    description: 'Pogoda i okna lotów z opcjonalną integracją Home Assistant.',
   },
   en: {
+    integrationSource: "APCO Weather integration entity (optional)", integrationHint: "Location and thresholds come from the integration. Edit them in Settings → Devices & services → APCO Weather. Clear the entity to fetch weather directly in the card.", integrationError: "The APCO Weather entity is unavailable or its forecast is stale. Check the integration in Home Assistant.",
     location: 'Location on the map', mapHint: 'Click the map or drag the pin. Save the card to keep this location.', mapUnavailable: 'The map is available in the Home Assistant editor. Reload if it does not load; you can also enter coordinates below.', support: 'Support this project', youtube: 'YT',
     subtitle: 'APCO Weather for Paraglider Pilots', refresh: 'Refresh', refreshing: 'Loading…', refreshLabel: 'Refresh forecast',
     good: 'Flyable', bad: 'Not flyable', unknown: 'No data', now: 'Now', wind: 'wind', windMax: 'wind up to',
@@ -38,9 +40,10 @@ export const MESSAGES = {
     daylight_only: 'Only show windows between sunrise and sunset', temporary: 'Changes last until the card is reopened. Save them in the page configuration to keep them.',
     apply: 'Apply settings', updated: 'Updated', interval: 'every 15 min', autoUpdate: 'Updates every 15 min',
     windFrom: 'Wind from', noDirection: 'No direction', invalid: 'Check the settings and time zone.',
-    description: 'Weather and flying windows grouped by conditions, independent of HA entities.',
+    description: 'Weather and flying windows with an optional Home Assistant integration.',
   },
   it: {
+    integrationSource: "Entità dell’integrazione APCO Weather (facoltativa)", integrationHint: "Posizione e soglie provengono dall’integrazione. Modificale in Impostazioni → Dispositivi e servizi → APCO Weather. Rimuovi l’entità per scaricare il meteo nella scheda.", integrationError: "L’entità APCO Weather non è disponibile o le previsioni sono scadute. Controlla l’integrazione in Home Assistant.",
     location: 'Posizione sulla mappa', mapHint: 'Fai clic sulla mappa o trascina il segnaposto. Salva la scheda per mantenere la posizione.', mapUnavailable: 'La mappa è disponibile nell’editor di Home Assistant. Se non viene caricata, aggiorna la pagina oppure inserisci le coordinate qui sotto.', support: 'Sostieni il progetto', youtube: 'YT',
     subtitle: 'APCO Meteo per piloti di parapendio', refresh: 'Aggiorna', refreshing: 'Caricamento…', refreshLabel: 'Aggiorna le previsioni',
     good: 'Condizioni favorevoli', bad: 'Condizioni sfavorevoli', unknown: 'Dati non disponibili', now: 'Adesso', wind: 'vento', windMax: 'vento fino a',
@@ -58,9 +61,10 @@ export const MESSAGES = {
     daylight_only: 'Mostra solo le finestre tra alba e tramonto', temporary: 'Le modifiche durano fino alla riapertura della scheda. Salvale nella configurazione della pagina per mantenerle.',
     apply: 'Applica le impostazioni', updated: 'Aggiornato', interval: 'ogni 15 min', autoUpdate: 'Aggiornamento ogni 15 min',
     windFrom: 'Vento da', noDirection: 'Direzione non disponibile', invalid: 'Verifica le impostazioni e il fuso orario.',
-    description: 'Meteo e finestre di volo raggruppate per condizioni, indipendenti dalle entità HA.',
+    description: 'Meteo e finestre di volo con integrazione Home Assistant facoltativa.',
   },
   es: {
+    integrationSource: "Entidad de la integración APCO Weather (opcional)", integrationHint: "La ubicación y los umbrales proceden de la integración. Cámbialos en Ajustes → Dispositivos y servicios → APCO Weather. Borra la entidad para obtener el tiempo desde la tarjeta.", integrationError: "La entidad APCO Weather no está disponible o su previsión está desactualizada. Comprueba la integración en Home Assistant.",
     location: 'Ubicación en el mapa', mapHint: 'Haz clic en el mapa o arrastra el marcador. Guarda la tarjeta para conservar la ubicación.', mapUnavailable: 'El mapa está disponible en el editor de Home Assistant. Si no se carga, actualiza la página o introduce las coordenadas abajo.', support: 'Apoya el proyecto', youtube: 'YT',
     subtitle: 'APCO Meteorología para pilotos de parapente', refresh: 'Actualizar', refreshing: 'Cargando…', refreshLabel: 'Actualizar el pronóstico',
     good: 'Condiciones favorables', bad: 'Condiciones desfavorables', unknown: 'Sin datos', now: 'Ahora', wind: 'viento', windMax: 'viento hasta',

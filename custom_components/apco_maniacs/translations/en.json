@@ -1,0 +1,66 @@
+{
+  "title": "APCO Weather",
+  "config": {
+    "step": {
+      "user": {
+        "title": "APCO Weather",
+        "description": "Choose a location. Home Assistant fetches Open-Meteo forecasts every 15 minutes, even when the dashboard is closed.",
+        "data": {
+          "name": "Location name",
+          "location": "Launch site",
+          "timezone": "Time zone",
+          "wind_threshold": "Wind threshold (m/s)",
+          "precip_threshold": "Precipitation threshold (%)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to Open-Meteo.",
+      "invalid_data": "Invalid settings or forecast data. Check the time zone and location."
+    },
+    "abort": {
+      "already_configured": "This location is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "APCO Weather",
+        "description": "Choose a location. Home Assistant fetches Open-Meteo forecasts every 15 minutes, even when the dashboard is closed.",
+        "data": {
+          "name": "Location name",
+          "location": "Launch site",
+          "timezone": "Time zone",
+          "wind_threshold": "Wind threshold (m/s)",
+          "precip_threshold": "Precipitation threshold (%)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to Open-Meteo.",
+      "invalid_data": "Invalid settings or forecast data. Check the time zone and location.",
+      "already_configured": "This location is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "conditions": {
+        "name": "Conditions",
+        "state": {
+          "good": "Flyable",
+          "bad": "Not flyable",
+          "unknown": "No data"
+        }
+      },
+      "temperature": {
+        "name": "Temperature"
+      },
+      "wind": {
+        "name": "Wind speed"
+      },
+      "precipitation": {
+        "name": "Precipitation probability"
+      }
+    }
+  }
+}

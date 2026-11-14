@@ -1,5 +1,5 @@
 {
-  "name": "APCO Maniacs",
-  "filename": "apco-maniacs-card.js",
+  "name": "APCO Weather",
+  "homeassistant": "2026.3.0",
   "render_readme": true
 }

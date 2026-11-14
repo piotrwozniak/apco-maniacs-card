@@ -12,7 +12,7 @@ globalThis.customElements={get:key=>registry.get(key),define:(key,value)=>regist
 globalThis.window={};
 globalThis.document={createElement:tag=>new (registry.get(tag))()};
 await import('./warun-card.js');
-const Card=registry.get('apco-maniacs-card');
+const Card=registry.get('apco-weather-card');
 function cardIn(language){
   const card=new Card();card.setConfig({language});card.render();return card;
 }
@@ -32,7 +32,7 @@ test('language setting supports four languages and falls back to English',()=>{
 test('English render localizes controls, zero precipitation and decimal numbers',()=>{
   const card=cardIn('en');
   assert.match(card.shadowRoot.innerHTML,/Location and threshold settings/);
-  assert.match(card.shadowRoot.innerHTML,/APCO Maniacs/);
+  assert.match(card.shadowRoot.innerHTML,/APCO Weather/);
   assert.doesNotMatch(card.shadowRoot.innerHTML,/Ustawienia|Przedziały|Teraz|Odśwież/);
   assert.equal(card.precipitation(0),'no precipitation');
   assert.equal(card.precipitation(12),'precipitation 12%');
@@ -82,7 +82,7 @@ test('compact header shows location once with APCO subtitle and refresh',()=>{
   assert.match(html,/<h1 class="brand-name">Piecki<\/h1>/);
   assert.match(html,/APCO Pogoda dla Paralotniarzy/);
   assert.equal((html.match(/<h1/g)||[]).length,1);
-  assert.doesNotMatch(html,/<span class="brand-name">APCO Maniacs/);
+  assert.doesNotMatch(html,/<span class="brand-name">APCO Weather/);
   assert.match(html,/<div class="name-row"><h1[^>]*>Piecki<\/h1><button[^>]*data-refresh/);
   assert.doesNotMatch(html,/<footer>.*data-refresh/);
 });
@@ -115,7 +115,7 @@ test('map pin changes persist exact coordinates and preserve all other settings'
   assert.equal(map.hass,hass);
   assert.deepEqual(map.schema[0].selector,{location:{}});
   let emitted;editor.addEventListener('config-changed',event=>{emitted=event.detail.config;});
-  editor.shadowRoot.handlers['value-changed']({target:{matches:()=>true},detail:{value:{location:{latitude:53.719876,longitude:21.012345}}},stopPropagation(){}});
+  editor.shadowRoot.handlers['value-changed']({target:{matches:selector=>selector==='ha-form[data-location]'},detail:{value:{location:{latitude:53.719876,longitude:21.012345}}},stopPropagation(){}});
   assert.equal(emitted.latitude,53.719876);assert.equal(emitted.longitude,21.012345);
   assert.equal(emitted.name,'Startowisko');assert.equal(emitted.language,'en');assert.equal(emitted.wind_threshold,6);assert.equal(emitted.daylight_only,false);
   assert.equal(emitted.type,'custom:apco-maniacs-card');
@@ -124,7 +124,7 @@ test('map pin changes persist exact coordinates and preserve all other settings'
   let renders=0;editor.render=()=>renders++;editor.setConfig(emitted);
   assert.equal(renders,0,'HA echo must not reset map zoom or pin');
   emitted=null;
-  editor.shadowRoot.handlers['value-changed']({target:{matches:()=>true},detail:{value:{location:{latitude:999,longitude:0}}},stopPropagation(){}});
+  editor.shadowRoot.handlers['value-changed']({target:{matches:selector=>selector==='ha-form[data-location]'},detail:{value:{location:{latitude:999,longitude:0}}},stopPropagation(){}});
   assert.equal(emitted,null);assert.equal(editor.config.latitude,53.719876);
 });
 
@@ -163,3 +163,80 @@ test('new cards start at the HA home coordinates and support links are present',
   assert.equal(editor.config.language,'es');assert.match(editor.shadowRoot.innerHTML,/Nombre del lugar/);
   editor.setConfig({language:'it'});editor.hass={language:'es'};assert.equal(editor.config.language,'it');
  });
+
+const backendFixture=JSON.parse(await (await import('node:fs/promises')).readFile(new URL('../tests/fixtures/open_meteo.json',import.meta.url),'utf8'));
+function integrationState(overrides={}) {
+  return {state:'good',attributes:{apco_maniacs:true,forecast:backendFixture,updated_at:Date.now()/1000,
+    location:{name:'Piecki',latitude:53.7,longitude:21,timezone:'Europe/Warsaw',wind_threshold:4,precip_threshold:20}},...overrides};
+}
+test('integration card reads the backend contract and never fetches weather in the browser',async()=>{
+  const originalFetch=globalThis.fetch;
+  globalThis.fetch=()=>assert.fail('Backend mode must not call Open-Meteo');
+  try {
+    const card=new Card();card.setConfig({entity:'sensor.apco_piecki_conditions',language:'en'});
+    card.hass={states:{'sensor.apco_piecki_conditions':integrationState()}};
+    await card.refresh();
+    assert.equal(card.error,false);assert.equal(card.data.hours.length,72);
+    assert.equal(card.weatherConfig.name,'Piecki');assert.equal(card.weatherConfig.wind_threshold,4);
+    assert.equal(card.config.language,'en');assert.match(card.shadowRoot.innerHTML,/<h1 class="brand-name">Piecki/);
+    assert.equal(card.data.hours[0].wind,3.2);
+  }finally{globalThis.fetch=originalFetch;}
+});
+test('missing unavailable stale and invalid integration data never falls back to direct fetch',async()=>{
+  const originalFetch=globalThis.fetch;globalThis.fetch=()=>assert.fail('No silent fallback');
+  try {
+    const card=new Card();card.setConfig({entity:'sensor.apco_test',language:'en'});
+    for(const state of [undefined,integrationState({state:'unavailable'}),
+      {state:'good',attributes:{...integrationState().attributes,updated_at:Date.now()/1000-1801}},
+      {state:'good',attributes:{...integrationState().attributes,forecast:{}}},
+      {state:'good',attributes:{...integrationState().attributes,location:{timezone:'invalid'}}}]){
+      card.hass={states:{'sensor.apco_test':state}};await card.refresh();
+      assert.equal(card.error,true);assert.match(card.shadowRoot.innerHTML,/entity is unavailable/);
+      assert.match(card.shadowRoot.innerHTML,/current alert unknown/);
+    }
+    card.hass={states:{'sensor.apco_test':integrationState({state:'unknown'})}};await card.refresh();
+    assert.equal(card.error,false,'Missing current measurements must not hide the forecast');
+  }finally{globalThis.fetch=originalFetch;}
+});
+test('backend changes update the card and explicit refresh uses HA update_entity',async()=>{
+  const card=new Card();card.setConfig({entity:'sensor.apco_test'});card.isConnected=true;
+  const calls=[];
+  const hass={states:{'sensor.apco_test':integrationState()},callService:async(...args)=>calls.push(args)};
+  card.hass=hass;assert.equal(card.error,false);
+  hass.states['sensor.apco_test']=integrationState({state:'unavailable'});card.hass=hass;assert.equal(card.error,true);
+  hass.states['sensor.apco_test']=integrationState();card.hass=hass;assert.equal(card.error,false);
+  await card.refresh();assert.equal(calls.length,0);
+  await card.refresh(true);assert.deepEqual(calls,[['homeassistant','update_entity',{entity_id:'sensor.apco_test'}]]);
+  card.isConnected=false;
+});
+test('native editor selects and clears an integration entity without losing other card settings',async()=>{
+  registry.set('ha-form',class {});
+  try{
+    const editor=await Card.getConfigElement();editor.setConfig({name:'Direct location',language:'es',daylight_only:false});
+    const source={},map={};editor.shadowRoot.querySelector=selector=>selector==='ha-form[data-source]'?source:selector==='ha-form[data-location]'?map:null;
+    editor.hass={states:{}};
+    assert.equal(source.schema[0].selector.entity.integration,'apco_maniacs');
+    let emitted;editor.addEventListener('config-changed',event=>emitted=event.detail.config);
+    const change=entity=>editor.shadowRoot.handlers['value-changed']({target:{matches:selector=>selector==='ha-form[data-source]'},detail:{value:{entity}},stopPropagation(){}});
+    change('sensor.apco_test');assert.equal(emitted.entity,'sensor.apco_test');assert.equal(emitted.language,'es');
+    assert.equal(emitted.daylight_only,false);assert.doesNotMatch(editor.shadowRoot.innerHTML,/ha-form data-location/);
+    assert.doesNotMatch(editor.shadowRoot.innerHTML,/name="latitude"/);
+    change('');assert.equal(emitted.entity,undefined);assert.equal(emitted.name,'Direct location');
+    assert.match(editor.shadowRoot.innerHTML,/ha-form data-location/);
+  }finally{registry.delete('ha-form');}
+});
+
+test('integration mode keeps daylight and horizon editable independently from backend settings',()=>{
+  const card=new Card();card.setConfig({entity:'sensor.apco_test',language:'pl'});
+  card.hass={states:{'sensor.apco_test':integrationState()}};
+  card.setConfig({...card.config,daylight_only:false,forecast_hours:72,wind_threshold:30});
+  assert.equal(card.weatherConfig.daylight_only,false);assert.equal(card.weatherConfig.forecast_hours,72);
+  assert.equal(card.weatherConfig.wind_threshold,4,'Backend thresholds remain authoritative');
+});
+
+test('APCO Weather is the card picker name and both older card types stay registered',()=>{
+  assert.ok(registry.has('apco-weather-card'));
+  assert.ok(registry.has('apco-maniacs-card'));
+  assert.ok(registry.has('warun-card'));
+  assert.equal(window.customCards.find(card=>card.type==='apco-weather-card').name,'APCO Weather');
+});

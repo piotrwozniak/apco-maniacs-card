@@ -4,7 +4,7 @@ Home Assistant YAML configuration for weather monitoring and waste collection re
 
 ## Language
 
-Default user-facing strings are in **Polish**. APCO Maniacs weather UI and sensor descriptions support explicitly selected **Polish, English, Italian or Spanish** (`language: pl` / `en` / `it` / `es`) in the web card; Python sensor output separately supports Polish or English; translate all weather UI strings, dates and number formats. Automation aliases, notifications and trash categories remain Polish. Template comments and variable names may mix Polish and English. New additions should follow this convention.
+Default user-facing strings are in **Polish**. APCO Weather UI and sensor descriptions support explicitly selected **Polish, English, Italian or Spanish** (`language: pl` / `en` / `it` / `es`) in the web card; Python sensor output separately supports Polish or English; translate all weather UI strings, dates and number formats. Automation aliases, notifications and trash categories remain Polish. Template comments and variable names may mix Polish and English. New additions should follow this convention.
 
 ## Architecture
 
@@ -20,11 +20,11 @@ Weather integrations (`weather.forecast_dom`, `weather.piecki`, `weather.faryny`
 
 ## Custom Components
 
-### Warun (`custom_components/warun/`)
+### Legacy Warun (`legacy/custom_components/warun/`)
 
 A HACS-compatible integration that replaces the template-based `sensor.warun_faryny`. Provides a sensor platform for weather conditions assessment.
 
-- **Installation**: copy `custom_components/warun/` to HA's `custom_components/` dir, or add this repo to HACS
+- **Installation**: copy `legacy/custom_components/warun/` to HA's `custom_components/` dir manually; root HACS now installs APCO Weather
 - **Config**: via UI (Settings → Devices & Services → Add Integration → Warun) — select a weather entity
 - **Options**: wind threshold (m/s), precipitation threshold (%), forecast hours count
 - **Architecture**: uses `DataUpdateCoordinator` + state change listeners on the weather entity. Fetches hourly forecast via `weather.get_forecasts` service (type=hourly) — no longer relies on the deprecated `state.attributes.forecast`. Current weather conditions (temp, wind, humidity) are read from the weather entity's state attributes, which remain available.
@@ -56,7 +56,7 @@ This sensor should be replaced by the **Warun** integration (`custom_components/
 
 ### `md_card_place` — Warun do latania, okna 3-godzinne
 
-Lovelace Markdown card template in `custom_components/md_card_place/md_card_place`. Displays a 3-hour-window flying-conditions assessment with color-coded `<ha-alert>` blocks.
+Lovelace Markdown card template in `legacy/custom_components/md_card_place/md_card_place`. Displays a 3-hour-window flying-conditions assessment with color-coded `<ha-alert>` blocks.
 
 - **Data source**: reads `forecast_raw` attribute from a `sensor.warun_*` entity (requires the Warun custom component)
 - **Config**: `sensor_name` (warun sensor), `wind_threshold` (m/s), `precip_threshold` (%), `wind_convert` (1.0 — data already in m/s)
@@ -91,7 +91,7 @@ Keep `wdrozenie.html` (Polish step-by-step deployment guide) up to date whenever
 
 ## Standalone web component
 
-`warun-web/` implements the weather/flying assessment independently of Home Assistant, using Open-Meteo directly. `warun-card.js` registers the same `<warun-card>` Web Component for standalone `index.html` and HA `type: custom:warun-card`; do not add a simulated HA interface. `weather.mjs` contains normalization and assessment/window logic, `warun.css` contains Shadow DOM styles. No runtime packages or build step for standalone sources. For HACS, run `npm run build` to regenerate the committed single-file `dist/apco-maniacs-card.js`; `npm run check:dist` verifies it matches the sources. HACS installs this repository as Dashboard/plugin, not as a Python integration. The product name is **APCO Maniacs**; the canonical web element and HA card type are `apco-maniacs-card` / `custom:apco-maniacs-card`, with `warun-card` retained for compatibility. Use Home Assistant theme variables with dark standalone fallbacks and a small paragliding canopy in the header; preserve the simple forecast layout. `i18n.mjs` contains PL/EN/IT/ES dictionaries. The native HA card editor saves language and location settings to card configuration; integration Python has an independent language option for sensor output. Tests: `node --test warun-web/*.test.mjs`. Deployment instructions for both standalone and HA use are in `wdrozenie.html`. Copy all four runtime files (`warun-card.js`, `weather.mjs`, `i18n.mjs`, `warun.css`) together when deploying to HA's `www/warun-web/`.
+`warun-web/` implements the weather/flying assessment independently of Home Assistant, using Open-Meteo directly. `warun-card.js` registers the same `<warun-card>` Web Component for standalone `index.html` and HA `type: custom:warun-card`; do not add a simulated HA interface. `weather.mjs` contains normalization and assessment/window logic, `warun.css` contains Shadow DOM styles. No runtime packages or build step for standalone sources. For HACS, run `npm run build` to regenerate the committed single-file `dist/apco-maniacs-card.js`; `npm run check:dist` verifies it matches the sources. HACS installs this repository as an integration containing the bundled dashboard card. The product name is **APCO Weather**; the canonical web element and HA card type are `apco-weather-card` / `custom:apco-weather-card`, with `apco-maniacs-card` and `warun-card` retained for compatibility. Use Home Assistant theme variables with dark standalone fallbacks and a small paragliding canopy in the header; preserve the simple forecast layout. `i18n.mjs` contains PL/EN/IT/ES dictionaries. The native HA card editor saves language and location settings to card configuration; integration Python has an independent language option for sensor output. Tests: `node --test warun-web/*.test.mjs`. Deployment instructions for both standalone and HA use are in `wdrozenie.html`. Copy all four runtime files (`warun-card.js`, `weather.mjs`, `i18n.mjs`, `warun.css`) together when deploying to HA's `www/warun-web/`.
 
 The web component should preserve the original Markdown card presentation: colored alert blocks for current conditions and forecast intervals grouped by hourly assessment, with time range, temperature range | max wind with only a source-direction abbreviation (e.g. WNW), without arrows | max precipitation. Preserve the simple pipe-separated layout; do not add a compass or oversized wind figures. Color conveys the verdict: do not add check marks, passing-hours counts, repeated verdict labels or expandable hourly details. Keep the daylight filter; explain when it hides all remaining windows today. Do not replace intervals with an hourly bar chart.
 
@@ -99,10 +99,16 @@ Web forecast windows start at the current full hour (14:15 → 14:00). Assess ea
 
 ## HACS publication and editor
 
-Root `hacs.json` selects `dist/apco-maniacs-card.js`. The dependency-free packaging script embeds CSS, translations and image in one JS file. Keep it in sync after source edits. The native HA card editor loads `ha-form` through the native entities card editor and uses HA's location selector; do not add a simulated HA UI or external map library. Pin changes persist latitude/longitude and retain the other card settings. New cards start at the HA home coordinates. Time zone remains an explicit setting.
+Root `hacs.json` describes the integration. The build emits identical standalone `dist/apco-maniacs-card.js` and bundled `custom_components/apco_maniacs/frontend/apco-weather-card.js`. Keep technical domain `apco_maniacs` and existing card aliases stable; the display brand is APCO Weather. The dependency-free packaging script embeds CSS, translations and image in one JS file. Keep it in sync after source edits. The native HA card editor loads `ha-form` through the native entities card editor and uses HA's location selector; do not add a simulated HA UI or external map library. Pin changes persist latitude/longitude and retain the other card settings. New cards start at the HA home coordinates. Time zone remains an explicit setting.
 
-Support links in `warun-web/i18n.mjs` point to `https://buymeacoffee.com/piotrwoznil` and `https://www.youtube.com/@piter_fly`; mirror these in README, deployment docs and `.github/FUNDING.yml` as applicable. Publication workflows validate HACS category `plugin` and attach the single JS asset on a published GitHub release.
+Support links in `warun-web/i18n.mjs` point to `https://buymeacoffee.com/piotrwoznil` and `https://www.youtube.com/@piter_fly`; mirror these in README, deployment docs and `.github/FUNDING.yml` as applicable. Publication workflows validate HACS category `integration` and attach the integration ZIP plus standalone JS asset on a published GitHub release.
 
 Web card language follows the HA frontend when `language` is omitted. Supported regional language tags normalize to PL/EN/IT/ES; all unmatched languages fall back to English. An explicit supported language overrides HA. Keep all four dictionaries complete and README.md (English default) / README.pl.md / README.it.md / README.es.md aligned. Native HA map controls use HA’s own localization.
 
 The default README and HACS listing description are English. README.en.md is a compatibility link to README.md. Documentation screenshots use the real standalone component in English for Warsaw and Piecki. The Warsaw screenshot fixture is explicitly simulated and isolated in warun-web/demo-warsaw.json; never include demo forecasts in the production card or HACS bundle.
+
+## Optional APCO Weather backend (feature preview)
+
+`custom_components/apco_maniacs/` is an independent, optional Open-Meteo integration (HA 2026.3+). Do not rename or migrate existing `warun` entries. One coordinator per location polls every 15 minutes; four sensors expose current temperature, wind, precipitation probability and enum assessment. Only the conditions sensor exposes the bounded `forecast` payload (Open-Meteo wire format), `updated_at` UTC seconds and `location` settings; the forecast is excluded from Recorder. Brand assets are in `brand/`. New integration display strings follow HA PL/EN/IT/ES translations; legacy Warun retains its independent PL/EN output option.
+
+The card's optional `entity` setting selects that conditions sensor and must never silently fall back to direct fetch. The integration controls location and thresholds; the card controls language, forecast hours and daylight filtering. No entity preserves direct-fetch mode. Real HA tests: Python 3.14 with `homeassistant==2026.3.0`, `python -m unittest discover -s integration_tests`; lightweight data tests stay in `tests/`. `scripts/package_integration.py` exports an installable ZIP and a staging tree for this same one-component repository under ignored `output/`. Root HACS category is integration. Keep just `apco_maniacs` under root `custom_components`; legacy Warun and Markdown files live in `legacy/custom_components`. The integration registers the bundled module using HA frontend extra module URLs and serves it at `/apco-weather/apco-weather-card.js` with a manifest version cache suffix. No separate repository is needed. Existing HACS Dashboard installs need a documented category migration before installing as Integration; never remove user dashboard cards or unrelated resources. Catalogue icon visibility still depends on publication and caches. Installation/rollback details live in `wdrozenie.html` and `docs/integration/README.md`.
