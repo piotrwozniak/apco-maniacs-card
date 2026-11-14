@@ -42,6 +42,10 @@ Editor real de Home Assistant con el centro de Varsovia: 52.2297, 21.0122. Confi
 - Polaco, inglés, italiano y español; fechas y números localizados y temas claros/oscuros de HA.
 - Un único archivo de instalación, sin bibliotecas descargadas de CDN.
 
+## Integración opcional de Home Assistant · versión preliminar
+
+La rama de desarrollo añade un backend opcional con un icono de parapente y sol, mapa nativo, cuatro sensores por ubicación y previsiones compartidas de Open-Meteo cada 15 minutos. La tarjeta puede leer la entidad Condiciones; las tarjetas con acceso directo y la página independiente siguen funcionando por separado. El backend requiere HA 2026.3+ y una instalación aparte; todavía no es una integración publicada en HACS. Consulta la [guía de instalación, entidades y reversión](docs/integration/README.md). `python3 scripts/package_integration.py` genera el ZIP y la estructura de un repositorio separado.
+
 ## Instalación mediante HACS
 
 Repositorio: **https://github.com/piotrwozniak/apco-maniacs-card**.

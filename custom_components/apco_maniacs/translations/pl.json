@@ -1,0 +1,66 @@
+{
+  "title": "APCO Maniacs",
+  "config": {
+    "step": {
+      "user": {
+        "title": "APCO Maniacs",
+        "description": "Wybierz miejsce. Home Assistant pobiera prognozy Open-Meteo co 15 minut, także przy zamkniętym dashboardzie.",
+        "data": {
+          "name": "Nazwa miejsca",
+          "location": "Startowisko",
+          "timezone": "Strefa czasowa",
+          "wind_threshold": "Próg wiatru (m/s)",
+          "precip_threshold": "Próg opadów (%)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie można połączyć się z Open-Meteo.",
+      "invalid_data": "Nieprawidłowe ustawienia lub dane prognozy. Sprawdź strefę czasową i lokalizację."
+    },
+    "abort": {
+      "already_configured": "Ta lokalizacja jest już skonfigurowana."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "APCO Maniacs",
+        "description": "Wybierz miejsce. Home Assistant pobiera prognozy Open-Meteo co 15 minut, także przy zamkniętym dashboardzie.",
+        "data": {
+          "name": "Nazwa miejsca",
+          "location": "Startowisko",
+          "timezone": "Strefa czasowa",
+          "wind_threshold": "Próg wiatru (m/s)",
+          "precip_threshold": "Próg opadów (%)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie można połączyć się z Open-Meteo.",
+      "invalid_data": "Nieprawidłowe ustawienia lub dane prognozy. Sprawdź strefę czasową i lokalizację.",
+      "already_configured": "Ta lokalizacja jest już skonfigurowana."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "conditions": {
+        "name": "Warunki",
+        "state": {
+          "good": "Warun",
+          "bad": "Brak warunu",
+          "unknown": "Brak danych"
+        }
+      },
+      "temperature": {
+        "name": "Temperatura"
+      },
+      "wind": {
+        "name": "Prędkość wiatru"
+      },
+      "precipitation": {
+        "name": "Prawdopodobieństwo opadów"
+      }
+    }
+  }
+}

@@ -4,6 +4,10 @@
 
 A Home Assistant weather card for paraglider pilots. Choose an exact point on the map, set wind and precipitation thresholds, and see consecutive hours with the same assessment grouped into clear weather windows.
 
+## Optional Home Assistant integration · preview
+
+The feature branch adds an optional server backend with its own paraglider/sun icon, native map configuration, four sensors per location and shared Open-Meteo polling every 15 minutes. The card can read the backend's Conditions entity; existing direct-fetch cards and standalone pages remain independent. The backend is a preview requiring HA 2026.3+, installed separately from the Dashboard card. It is not yet a published HACS integration. See the [installation, entity contract and rollback guide](docs/integration/README.md). Build the manual-install ZIP and isolated integration repository with `python3 scripts/package_integration.py`.
+
 ## Screenshots
 
 Two separate, lossless PNG screenshots at 2× pixel density: Warsaw in the dark theme, and Piecki in the light theme. Both use the English interface. Captured from the same component in its standalone preview on 13 November 2026. Warsaw uses simulated example data (a green window from 07:00 to 14:00); Piecki shows the Open-Meteo forecast fetched at capture time. Demo data is never used by the installed card.

@@ -1,0 +1,14 @@
+{
+  "domain": "apco_maniacs",
+  "name": "APCO Maniacs",
+  "codeowners": [
+    "@piotrwozniak"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/piotrwozniak/apco-maniacs-card",
+  "issue_tracker": "https://github.com/piotrwozniak/apco-maniacs-card/issues",
+  "version": "0.1.0",
+  "iot_class": "cloud_polling",
+  "integration_type": "service",
+  "requirements": []
+}

@@ -1,0 +1,66 @@
+{
+  "title": "APCO Maniacs",
+  "config": {
+    "step": {
+      "user": {
+        "title": "APCO Maniacs",
+        "description": "Scegli un luogo. Home Assistant scarica le previsioni Open-Meteo ogni 15 minuti, anche con la dashboard chiusa.",
+        "data": {
+          "name": "Nome del luogo",
+          "location": "Decollo",
+          "timezone": "Fuso orario",
+          "wind_threshold": "Soglia vento (m/s)",
+          "precip_threshold": "Soglia precipitazioni (%)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Impossibile connettersi a Open-Meteo.",
+      "invalid_data": "Impostazioni o previsioni non valide. Controlla fuso orario e posizione."
+    },
+    "abort": {
+      "already_configured": "Questa posizione è già configurata."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "APCO Maniacs",
+        "description": "Scegli un luogo. Home Assistant scarica le previsioni Open-Meteo ogni 15 minuti, anche con la dashboard chiusa.",
+        "data": {
+          "name": "Nome del luogo",
+          "location": "Decollo",
+          "timezone": "Fuso orario",
+          "wind_threshold": "Soglia vento (m/s)",
+          "precip_threshold": "Soglia precipitazioni (%)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Impossibile connettersi a Open-Meteo.",
+      "invalid_data": "Impostazioni o previsioni non valide. Controlla fuso orario e posizione.",
+      "already_configured": "Questa posizione è già configurata."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "conditions": {
+        "name": "Condizioni",
+        "state": {
+          "good": "Condizioni favorevoli",
+          "bad": "Condizioni sfavorevoli",
+          "unknown": "Dati non disponibili"
+        }
+      },
+      "temperature": {
+        "name": "Temperatura"
+      },
+      "wind": {
+        "name": "Velocità del vento"
+      },
+      "precipitation": {
+        "name": "Probabilità di precipitazioni"
+      }
+    }
+  }
+}

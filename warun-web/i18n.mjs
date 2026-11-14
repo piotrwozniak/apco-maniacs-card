@@ -1,6 +1,7 @@
 export const PROJECT_LINKS = Object.freeze({coffee: 'https://buymeacoffee.com/piotrwoznil', youtube: 'https://www.youtube.com/@piter_fly'});
 export const MESSAGES = {
   pl: {
+    integrationSource: "Encja integracji APCO Maniacs (opcjonalnie)", integrationHint: "Miejsce i progi pochodzą z integracji. Zmień je w Ustawienia → Urządzenia i usługi → APCO Maniacs. Wyczyść encję, aby pobierać pogodę bezpośrednio w karcie.", integrationError: "Encja APCO Maniacs jest niedostępna lub jej prognoza jest nieaktualna. Sprawdź integrację w Home Assistant.",
     location: 'Miejsce na mapie', mapHint: 'Kliknij mapę lub przesuń pinezkę. Zapisz kartę, aby zachować wybrane miejsce.', mapUnavailable: 'Mapa jest dostępna w edytorze Home Assistanta. Jeśli się nie ładuje, odśwież stronę; współrzędne możesz też wpisać poniżej.', support: 'Wesprzyj projekt', youtube: 'YT',
     subtitle: 'APCO Pogoda dla Paralotniarzy', refresh: 'Odśwież', refreshing: 'Pobieranie…', refreshLabel: 'Odśwież prognozę',
     good: 'Warun', bad: 'Brak warunu', unknown: 'Brak danych', now: 'Teraz', wind: 'wiatr', windMax: 'wiatr do',
@@ -21,6 +22,7 @@ export const MESSAGES = {
     description: 'Pogoda i okna lotów według warunków, niezależnie od encji HA.',
   },
   en: {
+    integrationSource: "APCO Maniacs integration entity (optional)", integrationHint: "Location and thresholds come from the integration. Edit them in Settings → Devices & services → APCO Maniacs. Clear the entity to fetch weather directly in the card.", integrationError: "The APCO Maniacs entity is unavailable or its forecast is stale. Check the integration in Home Assistant.",
     location: 'Location on the map', mapHint: 'Click the map or drag the pin. Save the card to keep this location.', mapUnavailable: 'The map is available in the Home Assistant editor. Reload if it does not load; you can also enter coordinates below.', support: 'Support this project', youtube: 'YT',
     subtitle: 'APCO Weather for Paraglider Pilots', refresh: 'Refresh', refreshing: 'Loading…', refreshLabel: 'Refresh forecast',
     good: 'Flyable', bad: 'Not flyable', unknown: 'No data', now: 'Now', wind: 'wind', windMax: 'wind up to',
@@ -41,6 +43,7 @@ export const MESSAGES = {
     description: 'Weather and flying windows grouped by conditions, independent of HA entities.',
   },
   it: {
+    integrationSource: "Entità dell’integrazione APCO Maniacs (facoltativa)", integrationHint: "Posizione e soglie provengono dall’integrazione. Modificale in Impostazioni → Dispositivi e servizi → APCO Maniacs. Rimuovi l’entità per scaricare il meteo nella scheda.", integrationError: "L’entità APCO Maniacs non è disponibile o le previsioni sono scadute. Controlla l’integrazione in Home Assistant.",
     location: 'Posizione sulla mappa', mapHint: 'Fai clic sulla mappa o trascina il segnaposto. Salva la scheda per mantenere la posizione.', mapUnavailable: 'La mappa è disponibile nell’editor di Home Assistant. Se non viene caricata, aggiorna la pagina oppure inserisci le coordinate qui sotto.', support: 'Sostieni il progetto', youtube: 'YT',
     subtitle: 'APCO Meteo per piloti di parapendio', refresh: 'Aggiorna', refreshing: 'Caricamento…', refreshLabel: 'Aggiorna le previsioni',
     good: 'Condizioni favorevoli', bad: 'Condizioni sfavorevoli', unknown: 'Dati non disponibili', now: 'Adesso', wind: 'vento', windMax: 'vento fino a',
@@ -61,6 +64,7 @@ export const MESSAGES = {
     description: 'Meteo e finestre di volo raggruppate per condizioni, indipendenti dalle entità HA.',
   },
   es: {
+    integrationSource: "Entidad de la integración APCO Maniacs (opcional)", integrationHint: "La ubicación y los umbrales proceden de la integración. Cámbialos en Ajustes → Dispositivos y servicios → APCO Maniacs. Borra la entidad para obtener el tiempo desde la tarjeta.", integrationError: "La entidad APCO Maniacs no está disponible o su previsión está desactualizada. Comprueba la integración en Home Assistant.",
     location: 'Ubicación en el mapa', mapHint: 'Haz clic en el mapa o arrastra el marcador. Guarda la tarjeta para conservar la ubicación.', mapUnavailable: 'El mapa está disponible en el editor de Home Assistant. Si no se carga, actualiza la página o introduce las coordenadas abajo.', support: 'Apoya el proyecto', youtube: 'YT',
     subtitle: 'APCO Meteorología para pilotos de parapente', refresh: 'Actualizar', refreshing: 'Cargando…', refreshLabel: 'Actualizar el pronóstico',
     good: 'Condiciones favorables', bad: 'Condiciones desfavorables', unknown: 'Sin datos', now: 'Ahora', wind: 'viento', windMax: 'viento hasta',

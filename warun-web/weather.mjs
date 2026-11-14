@@ -6,6 +6,7 @@ export const DEFAULTS = Object.freeze({
 });
 export function configFor(input = {}) {
   const config = {...DEFAULTS, ...input};
+  if(config.entity!=null&&config.entity!==''&&(typeof config.entity!=='string'||!/^sensor\.[a-z0-9_]+$/.test(config.entity)))throw new Error('Invalid APCO Maniacs entity');
   for (const [key, min, max] of [
     ['latitude', -90, 90], ['longitude', -180, 180],
     ['wind_threshold', 0.5, 30], ['precip_threshold', 0, 100], ['forecast_hours', 4, 72],

@@ -4,6 +4,10 @@
 
 Karta pogodowa Home Assistant dla paralotniarzy. Wybierz dokładne miejsce na mapie, ustaw progi wiatru i opadów, a karta połączy kolejne godziny o podobnej ocenie w czytelne okna pogodowe.
 
+## Opcjonalna integracja Home Assistant · wersja testowa
+
+Gałąź funkcjonalna dodaje opcjonalny backend z własną ikoną paralotni ze słońcem, natywną mapą, czterema sensorami na lokalizację i wspólnym pobieraniem Open-Meteo co 15 minut. Karta może czytać encję Warunki; dotychczasowe karty pobierające dane bezpośrednio i strona samodzielna nadal działają niezależnie. Backend wymaga HA 2026.3+ i osobnej instalacji — nie jest jeszcze opublikowaną integracją HACS. Instrukcja po polsku: [wdrozenie.html](wdrozenie.html#integracja-apco); [szczegóły encji i wycofania zmian](docs/integration/README.md). Paczkę ZIP i osobny układ repozytorium integracji tworzy `python3 scripts/package_integration.py`.
+
 ## Zrzuty ekranu
 
 Dwa osobne, bezstratne zrzuty PNG w podwójnej rozdzielczości: Warszawa w ciemnym motywie i Piecki w jasnym. Interfejs angielski. Zrzuty tego samego komponentu w podglądzie samodzielnym, wykonane 13 listopada 2026. Dane Warszawy są demonstracyjne (zielone okno 07:00–14:00); Piecki korzystają z prognozy Open-Meteo pobranej przy wykonywaniu zrzutów. Dane demonstracyjne nie są używane przez instalowaną kartę.
