@@ -63,7 +63,7 @@ To roll back to stable Dashboard 1.0.10, clear `entity` from affected cards, res
 
 ## Branding and packaging
 
-The original project icon combines a blue paraglider with the sun, with 256/512 px PNGs and light/dark variants under `brand/`. HA's local brand API supports these since 2026.3. Catalogue visibility also depends on the HACS/Marketplace version, publication and caches; a local icon alone does not publish a listing. This is an independent community project, not an official APCO Aviation product.
+The project icon uses the same blue/lime/white APCO wing as the card header, with only a sun added. The AI image edit is saved as `brand/icon-master.png`; 256/512 px PNGs are exported for both light and dark icon filenames. HA's local brand API supports these since 2026.3. Catalogue visibility also depends on the HACS/Marketplace version, publication and caches; a local icon alone does not publish a listing. This is an independent community project, not an official APCO Aviation product.
 
 From this repository run `npm run build`, then `python3 scripts/package_integration.py`. This produces `output/apco-weather.zip`, including `custom_components/apco_maniacs/` and the bundled card, plus a staging directory under `output/apco-weather/`. This is a packaging step for the **same repository**, not a requirement for a second repository. It never writes to a live HA configuration. Release automation attaches the ZIP and standalone JS. Root HACS validation uses category `integration`.
 
