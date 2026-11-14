@@ -1,4 +1,4 @@
-# APCO Maniacs
+# APCO Weather
 
 [Polski](README.pl.md) · [English](README.md) · [Italiano](README.it.md) · **Español**
 
@@ -42,46 +42,32 @@ Editor real de Home Assistant con el centro de Varsovia: 52.2297, 21.0122. Confi
 - Polaco, inglés, italiano y español; fechas y números localizados y temas claros/oscuros de HA.
 - Un único archivo de instalación, sin bibliotecas descargadas de CDN.
 
-## Integración opcional de Home Assistant · versión preliminar
+## Integración Home Assistant con tarjeta incluida · versión preliminar
 
-La rama de desarrollo añade un backend opcional con un icono de parapente y sol, mapa nativo, cuatro sensores por ubicación y previsiones compartidas de Open-Meteo cada 15 minutos. La tarjeta puede leer la entidad Condiciones; las tarjetas con acceso directo y la página independiente siguen funcionando por separado. El backend requiere HA 2026.3+ y una instalación aparte; todavía no es una integración publicada en HACS. Consulta la [guía de instalación, entidades y reversión](docs/integration/README.md). `python3 scripts/package_integration.py` genera el ZIP y la estructura de un repositorio separado.
+APCO Weather (antes APCO Maniacs) es ahora una integración con tarjeta incluida, desde el mismo repositorio. Requiere HA 2026.3+. La rama es preliminar; la versión estable 1.0.10 aún usa Dashboard. La URL y los identificadores técnicos siguen siendo compatibles. [Guía de instalación y migración](docs/integration/README.md).
 
 ## Instalación mediante HACS
 
-Repositorio: **https://github.com/piotrwozniak/apco-maniacs-card**.
+1. Añade `https://github.com/piotrwozniak/apco-maniacs-card` a los repositorios personalizados de HACS como **Integración** y descarga **APCO Weather**. Antes de publicar esta versión utiliza el ZIP de la rama, no la versión estable 1.0.10.
+2. Reinicia HA. Añade **APCO Weather** en **Ajustes → Dispositivos y servicios** y configura nombre, ubicación, zona horaria y umbrales.
+3. Recarga completamente el navegador. La integración carga automáticamente la tarjeta incluida; no hace falta otra descarga Dashboard ni un recurso aparte.
+4. Añade **APCO Weather** al panel y selecciona el sensor **Condiciones**. Cada ubicación tiene sensores de temperatura, viento, probabilidad de precipitación y condiciones, actualizados cada 15 minutos incluso con el panel cerrado.
 
-1. Abre HACS → menú ⋮ → **Repositorios personalizados**.
-2. Pega `https://github.com/piotrwozniak/apco-maniacs-card`, selecciona la categoría **Dashboard** y añádelo.
-3. Busca **APCO Maniacs**, descarga la tarjeta y recarga el navegador.
-4. Comprueba los recursos del panel en `/config/lovelace/resources`. HACS debería registrar `apco-maniacs-card.js` como módulo JavaScript. Si gestionas los recursos en YAML, añade manualmente la ruta indicada por HACS.
-5. Añade **APCO Maniacs** desde la lista de tarjetas. Haz clic en el mapa o arrastra el marcador, introduce el nombre del lugar y guarda.
-
-La ruta del recurso incluye el nombre del repositorio:
-
-```text
-/hacsfiles/apco-maniacs-card/apco-maniacs-card.js
-```
-
-Configuración YAML alternativa:
+Ejemplo (usa el ID real del sensor Condiciones):
 
 ```yaml
-type: custom:apco-maniacs-card
-name: Mi despegue
-latitude: 36.88
-longitude: -5.40
+type: custom:apco-weather-card
+entity: sensor.apco_weather_piecki_conditions
 language: es
-timezone: Europe/Madrid
-wind_threshold: 5
-precip_threshold: 10
 forecast_hours: 40
 daylight_only: true
 ```
 
-Cada tarjeta conserva su propia ubicación. El marcador no cambia la ubicación de casa de Home Assistant. Las tarjetas nuevas utilizan inicialmente las coordenadas de casa de HA. Si eliges un lugar en otra zona horaria, cambia también `timezone`: no se calcula automáticamente a partir del mapa.
-
 ## Elegir una ubicación en el mapa
 
-Abre el panel → Editar panel → Editar la tarjeta APCO Maniacs. Usa el editor visual (cambia desde el editor de código si es necesario), haz clic en el mapa o arrastra el marcador y guarda la tarjeta. La captura muestra el editor nativo de Home Assistant con Varsovia seleccionada: latitud `52.2297`, longitud `21.0122`, zona horaria `Europe/Warsaw`.
+Con una entidad seleccionada, cambia ubicación y umbrales desde Configurar en Dispositivos y servicios. Sin entidad usa el mapa de la tarjeta descrito abajo.
+
+Abre el panel → Editar panel → Editar la tarjeta APCO Weather. Usa el editor visual (cambia desde el editor de código si es necesario), haz clic en el mapa o arrastra el marcador y guarda la tarjeta. La captura muestra el editor nativo de Home Assistant con Varsovia seleccionada: latitud `52.2297`, longitud `21.0122`, zona horaria `Europe/Warsaw`.
 
 
 ## Idioma y localización
@@ -92,13 +78,13 @@ Se traducen etiquetas, mensajes, días y meses. En español, los decimales utili
 
 ## Migración desde la instalación manual anterior
 
-Conserva las configuraciones existentes. Tras instalar mediante HACS, elimina el recurso antiguo `/local/warun-web/warun-card.js?...` y deja únicamente el de HACS. Cierra y vuelve a abrir la página para descartar la definición antigua del componente. Se mantienen `custom:apco-maniacs-card` y `custom:warun-card`. Puedes conservar los archivos antiguos de `www/warun-web` hasta comprobar la instalación nueva.
+Conserva las tarjetas y una copia de su YAML. Elimina solo los recursos anteriores de este proyecto (`/hacsfiles/apco-maniacs-card/...`, `/local/apco-maniacs-card/...` o `/local/warun-web/warun-card.js`). Elimina la antigua descarga **Dashboard** de HACS, instala **el mismo repositorio como Integración**, reinicia HA y añade APCO Weather en Dispositivos y servicios. Vuelve a abrir el navegador.
 
-No sustituyas `configuration.yaml`, automatizaciones ni escenas. HACS instala solo la tarjeta, sin archivos de configuración de HA ni la integración Python Warun opcional.
+Los tipos `custom:apco-maniacs-card` y `custom:warun-card` siguen funcionando. Sin `entity` las tarjetas conservan sus ajustes y descarga directa; selecciona Condiciones para los datos del servidor. No sobrescribas la configuración HA ni las entradas Warun existentes. Solo los archivos antiguos del repositorio se movieron a `legacy/custom_components/`. [Actualización y reversión](docs/integration/README.md).
 
 ## Instalación manual de un solo archivo
 
-Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) a `www/apco-maniacs-card/`. Añade `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.10` como recurso de tipo **Módulo JavaScript**. Si acabas de crear `www`, reinicia HA. No necesitas archivos CSS, traducciones ni imágenes por separado.
+Copia [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) a `www/apco-maniacs-card/`. Añade `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.1.0-beta.1` como recurso de tipo **Módulo JavaScript**. Si acabas de crear `www`, reinicia HA. No necesitas archivos CSS, traducciones ni imágenes por separado.
 
 La versión fuente de `warun-web/` también funciona de forma independiente y puede desplegarse con cuatro archivos. La guía detallada [wdrozenie.html](wdrozenie.html) está en polaco.
 
@@ -117,6 +103,8 @@ Si la tarjeta te resulta útil, puedes [invitarme a un café](https://buymeacoff
 Vídeos y otros proyectos: [Piotrek Lata en YouTube](https://www.youtube.com/@piter_fly).
 
 ## Desarrollo y publicación
+
+La compilación escribe el mismo JS en `custom_components/apco_maniacs/frontend/`. HACS instala la integración y la tarjeta desde el mismo repositorio. `python3 scripts/package_integration.py` genera `output/apco-weather.zip`; los lanzamientos adjuntan el ZIP y el JS independiente. CI valida la categoría `integration` y HA 2026.3/2026.11.
 
 Se necesita Node.js 22 o posterior. No hay dependencias npm. El código independiente de `warun-web/` no requiere compilación.
 

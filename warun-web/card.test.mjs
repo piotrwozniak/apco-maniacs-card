@@ -12,7 +12,7 @@ globalThis.customElements={get:key=>registry.get(key),define:(key,value)=>regist
 globalThis.window={};
 globalThis.document={createElement:tag=>new (registry.get(tag))()};
 await import('./warun-card.js');
-const Card=registry.get('apco-maniacs-card');
+const Card=registry.get('apco-weather-card');
 function cardIn(language){
   const card=new Card();card.setConfig({language});card.render();return card;
 }
@@ -32,7 +32,7 @@ test('language setting supports four languages and falls back to English',()=>{
 test('English render localizes controls, zero precipitation and decimal numbers',()=>{
   const card=cardIn('en');
   assert.match(card.shadowRoot.innerHTML,/Location and threshold settings/);
-  assert.match(card.shadowRoot.innerHTML,/APCO Maniacs/);
+  assert.match(card.shadowRoot.innerHTML,/APCO Weather/);
   assert.doesNotMatch(card.shadowRoot.innerHTML,/Ustawienia|Przedziały|Teraz|Odśwież/);
   assert.equal(card.precipitation(0),'no precipitation');
   assert.equal(card.precipitation(12),'precipitation 12%');
@@ -82,7 +82,7 @@ test('compact header shows location once with APCO subtitle and refresh',()=>{
   assert.match(html,/<h1 class="brand-name">Piecki<\/h1>/);
   assert.match(html,/APCO Pogoda dla Paralotniarzy/);
   assert.equal((html.match(/<h1/g)||[]).length,1);
-  assert.doesNotMatch(html,/<span class="brand-name">APCO Maniacs/);
+  assert.doesNotMatch(html,/<span class="brand-name">APCO Weather/);
   assert.match(html,/<div class="name-row"><h1[^>]*>Piecki<\/h1><button[^>]*data-refresh/);
   assert.doesNotMatch(html,/<footer>.*data-refresh/);
 });
@@ -232,4 +232,11 @@ test('integration mode keeps daylight and horizon editable independently from ba
   card.setConfig({...card.config,daylight_only:false,forecast_hours:72,wind_threshold:30});
   assert.equal(card.weatherConfig.daylight_only,false);assert.equal(card.weatherConfig.forecast_hours,72);
   assert.equal(card.weatherConfig.wind_threshold,4,'Backend thresholds remain authoritative');
+});
+
+test('APCO Weather is the card picker name and both older card types stay registered',()=>{
+  assert.ok(registry.has('apco-weather-card'));
+  assert.ok(registry.has('apco-maniacs-card'));
+  assert.ok(registry.has('warun-card'));
+  assert.equal(window.customCards.find(card=>card.type==='apco-weather-card').name,'APCO Weather');
 });

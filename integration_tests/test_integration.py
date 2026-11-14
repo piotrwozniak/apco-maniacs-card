@@ -8,6 +8,7 @@ import unittest
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from homeassistant import loader
+from homeassistant.components import frontend
 from homeassistant.config_entries import ConfigEntries, ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import frame, entity_registry, device_registry, area_registry, floor_registry, label_registry
@@ -26,6 +27,11 @@ class IntegrationTests(unittest.IsolatedAsyncioTestCase):
         self.hass.config.longitude = 21.0
         self.hass.config.time_zone = 'Europe/Warsaw'
         self.hass.config.skip_pip = True
+        # The backend runs on real HA; the browser/HTTP boundary is provided by the host.
+        self.hass.config.components.add('frontend')
+        self.hass.data[frontend.DATA_EXTRA_MODULE_URL] = set()
+        self.hass.http = MagicMock()
+        self.hass.http.async_register_static_paths = AsyncMock()
         loader.async_setup(self.hass)
         frame.async_setup(self.hass)
         self.hass.config_entries = ConfigEntries(self.hass, {})
@@ -72,6 +78,10 @@ class IntegrationTests(unittest.IsolatedAsyncioTestCase):
         entry = await self.create_entry()
         states = self.hass.states.async_all('sensor')
         self.assertEqual(len(states), 4)
+        registrations = self.hass.http.async_register_static_paths.call_args.args[0]
+        self.assertEqual(registrations[0].url_path, '/apco-weather/apco-weather-card.js')
+        self.assertTrue(Path(registrations[0].path).is_file())
+        self.assertIn('/apco-weather/apco-weather-card.js?v=1.1.0-beta.1', self.hass.data[frontend.DATA_EXTRA_MODULE_URL])
         self.assertEqual(self.fetch.call_count, 2, "One validation request and one shared setup request")
         conditions = next(state for state in states if state.attributes.get('apco_maniacs'))
         self.assertEqual(conditions.state, 'good')
@@ -118,6 +128,7 @@ class IntegrationTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual((result['type'], result.get('reason')), ('abort','already_configured'))
         await self.create_entry(name='Faryny', latitude=53.5)
         self.assertEqual(len(self.hass.states.async_all('sensor')), 8)
+        self.hass.http.async_register_static_paths.assert_awaited_once()
 
     async def test_config_flow_reports_offline_and_invalid_timezone(self):
         from aiohttp import ClientConnectionError

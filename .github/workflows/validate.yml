@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: hacs/action@main
         with:
-          category: plugin
+          category: integration
           comment: "false"
 
   integration:
@@ -41,7 +41,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: matrix.homeassistant == '2026.11.1'
         with:
-          name: apco-maniacs-integration-preview
+          name: apco-weather-preview
           path: |
-            output/apco-maniacs-integration.zip
+            output/apco-weather.zip
             dist/apco-maniacs-card.js

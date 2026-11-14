@@ -45,9 +45,9 @@
           "forecast_hours": "Ile godzin prognozy sprawdzać (max 48)",
           "language": "Język ocen i opisu sensora: polski lub angielski"
         },
-        "title": "APCO maniacs — ustawienia"
+        "title": "Warun (legacy) — ustawienia"
       }
     }
   },
-  "title": "APCO maniacs"
+  "title": "Warun (legacy)"
 }

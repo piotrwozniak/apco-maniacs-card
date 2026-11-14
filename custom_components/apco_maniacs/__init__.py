@@ -1,9 +1,16 @@
-"""Optional APCO Maniacs backend; the standalone card remains independent."""
+"""Optional APCO Weather backend; the standalone card remains independent."""
 from homeassistant.const import Platform
 
 from .coordinator import APCOCoordinator
+from .frontend import async_register_card
 
 PLATFORMS = [Platform.SENSOR]
+
+
+async def async_setup(hass, config):
+    """Register the shared card once, before setting up location entries."""
+    await async_register_card(hass)
+    return True
 
 
 async def async_setup_entry(hass, entry):

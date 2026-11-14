@@ -1,80 +1,74 @@
-# APCO Maniacs integration · preview
+# APCO Weather · integration and dashboard card
 
-Optional Home Assistant backend for the [APCO Maniacs weather card](https://github.com/piotrwozniak/apco-maniacs-card). It polls Open-Meteo every 15 minutes per location, even when no dashboard is open. No API key or existing weather entity is required.
+APCO Weather (formerly APCO Maniacs) is delivered from **one repository as one Home Assistant integration containing its dashboard card**. It polls Open-Meteo every 15 minutes per location, including with the dashboard closed. No API key or existing weather entity is required. Requires HA **2026.3+**.
 
-![APCO Maniacs](../../custom_components/apco_maniacs/brand/icon.png)
+![APCO Weather](../../custom_components/apco_maniacs/brand/icon.png)
 
-Requires Home Assistant **2026.3 or newer**. This is a feature preview, not a published HACS integration. The card repository remains a HACS Dashboard/plugin. A separate integration repository is required before offering this backend through HACS; do not add the card repository again as an Integration. The export script prepares that repository's layout with exactly one custom component.
+This feature branch is a preview; the stable 1.0.10 release still uses the older Dashboard installation. Do not select the old stable release when testing the integration. The GitHub repository URL remains unchanged. The technical domain `apco_maniacs`, existing entity IDs and old card types are retained for compatibility.
 
 ## First installation
 
-1. Back up your HA configuration.
-2. Copy **only** `custom_components/apco_maniacs/` to `/config/custom_components/apco_maniacs/` and restart Home Assistant. Leave the existing `warun` integration and unrelated configuration files in place.
-3. Open **Settings → Devices & services → Add integration → APCO Maniacs**.
-4. Enter a location name, choose its map pin, set its explicit IANA time zone and wind/precipitation thresholds. New entries start at the HA home coordinates. Settings are validated against Open-Meteo before saving. Each different location can have its own entry.
-5. Install the matching preview card from this branch: copy `dist/apco-maniacs-card.js` to `/config/www/apco-maniacs-card/`, and use `/local/apco-maniacs-card/apco-maniacs-card.js?v=integration-preview` as the JavaScript module resource. If you already use the HACS resource, temporarily **replace its resource entry** rather than loading both builds. The stable 1.0.10 card does not read integration entities.
-6. In the card's visual editor choose the **Conditions** entity under “APCO Maniacs integration entity”. Find the real entity ID on the integration's device page; the example below is not guaranteed to match your installation.
+1. Back up your HA configuration. In HACS custom repositories, use `https://github.com/piotrwozniak/apco-maniacs-card` with category **Integration** and download the integration preview when available. Before publication, use the ZIP generated from this branch and copy its `custom_components/apco_maniacs/` folder to `/config/custom_components/apco_maniacs/`.
+2. Restart Home Assistant. Open **Settings → Devices & services → Add integration → APCO Weather**.
+3. Enter a location name, select a native map pin, its IANA time zone and both thresholds. New entries start at the HA home coordinates without changing them. The form checks Open-Meteo before saving. Different locations can have independent entries.
+4. Reload the browser fully. The integration automatically serves and loads its included card; no separate HACS Dashboard download or Lovelace resource is needed, including with YAML dashboards.
+5. Add **APCO Weather** from the dashboard card picker. In its visual editor select the **Conditions** entity. Find its actual ID on the integration's device page; names below are examples.
 
 ```yaml
-type: custom:apco-maniacs-card
-entity: sensor.apco_maniacs_piecki_conditions
+type: custom:apco-weather-card
+entity: sensor.apco_weather_piecki_conditions
 # Optional: otherwise follows the HA frontend language.
 language: en
 daylight_only: true
 forecast_hours: 40
 ```
 
-Clear the entity in the card editor to return to direct browser forecasts. Existing cards without `entity` and the standalone page continue to work without the backend.
+The module URL is `/apco-weather/apco-weather-card.js?v=<integration version>`. The integration loads it through HA's frontend module API, independently of how dashboard resources are managed. The module is shared by all location entries.
 
-## Entities and configuration
+## Migrate an existing HACS Dashboard installation
 
-Each entry creates one service device and four sensors:
+1. Save a copy of the existing card YAML and HA configuration. Keep the dashboard cards themselves.
+2. Remove only this project's old resource entries, such as `/hacsfiles/apco-maniacs-card/apco-maniacs-card.js?...`, `/local/apco-maniacs-card/apco-maniacs-card.js?...` or `/local/warun-web/warun-card.js?...`. If resources are configured in YAML, edit those specific entries there. Leave unrelated resources untouched.
+3. Remove the old **Dashboard** download and its custom-repository entry from HACS, then add the **same repository** as an **Integration**, install the integration preview, restart HA and add APCO Weather in Devices & services. Catalogue/category changes are a publication step; this feature branch does not update the public catalogue automatically.
+4. Fully close and reopen the frontend. Old `custom:apco-maniacs-card` and `custom:warun-card` YAML remains valid. Select a Conditions entity only on cards that should use server data. Existing cards without `entity` keep their direct Open-Meteo mode and existing location settings.
+
+The old Warun Python integration is independent. Its source is archived under `legacy/custom_components/warun/` in the repository; its live `/config/custom_components/warun/` folder and entries should be left in place. Markdown examples are in `legacy/custom_components/md_card_place/`. Do not replace `configuration.yaml`, automations, scripts or scenes.
+
+## Entities and settings
+
+Each location creates one service device and four sensors:
 
 | Sensor | Value |
 | --- | --- |
-| Conditions | `good`, `bad`, or `unknown`; displayed using HA translations |
+| Conditions | Stable state `good`, `bad` or `unknown`, with localized display labels |
 | Temperature | Current temperature, native °C |
-| Wind speed | Current wind, native m/s; HA can convert the display unit |
-| Precipitation probability | Probability for the current forecast hour, % |
+| Wind speed | Current wind, native m/s; HA may convert its display unit |
+| Precipitation probability | Probability for the current hour, % |
 
-The conditions entity carries `apco_maniacs: true`, `forecast`, `updated_at` (UTC epoch seconds), and `location` (name, latitude, longitude, IANA time zone and both thresholds). `forecast` uses the Open-Meteo structure, UTC epoch seconds, m/s and °C, and contains at most five days. Only this sensor carries the forecast, and it is excluded from Recorder attributes to avoid storing it on every update. Numeric sensors can be used in automations and history. Enum state values remain stable across languages; the new integration's PL/EN/IT/ES display translations follow HA. The older Warun sensor retains its separate PL/EN language option.
+Only Conditions carries `apco_maniacs: true`, `forecast`, `updated_at` (UTC epoch seconds), and `location` (name, coordinates, IANA time zone and thresholds). `forecast` has Open-Meteo's structure, UTC seconds, m/s, °C and up to five days. It is excluded from Recorder attributes. Numeric sensors support history and automations. Display translations follow HA's PL/EN/IT/ES language; legacy Warun retains its separate PL/EN option.
 
-The current assessment combines **current wind** with the **current hour's precipitation probability**. Both must be strictly below their thresholds. Missing, invalid or stale values never produce `good`. On a fetch failure the sensors become unavailable; previous card intervals may remain visible with an error and the current verdict paused. There is no silent switch to a browser fetch. A successful update restores availability. The card refresh button calls HA's `homeassistant.update_entity`; automatic polling is shared among all cards for the same entry.
+The current assessment combines current wind with the current forecast hour's precipitation probability. Both thresholds are exclusive. Missing, invalid or stale data never produces `good`. A fetch failure makes sensors unavailable; the card can retain previous intervals with an error and its current verdict paused. It never silently switches to browser fetching. Recovery restores availability. Manual card refresh calls `homeassistant.update_entity`; all cards of a location share its polling.
 
-Use the integration's **Configure** action to change its name, map pin, time zone or thresholds. These override the card's old location/threshold settings while an entity is selected. The card still controls language, forecast horizon and daylight filtering. Changing a pin or name keeps the entry and entity IDs. Duplicate location/time zone entries are rejected. Changing this integration does not alter the HA home location, other entries or the legacy `warun` integration.
+Use **Configure** on the integration to change a pin, name, time zone or thresholds while preserving entity IDs. Duplicate location/time-zone entries are rejected. With `entity` selected these settings override the card's old location and thresholds. Language, forecast horizon and daylight filtering remain card settings. Clearing `entity` returns to direct browser fetching.
 
-Forecast intervals keep the existing card rules: start at the current full hour, merge adjacent equal assessments without a three-hour limit, split at gaps/local midnight/verdict changes, clip at sunset including minutes, and restart the next day at the first full hour at or after sunrise. Today's windows disappear once sunset has passed, with the existing explanation on the next date heading.
+Forecast windows preserve the existing rules: start at the current full hour, merge adjacent equal assessments without a three-hour limit, split at gaps/local midnight/verdict changes, clip at sunset including minutes, and restart following days at the first full hour at or after sunrise.
 
-## Updating and removing the preview
+## Updates, standalone mode and rollback
 
-For updates, replace only the `apco_maniacs` component folder and the preview card file, restart HA, change the resource cache suffix, then fully refresh the dashboard. Existing entries and entities remain. Do not overwrite `configuration.yaml`, automations, scripts or scenes.
+For HACS integration updates, download the new version, restart HA and fully refresh the frontend. The card updates with the integration and its URL includes the integration version. Manual installs replace only the `apco_maniacs` component folder, including `frontend/`; no separate JS copy is required. Existing entries and entity IDs remain.
 
-To roll back, clear `entity` from the card and restore the stable HACS resource. Remove the integration entries in Devices & services before deleting the optional component folder and restarting HA. Cards without an integration entity continue to fetch their own weather.
+The standalone alternative remains available as `dist/apco-maniacs-card.js` or the four runtime files in `warun-web/`. When using the single file independently, add it as a JavaScript module and use `custom:apco-weather-card` without `entity`. The standalone page also works without HA. Load just one build of this project's card at a time.
 
-## Icon and distribution
+To roll back to stable Dashboard 1.0.10, clear `entity` from affected cards, restore a supported old card type, remove APCO Weather entries, uninstall the integration and restart HA so its frontend registration is gone. Then reinstall the old Dashboard release and its resource. Keep the dashboard cards and unrelated HA configuration.
 
-The independent project icon combines a blue paraglider canopy with the sun. `brand/icon.png` (256 px) and `brand/icon@2x.png` (512 px) are included for Home Assistant's local brand API, introduced in 2026.3. Matching `dark_icon` variants keep the lines visible on dark themes. The SVGs are the editable masters. An icon in Devices & services does not itself publish a HACS listing. Discovery/list icons also depend on the HACS/Marketplace version, its catalogue and caches; do not promise immediate visibility before publishing an integration repository.
+## Branding and packaging
 
-From the card source repository:
+The original project icon combines a blue paraglider with the sun, with 256/512 px PNGs and light/dark variants under `brand/`. HA's local brand API supports these since 2026.3. Catalogue visibility also depends on the HACS/Marketplace version, publication and caches; a local icon alone does not publish a listing. This is an independent community project, not an official APCO Aviation product.
 
-```sh
-python3 scripts/package_integration.py
-```
+From this repository run `npm run build`, then `python3 scripts/package_integration.py`. This produces `output/apco-weather.zip`, including `custom_components/apco_maniacs/` and the bundled card, plus a staging directory under `output/apco-weather/`. This is a packaging step for the **same repository**, not a requirement for a second repository. It never writes to a live HA configuration. Release automation attaches the ZIP and standalone JS. Root HACS validation uses category `integration`.
 
-This produces `output/apco-maniacs-integration.zip`, containing the installable `custom_components/apco_maniacs/` tree, and `output/apco-maniacs-integration/`, an isolated repository layout with one component, its own `hacs.json`, this guide and the MIT license. The exporter never writes into the live HA configuration. Publishing it as a separate repository and adding a HACS catalogue submission are separate steps; the exporter does neither. No changes to the existing card listing are required.
+Verification: `npm test`, `npm run check:dist`, `python3 -m unittest discover -s tests`; in Python 3.14 environments with HA 2026.3.0 or 2026.11.1 installed, `python -m unittest discover -s integration_tests`. Runtime tests run real HA config flows, entities and lifecycle, with HTTP calls and the frontend server boundary mocked. They do not visually test the native map or an installed HACS interface.
 
-## Verification
-
-```sh
-npm test
-npm run check:dist
-python3 -m unittest discover -s tests
-# In a separate Python 3.14 environment with homeassistant==2026.3.0 or 2026.11.1 installed:
-python -m unittest discover -s integration_tests
-```
-
-The runtime tests run real HA config flows, entity registration, option reloads, unloads and recovery with the HTTP session mocked. They do not test the native map visually or a user's installed HACS interface.
-
-Weather: [Open-Meteo](https://open-meteo.com/), [CC BY 4.0](https://open-meteo.com/en/terms). Coordinates are sent to Open-Meteo by the HA server. The public API is for non-commercial use; commercial deployments need the appropriate provider terms. Independent community project, not an official APCO Aviation product. The weather assessment does not account for turbulence, gusts, thermals or terrain and is not a flight safety guarantee.
+Weather: [Open-Meteo](https://open-meteo.com/), [CC BY 4.0](https://open-meteo.com/en/terms). Coordinates are sent to Open-Meteo by the HA server in integration mode or by the browser in direct mode. The public API is intended for non-commercial use. The assessment omits turbulence, gusts, thermals and terrain and is not a flight safety guarantee.
 
 [Support the project](https://buymeacoffee.com/piotrwoznil) · [Piotrek Lata on YouTube](https://www.youtube.com/@piter_fly)

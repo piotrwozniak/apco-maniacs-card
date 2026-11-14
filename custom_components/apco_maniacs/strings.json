@@ -1,9 +1,9 @@
 {
-  "title": "APCO Maniacs",
+  "title": "APCO Weather",
   "config": {
     "step": {
       "user": {
-        "title": "APCO Maniacs",
+        "title": "APCO Weather",
         "description": "Choose a location. Home Assistant fetches Open-Meteo forecasts every 15 minutes, even when the dashboard is closed.",
         "data": {
           "name": "Location name",
@@ -25,7 +25,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "APCO Maniacs",
+        "title": "APCO Weather",
         "description": "Choose a location. Home Assistant fetches Open-Meteo forecasts every 15 minutes, even when the dashboard is closed.",
         "data": {
           "name": "Location name",

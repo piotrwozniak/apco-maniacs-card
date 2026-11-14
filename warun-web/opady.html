@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#eaf0f5">
-<title>APCO Maniacs — Dublin, podgląd z opadami</title>
+<title>APCO Weather — Dublin, podgląd z opadami</title>
 <style>
 body{margin:0;background:#101921;font-family:system-ui,sans-serif;color:#e0e9ee}main{width:min(100% - 28px,620px);margin:32px auto;display:grid;grid-template-columns:1fr;gap:24px;align-items:start}warun-card{display:block}noscript{display:block;padding:30px}@media(max-width:850px){main{max-width:620px;grid-template-columns:1fr}}@media(max-width:480px){main{margin:14px auto}}@media(prefers-color-scheme:dark){body{background:#101b25}}
 </style>
@@ -13,11 +13,11 @@ body{margin:0;background:#101921;font-family:system-ui,sans-serif;color:#e0e9ee}
 <body>
 <main id="places"><noscript>Włącz JavaScript, aby pobrać prognozę i wyświetlić Warun.</noscript></main>
 <script type="module">
-  import './warun-card.js?v=25';
+  import './warun-card.js?v=26';
   for (const place of [
     {name: 'Dublin', latitude: 53.349, longitude: -6.26, timezone: 'Europe/Dublin'},
   ]) {
-    const card = document.createElement('apco-maniacs-card');
+    const card = document.createElement('apco-weather-card');
     card.setConfig(place);
     document.querySelector('#places').append(card);
   }

@@ -1,9 +1,9 @@
 {
-  "title": "APCO Maniacs",
+  "title": "APCO Weather",
   "config": {
     "step": {
       "user": {
-        "title": "APCO Maniacs",
+        "title": "APCO Weather",
         "description": "Wybierz miejsce. Home Assistant pobiera prognozy Open-Meteo co 15 minut, także przy zamkniętym dashboardzie.",
         "data": {
           "name": "Nazwa miejsca",
@@ -25,7 +25,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "APCO Maniacs",
+        "title": "APCO Weather",
         "description": "Wybierz miejsce. Home Assistant pobiera prognozy Open-Meteo co 15 minut, także przy zamkniętym dashboardzie.",
         "data": {
           "name": "Nazwa miejsca",

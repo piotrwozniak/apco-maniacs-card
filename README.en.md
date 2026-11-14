@@ -1,4 +1,4 @@
-# APCO Maniacs
+# APCO Weather
 
 The English documentation is now the default: [read README.md](README.md).
 

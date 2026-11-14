@@ -1,4 +1,4 @@
-import {languageFor} from './i18n.mjs?v=25';
+import {languageFor} from './i18n.mjs?v=26';
 export const DEFAULTS = Object.freeze({
   name: 'Faryny', latitude: 53.531944, longitude: 21.385556,
   wind_threshold: 5, precip_threshold: 10, forecast_hours: 40,
@@ -6,7 +6,7 @@ export const DEFAULTS = Object.freeze({
 });
 export function configFor(input = {}) {
   const config = {...DEFAULTS, ...input};
-  if(config.entity!=null&&config.entity!==''&&(typeof config.entity!=='string'||!/^sensor\.[a-z0-9_]+$/.test(config.entity)))throw new Error('Invalid APCO Maniacs entity');
+  if(config.entity!=null&&config.entity!==''&&(typeof config.entity!=='string'||!/^sensor\.[a-z0-9_]+$/.test(config.entity)))throw new Error('Invalid APCO Weather entity');
   for (const [key, min, max] of [
     ['latitude', -90, 90], ['longitude', -180, 180],
     ['wind_threshold', 0.5, 30], ['precip_threshold', 0, 100], ['forecast_hours', 4, 72],

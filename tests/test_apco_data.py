@@ -89,6 +89,8 @@ class ForecastTests(unittest.TestCase):
             with ZipFile(archive) as bundle:
                 names = bundle.namelist()
                 self.assertIn('custom_components/apco_maniacs/config_flow.py', names)
+                self.assertEqual(bundle.read('custom_components/apco_maniacs/frontend/apco-weather-card.js'),
+                                 (ROOT/'dist/apco-maniacs-card.js').read_bytes())
                 self.assertFalse(any('__pycache__' in n or n.endswith('.pyc') for n in names))
                 for suffix, size in [('', 256), ('@2x', 512)]:
                     png = bundle.read(f'custom_components/apco_maniacs/brand/icon{suffix}.png')

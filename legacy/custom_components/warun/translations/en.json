@@ -1,5 +1,5 @@
 {
-  "title": "APCO maniacs",
+  "title": "Warun (legacy)",
   "config": {
     "step": {
       "user": {
@@ -34,7 +34,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "APCO maniacs — settings",
+        "title": "Warun (legacy) — settings",
         "data": {
           "wind_threshold": "Wind threshold (m/s)",
           "precip_threshold": "Precipitation threshold (%)",

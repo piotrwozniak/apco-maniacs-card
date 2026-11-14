@@ -1,5 +1,4 @@
-"""Export the optional backend without changing the existing HACS card repository."""
-import json
+"""Package the APCO Weather integration, including its dashboard card."""
 from pathlib import Path
 import shutil
 from zipfile import ZipFile, ZIP_DEFLATED
@@ -10,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def package(output=ROOT / "output"):
     """Build a clean, single-integration repository and a manual-install ZIP."""
     output = Path(output)
-    target = output / "apco-maniacs-integration"
+    target = output / "apco-weather"
     component = target / "custom_components" / "apco_maniacs"
     if target.exists():
         shutil.rmtree(target)
@@ -20,10 +19,8 @@ def package(output=ROOT / "output"):
         "../../custom_components/", "custom_components/")
     (target / "README.md").write_text(guide)
     shutil.copyfile(ROOT / "LICENSE", target / "LICENSE")
-    (target / "hacs.json").write_text(json.dumps({
-        "name": "APCO Maniacs", "homeassistant": "2026.3.0", "render_readme": True,
-    }, indent=2) + "\n")
-    archive = output / "apco-maniacs-integration.zip"
+    shutil.copyfile(ROOT / 'hacs.json', target / 'hacs.json')
+    archive = output / "apco-weather.zip"
     with ZipFile(archive, "w", ZIP_DEFLATED) as bundle:
         for path in sorted(component.rglob("*")):
             if path.is_file():

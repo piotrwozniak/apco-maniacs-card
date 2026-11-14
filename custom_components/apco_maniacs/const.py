@@ -1,6 +1,6 @@
-"""APCO Maniacs integration constants."""
+"""APCO Weather integration constants."""
 DOMAIN = "apco_maniacs"
-NAME = "APCO Maniacs"
+NAME = "APCO Weather"
 DEFAULTS = {
     "name": NAME,
     "latitude": 53.531944,

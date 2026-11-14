@@ -1,5 +1,5 @@
-import {DEFAULTS, configFor, forecastURL, normalize, assessment, currentHour, windowsFor, direction} from './weather.mjs?v=25';
-import {MESSAGES, localeFor, PROJECT_LINKS, languageFor, LANGUAGE_NAMES} from './i18n.mjs?v=25';
+import {DEFAULTS, configFor, forecastURL, normalize, assessment, currentHour, windowsFor, direction} from './weather.mjs?v=26';
+import {MESSAGES, localeFor, PROJECT_LINKS, languageFor, LANGUAGE_NAMES} from './i18n.mjs?v=26';
 const HOUR = 3600000;
 const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const CSS = new URL('./warun.css?v=27', import.meta.url).href;
@@ -111,7 +111,7 @@ class WarunCard extends HTMLElement {
       this.data=data;this.updated=Date.now();
     }catch(error){
       if(controller!==this.controller||!this.isConnected)return;
-      this.error=true;console.warn('APCO Maniacs:',error.message);
+      this.error=true;console.warn('APCO Weather:',error.message);
     }finally{
       clearTimeout(timeout);if(controller===this.controller&&this.isConnected){this.loading=false;this.render();}
     }
@@ -125,7 +125,7 @@ class WarunCard extends HTMLElement {
     const current=this.previewTime!=null?hour:data&&Number.isFinite(data.current.time)&&Math.abs(now-data.current.time)<HOUR?data.current:null;
     const status=!this.updated||Date.now()-this.updated>30*60000||this.error?'unknown':assessment(hour&&current?{...hour,wind:current.wind}:null,c);
     const windows=data?windowsFor(data,c,now):[],days=[...new Set(windows.map(w=>this.day(w.start)))];
-    this.shadowRoot.innerHTML=`<link rel="stylesheet" href="${CSS}"><article class="card" lang="${c.language}" aria-label="APCO Maniacs: ${escapeHTML(c.name)}" aria-busy="${this.loading}">
+    this.shadowRoot.innerHTML=`<link rel="stylesheet" href="${CSS}"><article class="card" lang="${c.language}" aria-label="APCO Weather: ${escapeHTML(c.name)}" aria-busy="${this.loading}">
       <header><div class="brand">${GLIDER}<div class="brand-copy"><div class="name-row"><h1 class="brand-name">${escapeHTML(c.name)}</h1><button type="button" class="refresh" data-refresh aria-label="${t.refreshLabel}" title="${t.refreshLabel}" ${this.loading?'disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6.1 7a7 7 0 0 1 11.6-1L20 9M4 15l2.3 3A7 7 0 0 0 18 17"/></svg></button></div><span class="brand-subtitle">${t.subtitle}</span></div></div></header>
       ${this.error?`<div class="message" role="alert">${c.entity?t.integrationError:t.error} ${data?t.previous:''}</div>`:''}
       <section class="current alert ${status}" aria-label="${t.currentLabel}"><h2>${t.now} – ${this.time(now)}</h2>
@@ -136,7 +136,7 @@ class WarunCard extends HTMLElement {
       ${!windows.length?`<p class="empty">${t.empty}</p>`:''}</section>`:!this.loading?`<p class="empty">${t.noForecast}</p>`:`<div class="loading" role="status">${t.fetching}</div>`}
       <p class="limits">${t.wind} &lt; ${this.fmt(c.wind_threshold,1)} m/s | ${t.rain} &lt; ${this.fmt(c.precip_threshold)}%. ${t.limits}</p>
       ${!this.inHA?`<details class="settings"><summary>${t.settings}</summary><form>${fields(c,t)}<p class="wide hint">${t.temporary}</p><p class="wide form-error" data-form-error role="alert"></p><button class="save" type="submit">${t.apply}</button></form></details>`:''}
-      <footer><span>${this.updated?`${t.updated} ${this.time(this.updated)} · ${t.interval}`:t.autoUpdate}</span><nav class="project-links" aria-label="APCO Maniacs">${PROJECT_LINKS.coffee?`<a href="${escapeHTML(PROJECT_LINKS.coffee)}" target="_blank" rel="noopener noreferrer">☕ ${t.support}</a>`:''}${PROJECT_LINKS.youtube?`<a href="${escapeHTML(PROJECT_LINKS.youtube)}" target="_blank" rel="noopener noreferrer">${t.youtube}</a>`:''}</nav></footer></article>`;
+      <footer><span>${this.updated?`${t.updated} ${this.time(this.updated)} · ${t.interval}`:t.autoUpdate}</span><nav class="project-links" aria-label="APCO Weather">${PROJECT_LINKS.coffee?`<a href="${escapeHTML(PROJECT_LINKS.coffee)}" target="_blank" rel="noopener noreferrer">☕ ${t.support}</a>`:''}${PROJECT_LINKS.youtube?`<a href="${escapeHTML(PROJECT_LINKS.youtube)}" target="_blank" rel="noopener noreferrer">${t.youtube}</a>`:''}</nav></footer></article>`;
   }
   windHTML(speed,bearing){
     const valid=typeof bearing==='number'&&Number.isFinite(bearing);
@@ -216,12 +216,13 @@ class APCOEditor extends HTMLElement {
   }
   render(){
     if(!this.config)return;const t=MESSAGES[this.config.language];
-    this.shadowRoot.innerHTML=`<link rel="stylesheet" href="${CSS}"><div class="card editor" lang="${this.config.language}"><h2>APCO Maniacs</h2>${customElements.get('ha-form')?`<ha-form data-source></ha-form>`:''}${!this.config.entity?`<div class="location-map">${customElements.get('ha-form')?`<ha-form data-location></ha-form><p class="hint">${t.mapHint}</p>`:`<p class="hint">${t.mapUnavailable}</p>`}</div>`:''}<form>${fields(this.config,t)}<p class="wide form-error" data-form-error role="alert"></p></form></div>`;
+    this.shadowRoot.innerHTML=`<link rel="stylesheet" href="${CSS}"><div class="card editor" lang="${this.config.language}"><h2>APCO Weather</h2>${customElements.get('ha-form')?`<ha-form data-source></ha-form>`:''}${!this.config.entity?`<div class="location-map">${customElements.get('ha-form')?`<ha-form data-location></ha-form><p class="hint">${t.mapHint}</p>`:`<p class="hint">${t.mapUnavailable}</p>`}</div>`:''}<form>${fields(this.config,t)}<p class="wide form-error" data-form-error role="alert"></p></form></div>`;
     this.configureMap();
   }
 }
 if(!customElements.get('warun-card'))customElements.define('warun-card',WarunCard);
+if(!customElements.get('apco-weather-card'))customElements.define('apco-weather-card',class extends WarunCard{});
 if(!customElements.get('apco-maniacs-card'))customElements.define('apco-maniacs-card',class extends WarunCard{});
 if(!customElements.get('apco-maniacs-editor'))customElements.define('apco-maniacs-editor',APCOEditor);
 window.customCards=window.customCards||[];
-if(!window.customCards.some(card=>card.type==='apco-maniacs-card'))window.customCards.push({type:'apco-maniacs-card',name:'APCO Maniacs',description:MESSAGES.pl.description});
+if(!window.customCards.some(card=>card.type==='apco-weather-card'))window.customCards.push({type:'apco-weather-card',name:'APCO Weather',description:MESSAGES.pl.description});

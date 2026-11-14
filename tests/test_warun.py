@@ -6,7 +6,7 @@ from types import SimpleNamespace
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-source = ast.parse((ROOT / 'custom_components/warun/sensor.py').read_text())
+source = ast.parse((ROOT / 'legacy/custom_components/warun/sensor.py').read_text())
 selected = [node for node in source.body if isinstance(node, (ast.FunctionDef, ast.ClassDef))]
 namespace = {
     'CoordinatorEntity': type('CoordinatorEntity', (), {}),
@@ -16,7 +16,7 @@ namespace = {
     'WIND_DIRECTIONS': ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
                         'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'],
 }
-namespace.update(runpy.run_path(str(ROOT / 'custom_components/warun/const.py')))
+namespace.update(runpy.run_path(str(ROOT / 'legacy/custom_components/warun/const.py')))
 module = ast.Module(body=[ast.ImportFrom(module='__future__', names=[ast.alias(name='annotations')], level=0), *selected], type_ignores=[])
 exec(compile(ast.fix_missing_locations(module), 'sensor.py', 'exec'), namespace)
 

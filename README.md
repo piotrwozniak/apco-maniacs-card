@@ -1,12 +1,12 @@
-# APCO Maniacs
+# APCO Weather
 
 **English** · [Polski](README.pl.md) · [Italiano](README.it.md) · [Español](README.es.md)
 
 A Home Assistant weather card for paraglider pilots. Choose an exact point on the map, set wind and precipitation thresholds, and see consecutive hours with the same assessment grouped into clear weather windows.
 
-## Optional Home Assistant integration · preview
+## Home Assistant integration and included card · preview
 
-The feature branch adds an optional server backend with its own paraglider/sun icon, native map configuration, four sensors per location and shared Open-Meteo polling every 15 minutes. The card can read the backend's Conditions entity; existing direct-fetch cards and standalone pages remain independent. The backend is a preview requiring HA 2026.3+, installed separately from the Dashboard card. It is not yet a published HACS integration. See the [installation, entity contract and rollback guide](docs/integration/README.md). Build the manual-install ZIP and isolated integration repository with `python3 scripts/package_integration.py`.
+APCO Weather (formerly APCO Maniacs) now comes from one repository as an integration with its dashboard card included. Requires HA 2026.3+. The feature branch is a preview; stable 1.0.10 still uses the older Dashboard installation. The repository URL and technical IDs stay compatible. See the [installation and migration guide](docs/integration/README.md).
 
 ## Screenshots
 
@@ -50,40 +50,26 @@ Actual Home Assistant editor showing central Warsaw: 52.2297, 21.0122. Set the l
 
 ## Install with HACS
 
-Repository: **https://github.com/piotrwozniak/apco-maniacs-card**.
+1. Add `https://github.com/piotrwozniak/apco-maniacs-card` in HACS custom repositories as **Integration**, and download **APCO Weather**. For this unreleased preview, install the ZIP built from this branch instead of stable 1.0.10.
+2. Restart Home Assistant. Add **APCO Weather** in **Settings → Devices & services** and configure a named map location, time zone and thresholds.
+3. Fully reload the frontend. The integration loads its bundled card automatically; no separate Dashboard package or resource entry is needed.
+4. Add **APCO Weather** to your dashboard and select its **Conditions** sensor in the visual editor. Each location gets temperature, wind, precipitation probability and conditions sensors; fetching is shared every 15 minutes, even with the dashboard closed.
 
-1. Open HACS → ⋮ menu → **Custom repositories**.
-2. Paste `https://github.com/piotrwozniak/apco-maniacs-card`, select **Dashboard**, and add it.
-3. Find **APCO Maniacs**, download the card, and reload your browser.
-4. Check dashboard resources at `/config/lovelace/resources`. HACS should register `apco-maniacs-card.js` as a JavaScript module. If you manage resources in YAML, add the path shown by HACS manually.
-5. Add **APCO Maniacs** from the card picker. Click the map or drag the pin in the visual editor, enter a name, and save.
-
-The resource path includes the repository name. For this repository it is:
-
-```text
-/hacsfiles/apco-maniacs-card/apco-maniacs-card.js
-```
-
-You can also configure the card in YAML:
+Example (use your actual Conditions entity ID):
 
 ```yaml
-type: custom:apco-maniacs-card
-name: My launch site
-latitude: 53.531944
-longitude: 21.385556
+type: custom:apco-weather-card
+entity: sensor.apco_weather_piecki_conditions
 language: en
-timezone: Europe/Warsaw
-wind_threshold: 5
-precip_threshold: 10
 forecast_hours: 40
 daylight_only: true
 ```
 
-Each card stores its own location. Selecting a point does not change your Home Assistant home location. New cards initially use your HA home coordinates. When choosing a location in another time zone, also change `timezone` in the editor; it is not inferred from the map pin.
-
 ## Choose a location on the map
 
-Open the dashboard → Edit dashboard → Edit the APCO Maniacs card. Use the visual editor (switch from the code editor if needed), then click the map or drag the pin and save the card. This screenshot shows the native Home Assistant editor with Warsaw selected: latitude `52.2297`, longitude `21.0122`, time zone `Europe/Warsaw`.
+With an integration entity selected, edit the location and thresholds through Configure in Devices & services. Without an entity, use the card map described below.
+
+Open the dashboard → Edit dashboard → Edit the APCO Weather card. Use the visual editor (switch from the code editor if needed), then click the map or drag the pin and save the card. This screenshot shows the native Home Assistant editor with Warsaw selected: latitude `52.2297`, longitude `21.0122`, time zone `Europe/Warsaw`.
 
 
 ## Language and localization
@@ -94,13 +80,13 @@ Labels, messages, weekdays, month names and number formatting are localized. Pol
 
 ## Migrate from the older manual installation
 
-Keep your existing Faryny/Piecki card configurations. After installing with HACS, remove the old `/local/warun-web/warun-card.js?...` resource and keep only the HACS resource. Close and reopen the page so the browser discards the old custom element definition. Both `custom:apco-maniacs-card` and `custom:warun-card` remain supported. You can leave the old files in `www/warun-web` until you have checked the new installation.
+Keep your dashboard cards and back up their YAML. Remove only this project's old resource entries (`/hacsfiles/apco-maniacs-card/...`, `/local/apco-maniacs-card/...` or `/local/warun-web/warun-card.js`). Remove the old HACS **Dashboard** download, then install the **same repository as Integration**, restart HA and add APCO Weather in Devices & services. Fully reopen the browser.
 
-Do not replace `configuration.yaml`, automations or scenes. HACS installs only the dashboard card, without HA configuration files or the optional Warun Python integration.
+`custom:apco-maniacs-card` and `custom:warun-card` remain supported. Cards without `entity` keep their existing direct-fetch settings; select Conditions to use server data. Do not overwrite HA configuration or delete legacy Warun entries. Legacy sources moved to `legacy/custom_components/` in this repository only. [Detailed update and rollback steps](docs/integration/README.md).
 
 ## Manual single-file installation
 
-Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.0.10` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
+Copy [dist/apco-maniacs-card.js](dist/apco-maniacs-card.js) to `www/apco-maniacs-card/`. Add `/local/apco-maniacs-card/apco-maniacs-card.js?v=1.1.0-beta.1` as a **JavaScript module** resource. If you have just created `www`, restart HA. No separate CSS, translation or image files are required.
 
 The source version in `warun-web/` still runs standalone and can also be deployed using four files. The detailed deployment guide, [wdrozenie.html](wdrozenie.html), is in Polish.
 
@@ -120,6 +106,8 @@ Videos and other projects: [Piotrek Lata on YouTube](https://www.youtube.com/@pi
 
 ## Development and releases
 
+The build also writes the same JS into `custom_components/apco_maniacs/frontend/`. HACS now installs the integration and its bundled card from this same repository. `python3 scripts/package_integration.py` builds `output/apco-weather.zip`; releases attach the ZIP and standalone JS. CI validates category `integration` and tests HA 2026.3/2026.11.
+
 Node.js 22 or later is required. There are no npm dependencies. The standalone `warun-web/` sources need no build step.
 
 ```sh
@@ -131,7 +119,7 @@ python3 -m unittest discover -s tests
 
 `npm run build` generates the single HACS file, embedding CSS and the header illustration. Regenerate and commit `dist/apco-maniacs-card.js` after source changes. CI checks tests, bundle freshness and HACS compatibility.
 
-Public repository: [piotrwozniak/apco-maniacs-card](https://github.com/piotrwozniak/apco-maniacs-card). Before publishing another version, bump `package.json`, regenerate `dist`, push the commit, check Actions, and publish a matching release tag. The `Attach HACS bundle` workflow attaches the single JS file.
+Public repository: [piotrwozniak/apco-maniacs-card](https://github.com/piotrwozniak/apco-maniacs-card). Before publishing another version, bump `package.json`, regenerate `dist`, push the commit, check Actions, and publish a matching release tag. The release workflow attaches the integration ZIP and the standalone JS file.
 
 Installation as a HACS custom repository does not require inclusion in the default HACS catalog; catalog submission is a separate step. Local editor tests do not replace testing the map on a running HA instance with your frontend version.
 
